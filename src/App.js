@@ -1,25 +1,85 @@
-import logo from './logo.svg';
-import './App.css';
+/** @jsxImportSource @emotion/react */
+import {useEffect} from "react";
+import LogInScreen from "./Components/loginScreen/LogInScreen";
+import '@fontsource/roboto/400.css';
+import {useDispatch, useSelector} from "react-redux";
+import Sidebar from "./Components/Sidebar";
+import User from "./page/User";
+import Product from "./page/Product";
+import UserList from "./page/UserList";
+import NewUser from "./page/NewUser";
+import ProductList from "./page/ProductList";
+import NewProduct from "./page/NewProduct";
+import {Route, BrowserRouter, Routes} from "react-router-dom";
+import Topbar from "./Components/Topbar";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {profile_api} from "./redux/slices/user.slice";
+import {AddCrawlerSource, Crawler, CrawlerSource, CrawlerSourcesList, Home} from "./page";
+import {css} from "@emotion/react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            cacheTime: 3.2 * 60 * 1000,
+            staleTime: 3.2 * 60 * 1000
+        }
+    }
+});
+
+const App = () => {
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(profile_api());
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(profile_api());
+        }
+    }, [isLoggedIn]);
+
+    if (!isLoggedIn) {
+        return (
+            <LogInScreen/>
+        );
+    }
+
+    return (
+        <BrowserRouter>
+            <Topbar/>
+            <QueryClientProvider client={queryClient}>
+                <div css={style.container}>
+                    <Sidebar/>
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/crawler" element={<Crawler/>}/>
+                        <Route path="/crawlerSourcesList" element={<CrawlerSourcesList/>}/>
+                        <Route path="/crawlerSource/:sourceName" element={<CrawlerSource/>}/>
+                        <Route path="/addCrawlerSource" element={<AddCrawlerSource/>}/>
+                        <Route path="/users" element={<UserList/>}/>
+                        <Route path="/user/:userId" element={<User/>}/>
+                        <Route path="/newUser" element={<NewUser/>}/>
+                        <Route path="/products" element={<ProductList/>}/>
+                        <Route path="/product/:productId" element={<Product/>}/>
+                        <Route path="/newproduct" element={<NewProduct/>}/>
+                    </Routes>
+                </div>
+            </QueryClientProvider>
+        </BrowserRouter>
+    );
+}
+
+const style = {
+    container: css({
+        display: 'flex',
+        marginTop: '10px',
+        // width: '100vw',
+        // backgroundColor: 'red',
+    }),
 }
 
 export default App;
