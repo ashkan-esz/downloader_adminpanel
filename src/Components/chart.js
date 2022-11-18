@@ -45,7 +45,7 @@ const style = {
         padding: '20px 20px 30px 20px',
         webkitBoxShadow: '0px 0px 15px -10px rgba(0, 0, 0, 0.75)',
         boxShadow: '0px 0px 15px -10px rgba(0, 0, 0, 0.75)',
-        height: '27%',
+        height: '30vh',
     }),
     chartTitle: css({
         marginBottom: '20px',

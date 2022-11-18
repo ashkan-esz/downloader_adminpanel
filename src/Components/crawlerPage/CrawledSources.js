@@ -18,11 +18,12 @@ const CrawledSources = ({crawledSources, fieldStyle}) => {
                     divider={<Divider orientation="vertical" flexItem/>}
                     alignItems={"baseline"}
                 >
-                    <span css={fieldStyle}>sourceName: {item.sourceName}</span>
+                    <span css={fieldStyle}>sourceName: {item.name}</span>
                     <span css={fieldStyle}>startTime: {item.startTime}</span>
                     <span css={fieldStyle}>crawlMode: {item.crawlMode}</span>
                     <span css={fieldStyle}>endTime: {item.endTime}</span>
                     <span css={fieldStyle}>time: {item.time}</span>
+                    <span css={fieldStyle}>lastPage(s): {item.lastPages.join(',')}</span>
                 </Stack>
             ))}
         </div>

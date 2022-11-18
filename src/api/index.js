@@ -153,7 +153,7 @@ export const likeOrDislikeApi = async (docType, id, type, isRemove) => {
         if (docType === 'staff' || docType === 'characters') {
             url = `/movies/addUserStats/${docType}/${type}/${id}?remove=${isRemove}`;
         }
-        let response = await API.put(url);
+        await API.put(url);
         return 'ok';
     } catch (error) {
         if (error.response && error.response.status === 409) {

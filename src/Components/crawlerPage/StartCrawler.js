@@ -18,13 +18,13 @@ const StartCrawler = () => {
     });
 
     const _onPress = () => {
+        setError("");
         setIsLoading(true);
         startWebCrawler(configs).then((res) => {
             if (res.errorMessage || res.data.isError) {
                 setError(res.errorMessage || res.data.message);
                 setData(null);
             } else {
-                setError("");
                 setData(res.data);
             }
             setIsLoading(false);
@@ -148,7 +148,7 @@ const StartCrawler = () => {
                 }
 
                 {
-                    !error && data && data.message && <div>
+                    !error && !isLoading && data && data.message && <div>
                         <Typography
                             css={style.errorText}
                             variant="subtitle2"

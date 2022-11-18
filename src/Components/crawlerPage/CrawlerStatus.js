@@ -61,7 +61,10 @@ const CrawlerStatus = () => {
         <div css={style.chart}>
             <span css={style.title}> Crawler Status </span>
 
-            <RefreshButton refreshing={refreshing} onClick={_onRefresh}/>
+            <RefreshButton
+                refreshing={refreshing || isLoading || isFetching}
+                onClick={_onRefresh}
+            />
 
             <div css={style.fieldsContainer}>
 
@@ -90,7 +93,7 @@ const CrawlerStatus = () => {
                         divider={<Divider orientation="vertical" flexItem/>}
                         alignItems={"baseline"}
                     >
-                        <span css={style.field}>sourceName: {data.crawlingSource.sourceName}</span>
+                        <span css={style.field}>sourceName: {data.crawlingSource.name}</span>
                         <span css={style.field}>startTime: {data.crawlingSource.startTime}</span>
                         <span css={style.field}>crawlMode: {data.crawlingSource.crawlMode}</span>
                         <span css={style.field}>pageNumber: {data.pageNumber}</span>
