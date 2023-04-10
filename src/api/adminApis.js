@@ -25,6 +25,63 @@ export const startWebCrawler = async (configs) => {
     }
 }
 
+export const pauseWebCrawler = async (duration) => {
+    try {
+        let response = await API.put(`/admin/crawler/pause/${duration}`);
+        return response.data;
+    } catch (error) {
+        if (!error.response) {
+            error.response = {
+                data: {
+                    errorMessage: "Unknown error",
+                }
+            }
+        }
+        if (!error.response.data.errorMessage) {
+            error.response.data.errorMessage = 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
+export const resumeWebCrawler = async (force) => {
+    try {
+        let response = await API.put(`/admin/crawler/resume/${force}`);
+        return response.data;
+    } catch (error) {
+        if (!error.response) {
+            error.response = {
+                data: {
+                    errorMessage: "Unknown error",
+                }
+            }
+        }
+        if (!error.response.data.errorMessage) {
+            error.response.data.errorMessage = 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
+export const stopWebCrawler = async () => {
+    try {
+        let response = await API.put(`/admin/crawler/stop`);
+        return response.data;
+    } catch (error) {
+        if (!error.response) {
+            error.response = {
+                data: {
+                    errorMessage: "Unknown error",
+                }
+            }
+        }
+        if (!error.response.data.errorMessage) {
+            error.response.data.errorMessage = 'unknown error';
+        }
+        return error.response.data;
+    }
+}
+
 export const getCrawlerStatus = async () => {
     try {
         let response = await API.get(`/admin/crawler/status`);

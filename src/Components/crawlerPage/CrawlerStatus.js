@@ -8,7 +8,9 @@ import {Divider, Stack} from "@mui/material";
 import CrawledSources from "./CrawledSources";
 import RefreshButton from "./RefreshButton";
 import CheckIcon from "./CheckIcon";
-import {getDatesBetween} from "../../utils/utils";
+import {getPassedTime} from "../../utils/utils";
+import PauseCrawlerButton from "./PauseCrawlerButton";
+import StopCrawlerButton from "./StopCrawlerButton";
 
 const CrawlerStatus = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -29,18 +31,30 @@ const CrawlerStatus = () => {
         getData,
         {
             placeholderData: {
-                crawlId: "",
+                crawlId: '',
                 isCrawling: false,
                 isCrawlCycle: false,
-                crawlingSource: null,
+                isManualStart: false,
                 crawledSources: [],
-                lastCrawl: null,
+                crawlingSource: null,
+                totalPausedDuration: 0,
+                startTime: 0,
+                endTime: 0,
+                duration: 0,
+                error: false,
+                errorMessage: '',
+                crawlMode: 0,
                 pageNumber: 0,
                 pageCount: 0,
                 pageLinks: [],
                 isPaused: false,
+                pauseReason: '',
+                isManualPause: false,
+                manualPauseDuration: 0,
                 pausedFrom: 0,
-                totalPausedDuration: 0,
+                crawlerState: 'ok',
+                forceResume: false,
+                forceStop: false,
             },
             keepPreviousData: true,
             refetchInterval: 2 * 1000,
@@ -71,6 +85,9 @@ const CrawlerStatus = () => {
                 onClick={_onRefresh}
             />
 
+            <PauseCrawlerButton isCrawling={data.isCrawling && !data.forceStop} isPaused={data.isPaused}/>
+            <StopCrawlerButton isCrawling={data.isCrawling && !data.forceStop}/>
+
             <div css={style.fieldsContainer}>
 
                 <Stack
@@ -80,25 +97,44 @@ const CrawlerStatus = () => {
                     alignItems={"baseline"}
                 >
                     <span css={style.field}>
-                    isActive: <CheckIcon isCheck={data.isCrawling}/>
+                        isActive: <CheckIcon isCheck={data.isCrawling}/>
                     </span>
 
                     <span css={style.field}>
                         isCrawlCycle: <CheckIcon isCheck={data.isCrawlCycle}/>
                     </span>
 
-                    <span css={style.field}>
-                        isPaused: <CheckIcon isCheck={data.isPaused}/>
-                    </span>
-
-                    {data.isPaused && <span css={style.field}>
-                        pauseDuration: {(Date.now() - data.pausedFrom) / (60 * 1000)}
-                    </span>
-                    }
+                    <span css={style.field}>CrawlerState: {data.crawlerState}</span>
 
                     <span css={style.field}>CrawlId: {data.crawlId.toString()}</span>
                 </Stack>
 
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    divider={<Divider orientation="vertical" flexItem/>}
+                    alignItems={"baseline"}
+                >
+                    <span css={style.field}>
+                        isPaused: <CheckIcon isCheck={data.isPaused}/>
+                    </span>
+
+                    <span css={style.field}>
+                        isManualPause: <CheckIcon isCheck={data.isManualPause}/>
+                    </span>
+
+                    <span css={style.field}>
+                        pauseDuration: {data.isPaused ? ((Date.now() - data.pausedFrom) / (60 * 1000)).toFixed(1) : 0}
+                    </span>
+
+                    <span css={style.field}>
+                        manualPauseDuration: {data.manualPauseDuration}
+                    </span>
+
+                    <span css={style.field}>
+                        pauseReason: {data.pauseReason || "NONE"}
+                    </span>
+                </Stack>
 
                 {
                     data.isCrawling && data.crawlingSource && <Stack
@@ -106,12 +142,17 @@ const CrawlerStatus = () => {
                         spacing={2}
                         divider={<Divider orientation="vertical" flexItem/>}
                         alignItems={"baseline"}
+                        marginTop={1}
                     >
                         <span css={style.field}>sourceName: {data.crawlingSource.name}</span>
-                        <span css={style.field}>startTime: {data.crawlingSource.startTime}</span>
-                        <span css={style.field}>pausedDuration: {data.crawlingSource.pausedDuration}</span>
+                        <span css={style.field}>
+                            startTime: {getPassedTime(data.crawlingSource.startTime).minutes} ago
+                        </span>
+                        <span css={style.field}>
+                            pausedDuration: {(data.crawlingSource.pausedDuration / 60).toFixed(1)}
+                        </span>
                         <span css={style.field}>crawlMode: {data.crawlingSource.crawlMode}</span>
-                        <span css={style.field}>pageNumber: {data.pageNumber}/{data.pageCount}</span>
+                        <span css={style.field}>pageNumber: {data.pageNumber}/{data.pageCount.toFixed(0)}</span>
                     </Stack>
                 }
 
@@ -123,7 +164,10 @@ const CrawlerStatus = () => {
                         {
                             data.pageLinks.map(item => (
                                 <span key={item.url} css={style.field}>
-                                    pageNumber: {item.pageNumber} | Link: {item.url} | time: {getDatesBetween(new Date(), item.time).minutes} | state: {item.state} | stateTime: {getDatesBetween(new Date(), item.stateTime).minutes}
+                                    Page: {item.pageNumber} ||
+                                    Link: {item.url.replace('https://', '').replace(/\/$/, '')} ||
+                                    Time: {getPassedTime(item.time).minutes} ||
+                                    State: {item.state}, ({getPassedTime(item.stateTime).minutes} ago)
                                 </span>
                             ))
                         }
@@ -139,60 +183,6 @@ const CrawlerStatus = () => {
 
                 <Divider css={style.divider} orientation="horizontal" flexItem/>
             </div>
-
-            {
-                data.lastCrawl && <>
-                    <div css={style.titleContainer}>
-                        <span css={style.title2}> Last Crawl </span>
-                    </div>
-
-                    <Stack
-                        direction={"row"}
-                        spacing={2}
-                        divider={<Divider orientation="vertical" flexItem/>}
-                        alignItems={"baseline"}
-                    >
-                        <span css={style.field}>
-                                isCrawlCycle: <CheckIcon isCheck={data.lastCrawl.isCrawlCycle}/>
-                        </span>
-                        <span css={style.field}>crawlId: {data.lastCrawl.crawlId}</span>
-                        <span css={style.field}>crawlMode: {data.lastCrawl.crawlMode}</span>
-                    </Stack>
-
-                    <Stack
-                        direction={"row"}
-                        spacing={2}
-                        divider={<Divider orientation="vertical" flexItem/>}
-                        alignItems={"baseline"}
-                    >
-                        <span css={style.field}>startTime: {data.lastCrawl.startTime}</span>
-                        <span css={style.field}>endTime: {data.lastCrawl.endTime}</span>
-                        <span css={style.field}>time: {data.lastCrawl.time}</span>
-                    </Stack>
-
-                    {
-                        (data.lastCrawl.error || data.lastCrawl.errorMessage) && <Stack
-                            direction={"row"}
-                            spacing={2}
-                            divider={<Divider orientation="vertical" flexItem/>}
-                            alignItems={"baseline"}
-                        >
-                              <span css={style.field}>
-                                error: <CheckIcon isCheck={data.lastCrawl.error}/>
-                              </span>
-                            <span css={style.field}>errorMessage: {data.lastCrawl.errorMessage}</span>
-                        </Stack>
-                    }
-
-                    {
-                        data.lastCrawl.crawledSources.length > 0 && <CrawledSources
-                            crawledSources={data.lastCrawl.crawledSources}
-                            fieldStyle={style.field}
-                        />
-                    }
-
-                </>
-            }
         </div>
     );
 };
@@ -223,10 +213,6 @@ const style = {
     fieldsContainer: css({
         marginTop: '10px',
         marginLeft: '10px',
-    }),
-    fieldContainer: css({
-        display: 'flex',
-        alignItems: 'center',
     }),
     field: css({
         display: 'flex',

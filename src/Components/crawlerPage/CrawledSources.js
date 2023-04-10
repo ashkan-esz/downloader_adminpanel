@@ -22,7 +22,10 @@ const CrawledSources = ({crawledSources, fieldStyle}) => {
                     <span css={fieldStyle}>startTime: {item.startTime}</span>
                     <span css={fieldStyle}>crawlMode: {item.crawlMode}</span>
                     <span css={fieldStyle}>endTime: {item.endTime}</span>
-                    <span css={fieldStyle}>time: {item.time}</span>
+                    <span css={fieldStyle}>time: {item.duration}</span>
+                    <span css={style.field}>
+                          pausedDuration: {(item.pausedDuration / 60).toFixed(1)}
+                    </span>
                     <span css={fieldStyle}>lastPage(s): {item.lastPages.join(',')}</span>
                 </Stack>
             ))}

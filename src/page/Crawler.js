@@ -37,7 +37,7 @@ function Crawler() {
                 title="Crawler Analytics - Last 14 days"
                 grid
                 xAxisDataKey={"startTime"}
-                dataKey2={"time"}
+                dataKey2={"duration"}
             />
 
             <Grid
@@ -56,7 +56,7 @@ function Crawler() {
                                 title={`${sourceName} - Last 14 days`}
                                 grid
                                 xAxisDataKey={"startTime"}
-                                dataKey={"time"}
+                                dataKey={"duration"}
                             />
                         </Grid>
                     ))

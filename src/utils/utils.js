@@ -13,3 +13,7 @@ export function getDatesBetween(date1, date2) {
         days: Number(days.toFixed(2)),
     };
 }
+
+export function getPassedTime(date) {
+    return getDatesBetween(new Date(), date);
+}
