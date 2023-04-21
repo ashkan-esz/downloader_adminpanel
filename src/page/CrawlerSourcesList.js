@@ -12,7 +12,7 @@ function CrawlerSourcesList() {
     };
 
     const getData = async () => {
-        let result = await getCrawlerSources(false);
+        let result = await getCrawlerSources();
         if (result !== 'error') {
             return result;
         } else {

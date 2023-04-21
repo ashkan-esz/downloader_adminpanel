@@ -2,7 +2,7 @@
 import {useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useIsMounted} from "../../hooks";
-import {getCrawlerSources} from "../../api/adminApis";
+import {getCrawlerSources, getCrawlerWarnings} from "../../api/adminApis";
 import {css} from "@emotion/react";
 import {Divider, Stack} from "@mui/material";
 import RefreshButton from "./RefreshButton";
@@ -14,9 +14,15 @@ const CrawlerSources = () => {
     const isMounted = useIsMounted();
 
     const getData = async () => {
-        let result = await getCrawlerSources(true);
-        if (result !== 'error') {
-            return result;
+        let result = await Promise.all([
+            getCrawlerSources(),
+            getCrawlerWarnings(),
+        ]);
+        if (result[0] !== 'error' && result[1] !== 'error') {
+            return {
+                ...result[0],
+                warnings: result[1],
+            };
         } else {
             throw new Error();
         }
@@ -28,9 +34,10 @@ const CrawlerSources = () => {
         {
             placeholderData: {
                 sources: [],
+                warnings: [],
             },
             keepPreviousData: true,
-            refetchInterval: 5 * 60 * 1000,
+            refetchInterval: 30 * 1000,
         }
     );
 
@@ -85,8 +92,8 @@ const CrawlerSources = () => {
                     (data.warnings && data.warnings.length > 0) && <>
                         <span css={style.title2}> Warnings: </span>
                         {
-                            data.warnings.map((message, index) => (
-                                <span key={index} css={style.warning}>{index + 1}. {message} </span>
+                            data.warnings.map((warning, index) => (
+                                <span key={index} css={style.warning}>{index + 1}. {warning.message} ({warning.date})</span>
                             ))
                         }
                     </>

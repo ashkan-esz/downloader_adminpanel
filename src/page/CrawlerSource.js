@@ -12,7 +12,7 @@ function CrawlerSource() {
     const queryClient = useQueryClient();
 
     const getData = async () => {
-        let result = await getCrawlerSources(false);
+        let result = await getCrawlerSources();
         if (result !== 'error') {
             return result.sources.find(item => item.sourceName === location.state?.data?.sourceName);
         } else {

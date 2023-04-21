@@ -47,17 +47,25 @@ const CrawlerStatus = () => {
                 pageNumber: 0,
                 pageCount: 0,
                 pageLinks: [],
-                isPaused: false,
-                pauseReason: '',
-                isManualPause: false,
-                manualPauseDuration: 0,
-                pausedFrom: 0,
+                pauseData: {
+                    isPaused: false,
+                    pauseReason: '',
+                    isManualPause: false,
+                    manualPauseDuration: 0,
+                    pausedFrom: 0,
+                },
                 crawlerState: 'ok',
                 forceResume: false,
                 forceStop: false,
+                limits: {
+                    totalMemory: 0,
+                    memory: 0,
+                    cpu: 0,
+                    pauseDuration: 0,
+                }
             },
             keepPreviousData: true,
-            refetchInterval: 2 * 1000,
+            refetchInterval: 1000,
         }
     );
 
@@ -85,7 +93,7 @@ const CrawlerStatus = () => {
                 onClick={_onRefresh}
             />
 
-            <PauseCrawlerButton isCrawling={data.isCrawling && !data.forceStop} isPaused={data.isPaused}/>
+            <PauseCrawlerButton isCrawling={data.isCrawling && !data.forceStop} isPaused={data.pauseData.isPaused}/>
             <StopCrawlerButton isCrawling={data.isCrawling && !data.forceStop}/>
 
             <div css={style.fieldsContainer}>
@@ -104,7 +112,9 @@ const CrawlerStatus = () => {
                         isCrawlCycle: <CheckIcon isCheck={data.isCrawlCycle}/>
                     </span>
 
-                    <span css={style.field}>CrawlerState: {data.crawlerState}</span>
+                    <span css={style.field}>
+                        isManualStart: <CheckIcon isCheck={data.isManualStart}/>
+                    </span>
 
                     <span css={style.field}>CrawlId: {data.crawlId.toString()}</span>
                 </Stack>
@@ -114,25 +124,39 @@ const CrawlerStatus = () => {
                     spacing={2}
                     divider={<Divider orientation="vertical" flexItem/>}
                     alignItems={"baseline"}
+                    marginTop={1}
+                >
+                    <span css={style.field}>CrawlerState: {data.crawlerState}</span>
+                    <span css={style.field}>MemoryLimit: {data.limits.memory}/{data.limits.totalMemory} MB</span>
+                    <span css={style.field}>CpuLimit: {data.limits.cpu.toString()}%</span>
+                    <span css={style.field}>pauseDurationLimit: {data.limits.pauseDuration.toString()}Min</span>
+                </Stack>
+
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    divider={<Divider orientation="vertical" flexItem/>}
+                    alignItems={"baseline"}
+                    marginTop={1}
                 >
                     <span css={style.field}>
-                        isPaused: <CheckIcon isCheck={data.isPaused}/>
+                        isPaused: <CheckIcon isCheck={data.pauseData.isPaused}/>
                     </span>
 
                     <span css={style.field}>
-                        isManualPause: <CheckIcon isCheck={data.isManualPause}/>
+                        isManualPause: <CheckIcon isCheck={data.pauseData.isManualPause}/>
                     </span>
 
                     <span css={style.field}>
-                        pauseDuration: {data.isPaused ? ((Date.now() - data.pausedFrom) / (60 * 1000)).toFixed(1) : 0}
+                        pauseDuration: {data.pauseData.isPaused ? ((Date.now() - data.pauseData.pausedFrom) / (60 * 1000)).toFixed(1) : 0}
                     </span>
 
                     <span css={style.field}>
-                        manualPauseDuration: {data.manualPauseDuration}
+                        manualPauseDuration: {data.pauseData.manualPauseDuration}
                     </span>
 
                     <span css={style.field}>
-                        pauseReason: {data.pauseReason || "NONE"}
+                        pauseReason: {data.pauseData.pauseReason || "NONE"}
                     </span>
                 </Stack>
 
