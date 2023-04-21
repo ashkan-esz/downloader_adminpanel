@@ -104,8 +104,10 @@ export const updateCrawlerSourceData = async (sourceName, data) => {
 
 export const updateConfigs = async (data) => {
     try {
-        let response = await API.put('/admin/configs/update/', data);
-        return response.data;
+        let response = await API.put('/admin/configs/update/', {
+            configs: data,
+        });
+        return response.data.data;
     } catch (error) {
         return normalizeErrorData(error);
     }
@@ -114,7 +116,7 @@ export const updateConfigs = async (data) => {
 export const getConfigs = async () => {
     try {
         let response = await API.get('/admin/configs');
-        return response.data;
+        return response.data.data;
     } catch (error) {
         return normalizeErrorData(error);
     }
@@ -128,7 +130,7 @@ export const addCrawlerSource = async (data) => {
         let response = await API.put(`/admin/crawler/addSource/`, data);
         return response.data;
     } catch (error) {
-       return normalizeErrorData(error);
+        return normalizeErrorData(error);
     }
 }
 

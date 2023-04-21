@@ -35,6 +35,12 @@ function Sidebar() {
                                 Crawler
                             </li>
                         </Link>
+                        <Link to="/configs" css={style.link}>
+                            <li css={style.sidebarListItem}>
+                                <LineStyle css={style.sidebarIcon}/>
+                                Configs
+                            </li>
+                        </Link>
                         <li css={style.sidebarListItem}>
                             <Timeline css={style.sidebarIcon}/>
                             Analytics
