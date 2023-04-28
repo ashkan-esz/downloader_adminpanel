@@ -15,14 +15,16 @@ function Crawler() {
         start.setDate(start.getDate() - 14);
         let end = new Date();
         getCrawlerHistory(start, end, 0, 240).then(res => {
-            let t = res.map(item => item.crawledSources).flat(1);
-            let shit = t.reduce((rv, x) => {
-                (rv[x.name] = rv[x.name] || []).push(x);
-                return rv;
-            }, {});
-            setSourcesHistory(shit);
-            if (res !== 'error') {
-                setCrawlingHistory(res);
+            if (res !== null) {
+                let t = res.map(item => item.crawledSources).flat(1);
+                let shit = t.reduce((rv, x) => {
+                    (rv[x.name] = rv[x.name] || []).push(x);
+                    return rv;
+                }, {});
+                setSourcesHistory(shit);
+                if (res !== 'error') {
+                    setCrawlingHistory(res);
+                }
             }
         });
     }, []);

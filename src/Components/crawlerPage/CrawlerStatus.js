@@ -32,6 +32,7 @@ const CrawlerStatus = () => {
         {
             placeholderData: {
                 crawlId: '',
+                disable: false,
                 isCrawling: false,
                 isCrawlCycle: false,
                 isManualStart: false,
@@ -57,11 +58,15 @@ const CrawlerStatus = () => {
                 crawlerState: 'ok',
                 forceResume: false,
                 forceStop: false,
-                limits: {
-                    totalMemory: 0,
-                    memory: 0,
-                    cpu: 0,
+                constValues: {
+                    concurrencyNumber: 0,
                     pauseDuration: 0,
+                },
+                limits: {
+                    memory: {value: 0, limit: 0},
+                    cpu: {value: 0, limit: 100},
+                    imageOperations: {value: 0, limit: 0},
+                    trailerUpload: {value: 0, limit: 0},
                 }
             },
             keepPreviousData: true,
@@ -104,6 +109,10 @@ const CrawlerStatus = () => {
                     divider={<Divider orientation="vertical" flexItem/>}
                     alignItems={"baseline"}
                 >
+                     <span css={style.field}>
+                        disabled: <CheckIcon isCheck={data.disable}/>
+                    </span>
+
                     <span css={style.field}>
                         isActive: <CheckIcon isCheck={data.isCrawling}/>
                     </span>
@@ -127,9 +136,26 @@ const CrawlerStatus = () => {
                     marginTop={1}
                 >
                     <span css={style.field}>CrawlerState: {data.crawlerState}</span>
-                    <span css={style.field}>MemoryLimit: {data.limits.memory}/{data.limits.totalMemory} MB</span>
-                    <span css={style.field}>CpuLimit: {data.limits.cpu.toString()}%</span>
-                    <span css={style.field}>pauseDurationLimit: {data.limits.pauseDuration.toString()}Min</span>
+                    <span
+                        css={style.field}>Memory/Limit: {data.limits.memory.value}/{data.limits.memory.limit} MB</span>
+                    <span css={style.field}>Cpu/Limit: 0/{data.limits.cpu.limit.toString()} %</span>
+                    <span css={style.field}>pauseDurationLimit: {data.constValues.pauseDuration.toString()}Min</span>
+                </Stack>
+
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    divider={<Divider orientation="vertical" flexItem/>}
+                    alignItems={"baseline"}
+                    marginTop={1}
+                >
+
+                    <span css={style.field}>
+                        ImageOperations/Limit: {data.limits.imageOperations.value}/{data.limits.imageOperations.limit}
+                    </span>
+                    <span css={style.field}>
+                        TrailerUpload/Limit: {data.limits.trailerUpload.value}/{data.limits.trailerUpload.limit}
+                    </span>
                 </Stack>
 
                 <Stack
@@ -177,6 +203,8 @@ const CrawlerStatus = () => {
                         </span>
                         <span css={style.field}>crawlMode: {data.crawlingSource.crawlMode}</span>
                         <span css={style.field}>pageNumber: {data.pageNumber}/{data.pageCount.toFixed(0)}</span>
+                        <span
+                            css={style.field}>Links/Limit: {data.pageLinks.length}/{data.constValues.concurrencyNumber}</span>
                     </Stack>
                 }
 
