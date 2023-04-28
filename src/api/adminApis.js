@@ -78,6 +78,18 @@ export const getCrawlerSources = async () => {
     }
 }
 
+export const resolveCrawlerWarnings = async (id) => {
+    try {
+        let response = await API.put(`/admin/crawler/warnings/resolve/${id}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
 export const getCrawlerWarnings = async () => {
     try {
         let response = await API.get(`/admin/crawler/warnings`);

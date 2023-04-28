@@ -2,14 +2,19 @@
 import {useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useIsMounted} from "../../hooks";
-import {getCrawlerSources, getCrawlerWarnings} from "../../api/adminApis";
+import {getCrawlerSources, getCrawlerWarnings, resolveCrawlerWarnings} from "../../api/adminApis";
 import {css} from "@emotion/react";
-import {Divider, Stack} from "@mui/material";
+import {CircularProgress, Divider, Stack} from "@mui/material";
 import RefreshButton from "./RefreshButton";
 import CheckIcon from "./CheckIcon";
+import {LoadingButton} from "@mui/lab";
 
 const CrawlerSources = () => {
     const [refreshing, setRefreshing] = useState(false);
+    const [resolving, setResolving] = useState({
+        id: '',
+        isResolving: false,
+    });
     const queryClient = useQueryClient();
     const isMounted = useIsMounted();
 
@@ -45,6 +50,21 @@ const CrawlerSources = () => {
         setRefreshing(true);
         await queryClient.refetchQueries(['crawlerSources']);
         isMounted.current && setRefreshing(false);
+    }
+
+    const _resolveWarning = async (id) => {
+        if (!resolving.isResolving) {
+            setResolving({
+                id: id,
+                isResolving: true,
+            });
+            let result = await resolveCrawlerWarnings(id);
+            setResolving({
+                id: '',
+                isResolving: false,
+            });
+            _onRefresh();
+        }
     }
 
     if (isError) {
@@ -93,7 +113,25 @@ const CrawlerSources = () => {
                         <span css={style.title2}> Warnings: </span>
                         {
                             data.warnings.map((warning, index) => (
-                                <span key={index} css={style.warning}>{index + 1}. {warning.message} ({warning.date})</span>
+                                <div css={style.warningRow} key={index}>
+                                    <span css={style.warning}>
+                                        {index + 1}. {warning.message} ({warning.date}) (counts:{warning.count})
+                                    </span>
+
+                                    <div css={style.resolveButtonContainer}>
+                                        <LoadingButton
+                                            variant={"outlined"}
+                                            size={"small"}
+                                            color={"primary"}
+                                            disabled={resolving.isResolving}
+                                            loading={resolving.id === warning.id}
+                                            loadingIndicator={<CircularProgress color="error" size={18}/>}
+                                            onClick={() => _resolveWarning(warning.id)}
+                                        >
+                                            Resolve
+                                        </LoadingButton>
+                                    </div>
+                                </div>
                             ))
                         }
                     </>
@@ -139,6 +177,16 @@ const style = {
         marginTop: '10px',
         marginBottom: '10px',
         display: 'block',
+    }),
+    warningRow: css({
+        display: 'flex',
+        alignItems: 'center',
+    }),
+    resolveButtonContainer: css({
+        position: 'absolute',
+        right: '40px',
+        alignItems: 'center',
+        justifyContent: 'center',
     }),
 }
 
