@@ -1,13 +1,28 @@
 /** @jsxImportSource @emotion/react */
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {startWebCrawler} from "../../api/adminApis";
 import {css} from "@emotion/react";
-import {Checkbox, CircularProgress, Divider, FormControlLabel, Stack, TextField, Typography} from "@mui/material";
+import {
+    Checkbox,
+    CircularProgress,
+    Divider, FormControl,
+    FormControlLabel,
+    InputLabel, MenuItem, Select,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
+import {useQueryClient} from "@tanstack/react-query";
+import {useIsMounted} from "../../hooks";
+import RefreshButton from "./RefreshButton";
 
 const StartCrawler = () => {
+    const [selectedSource, setSelectedSource] = useState('');
+    const [crawlerSources, setCrawlerSources] = useState({sources: []});
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState("");
     const [configs, setConfigs] = useState({
         sourceName: "",
@@ -16,11 +31,29 @@ const StartCrawler = () => {
         handleDomainChangeOnly: false,
         handleCastUpdate: true,
     });
+    const isMounted = useIsMounted();
+    const queryClient = useQueryClient();
+
+    useEffect(() => {
+        let temp = queryClient.getQueryData(['crawlerSources']);
+        if (temp) {
+            setCrawlerSources(temp);
+        }
+    }, []);
 
     const _onPress = () => {
+        if (!selectedSource) {
+            setError("Choose source");
+            return;
+        }
         setError("");
         setIsLoading(true);
-        startWebCrawler(configs).then((res) => {
+        let temp = {
+            ...configs,
+            sourceName: selectedSource,
+        }
+        setConfigs(temp);
+        startWebCrawler(temp).then((res) => {
             if (res.errorMessage || res.data.isError) {
                 setError(res.errorMessage || res.data.message);
                 setData(null);
@@ -31,9 +64,18 @@ const StartCrawler = () => {
         });
     }
 
+    const _onRefresh = async () => {
+        setRefreshing(true);
+        await queryClient.refetchQueries(['crawlerSources']);
+        let temp = queryClient.getQueryData(['crawlerSources']);
+        setCrawlerSources(temp);
+        isMounted.current && setRefreshing(false);
+    }
+
     return (
         <div css={style.container}>
             <span css={style.title}> Start Crawler </span>
+            <RefreshButton refreshing={refreshing || isLoading} onClick={_onRefresh}/>
 
             <div css={style.fieldsContainer}>
 
@@ -43,21 +85,26 @@ const StartCrawler = () => {
                     divider={<Divider orientation="vertical" flexItem/>}
                     alignItems={"baseline"}
                 >
-                    <TextField
-                        name={"sourceName"}
-                        placeholder={"Source Name?"}
-                        value={configs.sourceName}
-                        onChange={(value) => setConfigs(prev => ({
-                                ...prev,
-                                sourceName: value.target.value,
-                            })
-                        )}
-                        label={"Source Name"}
-                        type={"text"}
-                        margin={"dense"}
-                        variant={"standard"}
-                        color={"secondary"}
-                    />
+
+                    <FormControl required disabled={refreshing || isLoading} sx={{m: 1, minWidth: 120}}>
+                        <InputLabel id="demo-simple-select-label">Source</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedSource}
+                            label="Age"
+                            onChange={(v) => setSelectedSource(v.target.value)}
+                        >
+                            {
+                                crawlerSources.sources.map(item => <MenuItem
+                                    key={item.sourceName}
+                                    value={item.sourceName}>
+                                    {item.sourceName}
+                                </MenuItem>)
+                            }
+                        </Select>
+                    </FormControl>
 
                     <TextField
                         name={"mode"}
