@@ -35,10 +35,12 @@ const StartCrawler = () => {
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        let temp = queryClient.getQueryData(['crawlerSources']);
-        if (temp) {
-            setCrawlerSources(temp);
-        }
+        setTimeout(() => {
+            let temp = queryClient.getQueryData(['crawlerSources']);
+            if (temp) {
+                setCrawlerSources(temp);
+            }
+        }, 2000);
     }, []);
 
     const _onPress = () => {

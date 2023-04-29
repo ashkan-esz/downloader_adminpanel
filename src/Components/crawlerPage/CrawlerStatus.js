@@ -8,7 +8,7 @@ import {Divider, Stack} from "@mui/material";
 import CrawledSources from "./CrawledSources";
 import RefreshButton from "./RefreshButton";
 import CheckIcon from "./CheckIcon";
-import {getPassedTime} from "../../utils/utils";
+import {addHourToDate, getLeftTime, getPassedTime} from "../../utils/utils";
 import PauseCrawlerButton from "./PauseCrawlerButton";
 import StopCrawlerButton from "./StopCrawlerButton";
 
@@ -32,6 +32,13 @@ const CrawlerStatus = () => {
         {
             placeholderData: {
                 crawlId: '',
+                disabledData: {
+                    isEnvDisabled: false,
+                    isDbDisabled: false,
+                    isDbDisabled_temporary: false,
+                    dbDisableDuration: 0,
+                    dbDisableStart: 0,
+                },
                 disable: false,
                 isCrawling: false,
                 isCrawlCycle: false,
@@ -63,8 +70,8 @@ const CrawlerStatus = () => {
                     pauseDuration: 0,
                 },
                 limits: {
-                    memory: {value: 0, limit: 0},
-                    cpu: {value: 0, limit: 100},
+                    memory: {value: 0, limit: 0, total: 0},
+                    cpu: {value: [0, 0, 0], limit: 100},
                     imageOperations: {value: 0, limit: 0},
                     trailerUpload: {value: 0, limit: 0},
                 }
@@ -109,10 +116,30 @@ const CrawlerStatus = () => {
                     divider={<Divider orientation="vertical" flexItem/>}
                     alignItems={"baseline"}
                 >
-                     <span css={style.field}>
-                        disabled: <CheckIcon isCheck={data.disable}/>
+                    <span css={style.field}>
+                        Disabled(Env): <CheckIcon isCheck={data.disabledData.isEnvDisabled}/>
                     </span>
+                    <span css={style.field}>
+                        Disabled(Db): <CheckIcon isCheck={data.disabledData.isDbDisabled}/>
+                    </span>
+                    <span css={style.field}>
+                        Temporary Disabled(Db): <CheckIcon isCheck={data.disabledData.isDbDisabled_temporary}/>
+                    </span>
+                    <span css={style.field}>Time to Crawler Activation:
+                        {data.disabledData.isDbDisabled_temporary
+                            ? getLeftTime(addHourToDate(data.disabledData.dbDisableStart, data.disabledData.dbDisableDuration)).hours
+                            : 0
+                        } Hour
+                        </span>
+                </Stack>
 
+                <Stack
+                    direction={"row"}
+                    spacing={2}
+                    divider={<Divider orientation="vertical" flexItem/>}
+                    alignItems={"baseline"}
+                    marginTop={1}
+                >
                     <span css={style.field}>
                         isActive: <CheckIcon isCheck={data.isCrawling}/>
                     </span>
@@ -137,8 +164,10 @@ const CrawlerStatus = () => {
                 >
                     <span css={style.field}>CrawlerState: {data.crawlerState}</span>
                     <span
-                        css={style.field}>Memory/Limit: {data.limits.memory.value}/{data.limits.memory.limit} MB</span>
-                    <span css={style.field}>Cpu/Limit: 0/{data.limits.cpu.limit.toString()} %</span>
+                        css={style.field}>Memory/Limit/Total: {data.limits.memory.value}/{data.limits.memory.limit}/{data.limits.memory.total} MB</span>
+                    <span css={style.field}>
+                        Cpu/Limit: {data.limits.cpu.value.map(item => item.toFixed(1)).join(', ')}/{data.limits.cpu.limit.toString()} %
+                    </span>
                     <span css={style.field}>pauseDurationLimit: {data.constValues.pauseDuration.toString()}Min</span>
                 </Stack>
 

@@ -17,3 +17,14 @@ export function getDatesBetween(date1, date2) {
 export function getPassedTime(date) {
     return getDatesBetween(new Date(), date);
 }
+
+export function getLeftTime(date) {
+    date = new Date(date);
+    return getDatesBetween(date, new Date());
+}
+
+export function addHourToDate(date,hours){
+    date = new Date(date);
+    date.setHours(date.getHours() + hours);
+    return date;
+}
