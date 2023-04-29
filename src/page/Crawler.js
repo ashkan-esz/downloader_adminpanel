@@ -39,7 +39,8 @@ function Crawler() {
                 title="Crawler Analytics - Last 14 days"
                 grid
                 xAxisDataKey={"startTime"}
-                dataKey2={"duration"}
+                dataKey={"duration"}
+                dataKey2={"totalPausedDuration"}
             />
 
             <Grid
@@ -59,6 +60,7 @@ function Crawler() {
                                 grid
                                 xAxisDataKey={"startTime"}
                                 dataKey={"duration"}
+                                dataKey2={"pausedDuration"}
                             />
                         </Grid>
                     ))

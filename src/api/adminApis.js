@@ -116,9 +116,7 @@ export const updateCrawlerSourceData = async (sourceName, data) => {
 
 export const updateConfigs = async (data) => {
     try {
-        let response = await API.put('/admin/configs/update/', {
-            configs: data,
-        });
+        let response = await API.put('/admin/configs/update/', data);
         return response.data.data;
     } catch (error) {
         return normalizeErrorData(error);

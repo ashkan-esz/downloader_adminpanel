@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useMemo, useState} from 'react';
 import {css} from "@emotion/react";
-import {Button, CircularProgress, TextField, Typography} from "@mui/material";
+import {Button, CircularProgress, FormControlLabel, Switch, TextField, Typography} from "@mui/material";
 import {isUri} from "valid-url";
 import {LoadingButton} from "@mui/lab";
 import {useForm} from "react-hook-form";
@@ -10,6 +10,11 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 
 
 const Configs = () => {
+    const [otherDataFields, setOtherDataFields] = useState({
+        disableTestUserRequests: false,
+        disableCrawler: false,
+    });
+    const [isFirstData, setIsFirstData] = useState(true);
     const [isLoading2, setIsLoading2] = useState(false);
     const [error, setError] = useState("");
     const [isDirty, setIsDirty] = useState(false);
@@ -19,6 +24,13 @@ const Configs = () => {
     const getData = async () => {
         let result = await getConfigs();
         if (result !== 'error') {
+            if (isFirstData) {
+                setOtherDataFields({
+                    disableTestUserRequests: result.disableTestUserRequests,
+                    disableCrawler: result.disableCrawler,
+                });
+                setIsFirstData(false);
+            }
             return result;
         } else {
             throw new Error();
@@ -41,8 +53,9 @@ const Configs = () => {
     const _onPress = () => {
         handleSubmit((data) => {
                 setIsLoading2(true);
-                let updateFields = {...data};
+                let updateFields = {...data, ...otherDataFields};
                 updateFields.corsAllowedOrigins = updateFields.corsAllowedOrigins.split(' --- ');
+                updateFields.disableCrawlerForDuration = Number(updateFields.disableCrawlerForDuration);
                 updateConfigs(updateFields).then(async res => {
                     if (res.errorMessage) {
                         setError(res.errorMessage);
@@ -79,6 +92,18 @@ const Configs = () => {
         return () => subscription.unsubscribe();
     }, [watch, data, getValues]);
 
+
+    useEffect(() => {
+        if (
+            (data && data.disableTestUserRequests !== otherDataFields.disableTestUserRequests) ||
+            (data && data.disableCrawler !== otherDataFields.disableCrawler)
+        ) {
+            setIsDirty(true);
+        } else if (data && isDirty) {
+            setIsDirty(true);
+        }
+    }, [otherDataFields]);
+
     if (!data && (isLoading || isLoading2)) {
         return (
             <CircularProgress color="error" size={18}/>
@@ -105,6 +130,63 @@ const Configs = () => {
                     color={"secondary"}
                 />
             </div>
+
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("disableCrawlerForDuration", {
+                        validate: value => !isNaN(value) || "Int Numbers only",
+                    })}
+                    name={"disableCrawlerForDuration"}
+                    placeholder={data.disableCrawlerForDuration || '0'}
+                    defaultValue={data.disableCrawlerForDuration || 0}
+                    label={"disableCrawlerForDuration"}
+                    type={"url"}
+                    error={!!errors.disableCrawlerForDuration}
+                    helperText={errors.disableCrawlerForDuration?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.disableTestUserRequests ? "error" : "primary"}
+                        checked={otherDataFields.disableTestUserRequests}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            disableTestUserRequests: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="disableTestUserRequests"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.disableCrawler ? "error" : "primary"}
+                        checked={otherDataFields.disableCrawler}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            disableCrawler: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'disableCrawler'}}
+                    />
+                }
+                label="disableCrawler"
+                labelPlacement="start"
+            />
 
             {
                 !!error && <div>
@@ -180,6 +262,9 @@ const style = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+    }),
+    switch: css({
+        display: 'block',
     }),
 };
 
