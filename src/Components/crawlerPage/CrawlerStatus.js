@@ -54,6 +54,11 @@ const CrawlerStatus = () => {
                 crawlMode: 0,
                 pageNumber: 0,
                 pageCount: 0,
+                sourcePage: {
+                    url: '',
+                    state: '',
+                    stateTime: 0,
+                },
                 pageLinks: [],
                 pauseData: {
                     isPaused: false,
@@ -243,8 +248,15 @@ const CrawlerStatus = () => {
                             <span css={style.title2}> Page Links </span>
                         </div>
                         {
-                            data.pageLinks.map(item => (
+                            data.sourcePage.url && <span css={style.field}>
+                            Source Page: {data.sourcePage.url} || {data.sourcePage.state} || ({getPassedTime(data.sourcePage.stateTime).minutes} ago)
+                        </span>
+                        }
+
+                        {
+                            data.pageLinks.map((item, index) => (
                                 <span key={item.url} css={style.field}>
+                                    {index + 1}.
                                     Page: {item.pageNumber} ||
                                     Link: {item.url.replace('https://', '').replace(/\/$/, '')} ||
                                     Time: {getPassedTime(item.time).minutes} ||
