@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {css} from "@emotion/react";
 import {Button, CircularProgress, FormControlLabel, Switch, TextField, Typography} from "@mui/material";
 import {isUri} from "valid-url";
@@ -13,6 +13,7 @@ const Configs = () => {
     const [otherDataFields, setOtherDataFields] = useState({
         disableTestUserRequests: false,
         disableCrawler: false,
+        developmentFaze: false,
     });
     const [isFirstData, setIsFirstData] = useState(true);
     const [isLoading2, setIsLoading2] = useState(false);
@@ -28,6 +29,7 @@ const Configs = () => {
                 setOtherDataFields({
                     disableTestUserRequests: result.disableTestUserRequests,
                     disableCrawler: result.disableCrawler,
+                    developmentFaze: result.developmentFaze,
                 });
                 setIsFirstData(false);
             }
@@ -96,7 +98,8 @@ const Configs = () => {
     useEffect(() => {
         if (
             (data && data.disableTestUserRequests !== otherDataFields.disableTestUserRequests) ||
-            (data && data.disableCrawler !== otherDataFields.disableCrawler)
+            (data && data.disableCrawler !== otherDataFields.disableCrawler) ||
+            (data && data.developmentFaze !== otherDataFields.developmentFaze)
         ) {
             setIsDirty(true);
         } else if (data && isDirty) {
@@ -185,6 +188,25 @@ const Configs = () => {
                     />
                 }
                 label="disableCrawler"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.developmentFaze ? "error" : "primary"}
+                        checked={otherDataFields.developmentFaze}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            developmentFaze: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'developmentFaze'}}
+                    />
+                }
+                label="developmentFaze"
                 labelPlacement="start"
             />
 
