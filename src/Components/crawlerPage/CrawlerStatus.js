@@ -89,8 +89,9 @@ const CrawlerStatus = () => {
                     stateTime: 0,
                     error: false,
                     errorMessage: '',
-                    sources: [], //sourceName, url, checked, changed, crawled, errorMessage
+                    sources: [], //sourceName,url,checked,changed,crawled,errorMessage
                 },
+                remoteBrowsers: [], //endpoint,tabsCount,apiCallCount,urls,sourcesData:{sourceName,errorCounter,lastErrorTime,isBlocked},disabledTime,disabled
             },
             keepPreviousData: true,
             refetchInterval: 1000,
@@ -331,6 +332,63 @@ const CrawlerStatus = () => {
                     />
                 }
 
+                {
+                    data.remoteBrowsers.length > 0 && <div css={style.remoteBrowsersContainer}>
+                        <div css={style.titleContainer}>
+                            <span css={style.title2}> Remote Headless Browsers </span>
+                        </div>
+
+                        {
+                            data.remoteBrowsers.map((item, index) => (<div key={item.endpoint}>
+                                <span key={item.endpoint} css={style.field2}>
+                                    {index + 1}.
+                                    Link: {item.endpoint} ||
+                                    TabsCount: {item.tabsCount} ||
+                                    ApiCallCount: {item.apiCallCount} ||
+                                    Disabled: <CheckIcon isCheck={item.disabled}/> {
+                                    item.disabled && <span>({getPassedTime(item.disabledTime).minutes} ago)</span>
+                                }
+                                </span>
+
+                                    {
+                                        item.sourcesData.length > 0 && <>
+                                            <div css={style.titleContainer2}>
+                                                <span css={style.title4}> Sources Data: </span>
+                                            </div>
+                                            {
+                                                item.sourcesData.map((source, sindex) => (
+                                                        <span key={source.sourceName} css={style.field3}>
+                                                            {sindex + 1}.
+                                                            Name: {source.sourceName} ||
+                                                            Error Counter: {source.errorCounter} ||
+                                                            lastErrorTime: {source.lastErrorTime ? getPassedTime(source.lastErrorTime).minutes : 0} ago ||
+                                                            IsBlocked: <CheckIcon isCheck={source.isBlocked}/>
+                                                        </span>
+                                                    )
+                                                )
+                                            }
+                                        </>
+                                    }
+
+                                    {
+                                        item.urls.length > 0 && <>
+                                            <div css={style.titleContainer2}>
+                                                <span css={style.title4}> Urls: </span>
+                                            </div>
+                                            {
+                                                item.urls.map((url, uindex) => (
+                                                        <span key={url} css={style.field3}>{uindex + 1}. {url}</span>
+                                                    )
+                                                )
+                                            }
+                                        </>
+                                    }
+                                </div>
+                            ))
+                        }
+                    </div>
+                }
+
                 <Divider css={style.divider} orientation="horizontal" flexItem/>
             </div>
         </div>
@@ -353,9 +411,22 @@ const style = {
         fontSize: '18px',
         fontWeight: 600,
     }),
+    title3: css({
+        fontSize: '16px',
+        fontWeight: 600,
+    }),
+    title4: css({
+        fontSize: '15px',
+        fontWeight: 600,
+    }),
     titleContainer: css({
         marginTop: '20px',
         marginBottom: '10px',
+    }),
+    titleContainer2: css({
+        marginTop: '10px',
+        marginBottom: '5px',
+        marginLeft: '70px',
     }),
     chartTitle: css({
         marginBottom: '20px',
@@ -375,12 +446,22 @@ const style = {
         marginTop: '7px',
         marginLeft: '30px',
     }),
+    field3: css({
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '5px',
+        marginBottom: '5px',
+        marginLeft: '100px',
+    }),
     divider: css({
         marginTop: '20px',
     }),
     marginLeft10: css({
         marginLeft: '10px',
-    })
+    }),
+    remoteBrowsersContainer: css({
+        marginTop: '40px',
+    }),
 }
 
 
