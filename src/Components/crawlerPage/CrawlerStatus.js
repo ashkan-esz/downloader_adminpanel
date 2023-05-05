@@ -79,7 +79,18 @@ const CrawlerStatus = () => {
                     cpu: {value: [0, 0, 0], limit: 100},
                     imageOperations: {value: 0, limit: 0},
                     trailerUpload: {value: 0, limit: 0},
-                }
+                },
+                domainChangeHandler: {
+                    isActive: false,
+                    startTime: 0,
+                    endTime: 0,
+                    duration: 0,
+                    state: '',
+                    stateTime: 0,
+                    error: false,
+                    errorMessage: '',
+                    sources: [], //sourceName, url, checked, changed, crawled, errorMessage
+                },
             },
             keepPreviousData: true,
             refetchInterval: 1000,
@@ -243,6 +254,52 @@ const CrawlerStatus = () => {
                 }
 
                 {
+                    data.domainChangeHandler.isActive && <>
+                        <div css={style.titleContainer}>
+                            <span css={style.title2}> Domain Change </span>
+                        </div>
+
+                        <Stack
+                            direction={"row"}
+                            spacing={2}
+                            divider={<Divider orientation="vertical" flexItem/>}
+                            alignItems={"baseline"}
+                            marginTop={1}
+                        >
+                            <span css={style.field}>
+                            startTime: {getPassedTime(data.domainChangeHandler.startTime).minutes} ago
+                            </span>
+                            <span css={style.field}>State: {data.domainChangeHandler.state}</span>
+                            <span css={style.field}>
+                            State Time: {getPassedTime(data.domainChangeHandler.stateTime).minutes} ago
+                            </span>
+                            <span css={style.field}>
+                                Error: <CheckIcon isCheck={data.domainChangeHandler.error}/>
+                            </span>
+                            <span css={style.field}>Error Message: {data.domainChangeHandler.errorMessage}</span>
+                        </Stack>
+
+                        <div css={[style.titleContainer, style.marginLeft10]}>
+                            <span css={style.title2}> Sources </span>
+                        </div>
+
+                        {
+                            data.domainChangeHandler.sources.map((item, index) => (
+                                <span key={item.url} css={style.field2}>
+                                    {index + 1}.
+                                    Source: {item.sourceName} ||
+                                    Link: {item.url.replace(/(\/page)|(\/$)/g, '')} ||
+                                    Checked: <CheckIcon isCheck={item.checked}/> ||
+                                    Changed: <CheckIcon isCheck={item.Changed}/> ||
+                                    Crawled: <CheckIcon isCheck={item.Crawled}/> ||
+                                    Error: {item.errorMessage || 'none'}
+                                </span>
+                            ))
+                        }
+                    </>
+                }
+
+                {
                     data.isCrawling && <>
                         <div css={style.titleContainer}>
                             <span css={style.title2}> Page Links </span>
@@ -312,9 +369,18 @@ const style = {
         alignItems: 'center',
         marginTop: '7px',
     }),
+    field2: css({
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '7px',
+        marginLeft: '30px',
+    }),
     divider: css({
         marginTop: '20px',
     }),
+    marginLeft10: css({
+        marginLeft: '10px',
+    })
 }
 
 
