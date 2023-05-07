@@ -181,6 +181,7 @@ const style = {
     warningRow: css({
         display: 'flex',
         alignItems: 'center',
+        marginLeft: '5px',
     }),
     resolveButtonContainer: css({
         position: 'absolute',

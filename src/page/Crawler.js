@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import Chart from '../Components/chart';
 import {css} from "@emotion/react";
 import {getCrawlerHistory} from "../api/adminApis";
-import {CrawlerStatus, CrawlerSources, StartCrawler} from "../Components/crawlerPage";
+import {CrawlerStatus, CrawlerSources, StartCrawler, GoogleCacheCalls} from "../Components/crawlerPage";
 import {Grid} from "@mui/material";
 
 function Crawler() {
@@ -34,6 +34,7 @@ function Crawler() {
             <CrawlerStatus/>
             <StartCrawler/>
             <CrawlerSources/>
+            <GoogleCacheCalls/>
             <Chart
                 data={crawlingHistory}
                 title="Crawler Analytics - Last 14 days"

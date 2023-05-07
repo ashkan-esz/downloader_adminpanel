@@ -114,6 +114,45 @@ export const updateCrawlerSourceData = async (sourceName, data) => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const getGoogleCacheCallsHistory = async (startTime, endTime, skip, limit) => {
+    try {
+        let response = await API.get(`/admin/googleCacheCalls/history/${startTime}/${endTime}/${skip}/${limit}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+        return 'error';
+    }
+}
+
+export const getGoogleCacheCalls = async () => {
+    try {
+        let response = await API.get(`/admin/googleCacheCalls`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+export const removeGoogleCacheCall = async (id) => {
+    try {
+        let response = await API.put(`/admin/googleCacheCalls/remove/${id}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
 export const updateConfigs = async (data) => {
     try {
         let response = await API.put('/admin/configs/update/', data);
