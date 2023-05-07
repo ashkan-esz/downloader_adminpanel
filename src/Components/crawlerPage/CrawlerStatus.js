@@ -345,7 +345,7 @@ const CrawlerStatus = () => {
                                     Link: {item.endpoint} ||
                                     TabsCount: {item.tabsCount} ||
                                     ApiCallCount: {item.apiCallCount} ||
-                                    Disabled: <CheckIcon isCheck={item.disabled}/> {
+                                    Active: <CheckIcon isCheck={!item.disabled}/> {
                                     item.disabled && <span>({getPassedTime(item.disabledTime).minutes} ago)</span>
                                 }
                                 </span>
@@ -362,7 +362,7 @@ const CrawlerStatus = () => {
                                                             Name: {source.sourceName} ||
                                                             Error Counter: {source.errorCounter} ||
                                                             lastErrorTime: {source.lastErrorTime ? getPassedTime(source.lastErrorTime).minutes : 0} ago ||
-                                                            IsBlocked: <CheckIcon isCheck={source.isBlocked}/>
+                                                            Active: <CheckIcon isCheck={!source.isBlocked}/>
                                                         </span>
                                                     )
                                                 )
