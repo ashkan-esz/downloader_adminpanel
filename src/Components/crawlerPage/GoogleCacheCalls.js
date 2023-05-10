@@ -7,6 +7,7 @@ import {css} from "@emotion/react";
 import {CircularProgress} from "@mui/material";
 import RefreshButton from "./RefreshButton";
 import {LoadingButton} from "@mui/lab";
+import {getPassedTime} from "../../utils/utils";
 
 const GoogleCacheCalls = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -79,7 +80,7 @@ const GoogleCacheCalls = () => {
                             data.map((cacheCall, index) => (
                                 <div css={style.cacheCallRow} key={index}>
                                     <span css={style.cacheCall}>
-                                        {index + 1}. {cacheCall.url} ({cacheCall.date}) (counts:{cacheCall.count})
+                                        {index + 1}. {cacheCall.url} ({getPassedTime(cacheCall.date)}) (counts:{cacheCall.count})
                                     </span>
 
                                     <div css={style.removeButtonContainer}>

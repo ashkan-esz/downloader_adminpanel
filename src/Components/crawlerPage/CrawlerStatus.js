@@ -144,7 +144,7 @@ const CrawlerStatus = () => {
                     </span>
                     <span css={style.field}>Time to Crawler Activation:
                         {data.disabledData.isDbDisabled_temporary
-                            ? getLeftTime(addHourToDate(data.disabledData.dbDisableStart, data.disabledData.dbDisableDuration)).hours
+                            ? getLeftTime(addHourToDate(data.disabledData.dbDisableStart, data.disabledData.dbDisableDuration))
                             : 0
                         } Hour
                         </span>
@@ -242,7 +242,7 @@ const CrawlerStatus = () => {
                     >
                         <span css={style.field}>sourceName: {data.crawlingSource.name}</span>
                         <span css={style.field}>
-                            startTime: {getPassedTime(data.crawlingSource.startTime).minutes} ago
+                            startTime: {getPassedTime(data.crawlingSource.startTime)} ago
                         </span>
                         <span css={style.field}>
                             pausedDuration: {(data.crawlingSource.pausedDuration / 60).toFixed(1)}
@@ -268,11 +268,11 @@ const CrawlerStatus = () => {
                             marginTop={1}
                         >
                             <span css={style.field}>
-                            startTime: {getPassedTime(data.domainChangeHandler.startTime).minutes} ago
+                            startTime: {getPassedTime(data.domainChangeHandler.startTime)} ago
                             </span>
                             <span css={style.field}>State: {data.domainChangeHandler.state}</span>
                             <span css={style.field}>
-                            State Time: {getPassedTime(data.domainChangeHandler.stateTime).minutes} ago
+                            State Time: {getPassedTime(data.domainChangeHandler.stateTime)} ago
                             </span>
                             <span css={style.field}>
                                 Error: <CheckIcon isCheck={data.domainChangeHandler.error}/>
@@ -307,7 +307,7 @@ const CrawlerStatus = () => {
                         </div>
                         {
                             data.sourcePage.url && <span css={style.field}>
-                            Source Page: {data.sourcePage.url} || {data.sourcePage.state} || ({getPassedTime(data.sourcePage.stateTime).minutes} ago)
+                            Source Page: {data.sourcePage.url} || {data.sourcePage.state} || ({getPassedTime(data.sourcePage.stateTime)} ago)
                         </span>
                         }
 
@@ -317,8 +317,8 @@ const CrawlerStatus = () => {
                                     {index + 1}.
                                     Page: {item.pageNumber} ||
                                     Link: {item.url.replace('https://', '').replace(/\/$/, '')} ||
-                                    Time: {getPassedTime(item.time).minutes} ||
-                                    State: {item.state}, ({getPassedTime(item.stateTime).minutes} ago)
+                                    Time: {getPassedTime(item.time)} ||
+                                    State: {item.state}, ({getPassedTime(item.stateTime)})
                                 </span>
                             ))
                         }
@@ -346,7 +346,7 @@ const CrawlerStatus = () => {
                                     TabsCount: {item.tabsCount} ||
                                     ApiCallCount: {item.apiCallCount} ||
                                     Active: <CheckIcon isCheck={!item.disabled}/> {
-                                    item.disabled && <span>({getPassedTime(item.disabledTime).minutes} ago)</span>
+                                    item.disabled && <span>({getPassedTime(item.disabledTime)} ago)</span>
                                 }
                                 </span>
 
@@ -361,7 +361,7 @@ const CrawlerStatus = () => {
                                                             {sindex + 1}.
                                                             Name: {source.sourceName} ||
                                                             Error Counter: {source.errorCounter} ||
-                                                            lastErrorTime: {source.lastErrorTime ? getPassedTime(source.lastErrorTime).minutes : 0} ago ||
+                                                            lastErrorTime: {source.lastErrorTime ? getPassedTime(source.lastErrorTime) : 0} ago ||
                                                             Active: <CheckIcon isCheck={!source.isBlocked}/>
                                                         </span>
                                                     )

@@ -8,6 +8,7 @@ import {CircularProgress, Divider, Stack} from "@mui/material";
 import RefreshButton from "./RefreshButton";
 import CheckIcon from "./CheckIcon";
 import {LoadingButton} from "@mui/lab";
+import {getPassedTime} from "../../utils/utils";
 
 const CrawlerSources = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -115,7 +116,7 @@ const CrawlerSources = () => {
                             data.warnings.map((warning, index) => (
                                 <div css={style.warningRow} key={index}>
                                     <span css={style.warning}>
-                                        {index + 1}. {warning.message} ({warning.date}) (counts:{warning.count})
+                                        {index + 1}. {warning.message} ({getPassedTime(warning.date)}) (counts:{warning.count})
                                     </span>
 
                                     <div css={style.resolveButtonContainer}>

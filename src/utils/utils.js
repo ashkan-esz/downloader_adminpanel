@@ -8,22 +8,47 @@ export function getDatesBetween(date1, date2) {
     return {
         milliseconds,
         seconds,
-        minutes: Number(minutes.toFixed(2)),
-        hours: Number(hours.toFixed(2)),
-        days: Number(days.toFixed(2)),
+        minutes: Math.floor(minutes),
+        hours: Math.floor(hours),
+        days: Math.floor(days),
     };
 }
 
 export function getPassedTime(date) {
-    return getDatesBetween(new Date(), date);
+    let {seconds, minutes, hours, days} = getDatesBetween(new Date(), new Date(date));
+    if (days > 0) {
+        if (days > 60) {
+            return date.toString().replace(/\.\d+Z$/, '');
+        }
+        return `${days} Days`;
+    }
+    if (hours > 0) {
+        return `${hours}H,${minutes % 60}Min`;
+    }
+    if (minutes > 0) {
+        return `${minutes}Min,${Math.floor(seconds) % 60}sec`;
+    }
+    return `${seconds.toFixed(2)}Sec`;
 }
 
 export function getLeftTime(date) {
-    date = new Date(date);
-    return getDatesBetween(date, new Date());
+    let {seconds, minutes, hours, days} = getDatesBetween(new Date(date), new Date());
+    if (days > 0) {
+        if (days > 60) {
+            return date.toString().replace(/\.\d+Z$/, '');
+        }
+        return `${days} Days`;
+    }
+    if (hours > 0) {
+        return `${hours}H,${minutes % 60}Min`;
+    }
+    if (minutes > 0) {
+        return `${minutes}Min,${Math.floor(seconds) % 60}sec`;
+    }
+    return `${seconds.toFixed(2)}Sec`;
 }
 
-export function addHourToDate(date,hours){
+export function addHourToDate(date, hours) {
     date = new Date(date);
     date.setHours(date.getHours() + hours);
     return date;
