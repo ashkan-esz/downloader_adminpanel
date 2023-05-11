@@ -60,7 +60,7 @@ const GoogleCacheCalls = () => {
                         {
                             data.map((cacheCall, index) => (
                                 <GoogleCacheCallItem
-                                    key={cacheCall.url}
+                                    key={cacheCall.id}
                                     data={cacheCall}
                                     index={index}
                                     onRemove={delayFuncCall}

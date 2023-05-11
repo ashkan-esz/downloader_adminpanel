@@ -95,9 +95,25 @@ const CrawlerSources = () => {
                     (data.warnings && data.warnings.length > 0) && <>
                         <span css={style.title2}> Warnings: </span>
                         {
-                            data.warnings.map((warning, index) => (
+                            data.warnings.filter(f => !f.message.startsWith('RemoteBrowser')).map((warning, index) => (
                                 <CrawlerWarningItem
-                                    key={warning.message}
+                                    key={warning.id}
+                                    data={warning}
+                                    index={index}
+                                    onResolve={delayFuncCall}
+                                />
+                            ))
+                        }
+                    </>
+                }
+
+                {
+                    (data.warnings && data.warnings.filter(f => f.message.startsWith('RemoteBrowser')).length > 0) && <>
+                        <span css={style.title2}>RemoteBrowser Warnings: </span>
+                        {
+                            data.warnings.filter(f => f.message.startsWith('RemoteBrowser')).map((warning, index) => (
+                                <CrawlerWarningItem
+                                    key={warning.id}
                                     data={warning}
                                     index={index}
                                     onResolve={delayFuncCall}
