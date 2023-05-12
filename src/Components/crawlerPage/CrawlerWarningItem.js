@@ -9,10 +9,14 @@ import {resolveCrawlerWarnings} from "../../api/adminApis";
 
 const CrawlerWarningItem = ({data, index, onResolve}) => {
     const [isResolving, setIsResolving] = useState(false);
+    const [active, setActive] = useState(true);
 
     const _resolveWarning = async () => {
         setIsResolving(true);
         let result = await resolveCrawlerWarnings(data.id);
+        if (result !== 'error') {
+            setActive(false);
+        }
         setIsResolving(false);
         onResolve();
     }
@@ -28,7 +32,7 @@ const CrawlerWarningItem = ({data, index, onResolve}) => {
                     variant={"outlined"}
                     size={"small"}
                     color={"primary"}
-                    disabled={isResolving}
+                    disabled={isResolving || !active}
                     loading={isResolving}
                     loadingIndicator={<CircularProgress color="error" size={18}/>}
                     onClick={_resolveWarning}

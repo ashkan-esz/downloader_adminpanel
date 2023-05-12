@@ -9,10 +9,14 @@ import {removeGoogleCacheCall} from "../../api/adminApis";
 
 const GoogleCacheCallItem = ({data, index, onRemove}) => {
     const [isRemoving, setIsRemoving] = useState(false);
+    const [active, setActive] = useState(true);
 
     const _remove = async () => {
         setIsRemoving(true);
         let result = await removeGoogleCacheCall(data.id);
+        if (result !== 'error') {
+            setActive(false);
+        }
         setIsRemoving(false);
         onRemove();
     }
@@ -28,7 +32,7 @@ const GoogleCacheCallItem = ({data, index, onRemove}) => {
                     variant={"outlined"}
                     size={"small"}
                     color={"primary"}
-                    disabled={isRemoving}
+                    disabled={isRemoving || !active}
                     loading={isRemoving}
                     loadingIndicator={<CircularProgress color="error" size={18}/>}
                     onClick={_remove}
