@@ -362,6 +362,7 @@ const CrawlerStatus = () => {
                                                             Name: {source.sourceName} ||
                                                             Error Counter: {source.errorCounter} ||
                                                             lastErrorTime: {source.lastErrorTime ? getPassedTime(source.lastErrorTime) : 0} ago ||
+                                                            Total Error Counter: {source.totalErrorCounter} ||
                                                             Active: <CheckIcon isCheck={!source.isBlocked}/>
                                                         </span>
                                                     )

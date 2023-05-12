@@ -13,10 +13,12 @@ import {
     WorkOutline,
     Report, Source,
 } from "@mui/icons-material";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {css} from "@emotion/react";
 
 function Sidebar() {
+    const location = useLocation();
+
     return (
         <div css={style.sidebar}>
             <div css={style.sidebarWrapper}>
@@ -24,19 +26,25 @@ function Sidebar() {
                     <h3 css={style.sidebarTitle}>Dashboard</h3>
                     <ul css={style.sidebarList}>
                         <Link to="/" css={style.link}>
-                            <li css={[style.sidebarListItem, style.activeSidebarListItem]}>
+                            <li css={[style.sidebarListItem, location.pathname === '/' && style.activeSidebarListItem]}>
                                 <LineStyle css={style.sidebarIcon}/>
                                 User
                             </li>
                         </Link>
                         <Link to="/crawler" css={style.link}>
-                            <li css={style.sidebarListItem}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/crawler') && style.activeSidebarListItem]}>
                                 <LineStyle css={style.sidebarIcon}/>
                                 Crawler
                             </li>
                         </Link>
+                        <Link to="/serverstatus" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/serverstatus') && style.activeSidebarListItem]}>
+                                <LineStyle css={style.sidebarIcon}/>
+                                Server Status
+                            </li>
+                        </Link>
                         <Link to="/configs" css={style.link}>
-                            <li css={style.sidebarListItem}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/configs') && style.activeSidebarListItem]}>
                                 <LineStyle css={style.sidebarIcon}/>
                                 Configs
                             </li>

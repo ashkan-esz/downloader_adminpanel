@@ -14,7 +14,7 @@ import {Route, BrowserRouter, Routes} from "react-router-dom";
 import Topbar from "./Components/Topbar";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {profile_api} from "./redux/slices/user.slice";
-import {AddCrawlerSource, Configs, Crawler, CrawlerSource, CrawlerSourcesList, Home} from "./page";
+import {AddCrawlerSource, Configs, Crawler, CrawlerSource, CrawlerSourcesList, Home, ServerStatus} from "./page";
 import {css} from "@emotion/react";
 
 const queryClient = new QueryClient({
@@ -57,6 +57,7 @@ const App = () => {
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/crawler" element={<Crawler/>}/>
+                        <Route path="/serverstatus" element={<ServerStatus/>}/>
                         <Route path="/crawlerSourcesList" element={<CrawlerSourcesList/>}/>
                         <Route path="/crawlerSource/:sourceName" element={<CrawlerSource/>}/>
                         <Route path="/addCrawlerSource" element={<AddCrawlerSource/>}/>

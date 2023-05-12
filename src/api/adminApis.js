@@ -143,9 +143,6 @@ export const removeGoogleCacheCall = async (id) => {
         let response = await API.put(`/admin/googleCacheCalls/remove/${id}`);
         return response.data.data;
     } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return [];
-        }
         return 'error';
     }
 }
@@ -190,6 +187,30 @@ export const getAnalysisActiveUsers = async (startTime, endTime, skip, limit) =>
     } catch (error) {
         if (error.response && error.response.status === 404) {
             return null;
+        }
+        return 'error';
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
+export const getServerStatus = async () => {
+    try {
+        let response = await API.get(`/admin/server/status`);
+        return response.data.data;
+    } catch (error) {
+        return 'error';
+    }
+}
+
+export const getRemoteBrowsersStatus = async () => {
+    try {
+        let response = await API.get(`/admin/remotebrowsers/status`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
         }
         return 'error';
     }
