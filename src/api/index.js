@@ -3,8 +3,8 @@ import axios from 'axios';
 const {REACT_APP_BASE_URL, REACT_APP_BASE_URL_DEV} = process.env;
 
 const API = axios.create({
-    // baseURL: process.env.NODE_ENV === 'production' ? REACT_APP_BASE_URL : REACT_APP_BASE_URL_DEV,
-    baseURL: REACT_APP_BASE_URL,
+    baseURL: process.env.NODE_ENV === 'production' ? REACT_APP_BASE_URL : REACT_APP_BASE_URL_DEV,
+    // baseURL: REACT_APP_BASE_URL,
     withCredentials: true,
 });
 
@@ -163,3 +163,11 @@ export const likeOrDislikeApi = async (docType, id, type, isRemove) => {
     }
 }
 
+export const getMovieSources = async () => {
+    try {
+        let response = await API.get('/movies/status/movieSources');
+        return response.data.data;
+    } catch (error) {
+        return 'error';
+    }
+}
