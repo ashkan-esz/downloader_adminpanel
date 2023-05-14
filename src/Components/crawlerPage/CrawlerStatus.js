@@ -11,6 +11,7 @@ import CheckIcon from "./CheckIcon";
 import {addHourToDate, getLeftTime, getPassedTime} from "../../utils/utils";
 import PauseCrawlerButton from "./PauseCrawlerButton";
 import StopCrawlerButton from "./StopCrawlerButton";
+import RemoteBrowserItem from "./RemoteBrowserItem";
 
 const CrawlerStatus = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -339,52 +340,8 @@ const CrawlerStatus = () => {
                         </div>
 
                         {
-                            data.remoteBrowsers.map((item, index) => (<div key={item.endpoint}>
-                                <span key={item.endpoint} css={style.field2}>
-                                    {index + 1}.
-                                    Link: {item.endpoint} ||
-                                    TabsCount: {item.tabsCount} ||
-                                    ApiCallCount: {item.apiCallCount} ||
-                                    Active: <CheckIcon isCheck={!item.disabled}/> {
-                                    item.disabled && <span>({getPassedTime(item.disabledTime)} ago)</span>
-                                }
-                                </span>
-
-                                    {
-                                        item.sourcesData.length > 0 && <>
-                                            <div css={style.titleContainer2}>
-                                                <span css={style.title4}> Sources Data: </span>
-                                            </div>
-                                            {
-                                                item.sourcesData.map((source, sindex) => (
-                                                        <span key={source.sourceName} css={style.field3}>
-                                                            {sindex + 1}.
-                                                            Name: {source.sourceName} ||
-                                                            Error Counter: {source.errorCounter} ||
-                                                            lastErrorTime: {source.lastErrorTime ? getPassedTime(source.lastErrorTime) : 0} ago ||
-                                                            Total Error Counter: {source.totalErrorCounter} ||
-                                                            Active: <CheckIcon isCheck={!source.isBlocked}/>
-                                                        </span>
-                                                    )
-                                                )
-                                            }
-                                        </>
-                                    }
-
-                                    {
-                                        item.urls.length > 0 && <>
-                                            <div css={style.titleContainer2}>
-                                                <span css={style.title4}> Urls: </span>
-                                            </div>
-                                            {
-                                                item.urls.map((url, uindex) => (
-                                                        <span key={url} css={style.field3}>{uindex + 1}. {url}</span>
-                                                    )
-                                                )
-                                            }
-                                        </>
-                                    }
-                                </div>
+                            data.remoteBrowsers.map((item, index) => (
+                                <RemoteBrowserItem key={index} data={item} index={index}/>
                             ))
                         }
                     </div>
@@ -408,26 +365,9 @@ const style = {
         fontSize: '22px',
         fontWeight: 600,
     }),
-    title2: css({
-        fontSize: '18px',
-        fontWeight: 600,
-    }),
-    title3: css({
-        fontSize: '16px',
-        fontWeight: 600,
-    }),
-    title4: css({
-        fontSize: '15px',
-        fontWeight: 600,
-    }),
     titleContainer: css({
         marginTop: '20px',
         marginBottom: '10px',
-    }),
-    titleContainer2: css({
-        marginTop: '10px',
-        marginBottom: '5px',
-        marginLeft: '70px',
     }),
     chartTitle: css({
         marginBottom: '20px',
@@ -446,13 +386,6 @@ const style = {
         alignItems: 'center',
         marginTop: '7px',
         marginLeft: '30px',
-    }),
-    field3: css({
-        display: 'flex',
-        alignItems: 'center',
-        marginTop: '5px',
-        marginBottom: '5px',
-        marginLeft: '100px',
     }),
     divider: css({
         marginTop: '20px',

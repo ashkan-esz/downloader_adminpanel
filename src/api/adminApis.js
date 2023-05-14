@@ -204,6 +204,9 @@ export const getServerStatus = async () => {
     }
 }
 
+//---------------------------------------------
+//---------------------------------------------
+
 export const getRemoteBrowsersStatus = async () => {
     try {
         let response = await API.get(`/admin/remotebrowsers/status`);
@@ -215,6 +218,16 @@ export const getRemoteBrowsersStatus = async () => {
         return 'error';
     }
 }
+
+export const mutateRemoteBrowserStatus = async (mutateType, bid) => {
+    try {
+        let response = await API.put(`/admin/remotebrowsers/${mutateType}/${bid}`);
+        return response.data.data;
+    } catch (error) {
+        return 'error';
+    }
+}
+
 
 //---------------------------------------------
 //---------------------------------------------
