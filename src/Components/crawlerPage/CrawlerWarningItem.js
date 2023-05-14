@@ -3,9 +3,8 @@ import {useState} from "react";
 import {css} from "@emotion/react";
 import PropTypes from 'prop-types';
 import {getPassedTime} from "../../utils/utils";
-import {LoadingButton} from "@mui/lab";
-import {CircularProgress} from "@mui/material";
 import {resolveCrawlerWarnings} from "../../api/adminApis";
+import MyLoadingButton from "../MyLoadingButton";
 
 const CrawlerWarningItem = ({data, index, onResolve}) => {
     const [isResolving, setIsResolving] = useState(false);
@@ -27,19 +26,11 @@ const CrawlerWarningItem = ({data, index, onResolve}) => {
                 {index + 1}. {data.message} ({getPassedTime(data.date)}) (counts:{data.count})
             </span>
 
-            <div css={style.resolveButtonContainer}>
-                <LoadingButton
-                    variant={"outlined"}
-                    size={"small"}
-                    color={"primary"}
-                    disabled={isResolving || !active}
-                    loading={isResolving}
-                    loadingIndicator={<CircularProgress color="error" size={18}/>}
-                    onClick={_resolveWarning}
-                >
-                    Resolve
-                </LoadingButton>
-            </div>
+            <MyLoadingButton
+                disabled={isResolving || !active}
+                isLoading={isResolving}
+                text={"Resolve"}
+                onClick={_resolveWarning}/>
         </div>
     );
 };
@@ -54,12 +45,6 @@ const style = {
         marginTop: '10px',
         marginBottom: '10px',
         display: 'block',
-    }),
-    resolveButtonContainer: css({
-        position: 'absolute',
-        right: '40px',
-        alignItems: 'center',
-        justifyContent: 'center',
     }),
 };
 

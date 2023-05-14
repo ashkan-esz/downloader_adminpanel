@@ -5,9 +5,9 @@ import {CircularProgress} from "@mui/material";
 import PropTypes from 'prop-types';
 
 
-const MyLoadingButton = ({extraStyle,disabled,isLoading,onClick,text}) => {
+const MyLoadingButton = ({extraStyle, disabled, isLoading, onClick, text}) => {
     return (
-        <div css={[style.buttonContainer,extraStyle]}>
+        <div css={[style.buttonContainer, extraStyle]}>
             <LoadingButton
                 variant={"outlined"}
                 size={"small"}
