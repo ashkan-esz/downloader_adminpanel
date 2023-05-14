@@ -228,6 +228,15 @@ export const mutateRemoteBrowserStatus = async (mutateType, bid) => {
     }
 }
 
+export const checkSourceRemoteBrowsers = async (sourceName, url) => {
+    try {
+        let response = await API.get(`/admin/remoteBrowsers/checkSource/${sourceName}/${encodeURIComponent(url)}`);
+        return response.data.data;
+    } catch (error) {
+        return 'error';
+    }
+}
+
 
 //---------------------------------------------
 //---------------------------------------------

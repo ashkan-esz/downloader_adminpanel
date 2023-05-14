@@ -4,7 +4,7 @@ import RefreshButton from "../Components/crawlerPage/RefreshButton";
 import {CircularProgress} from "@mui/material";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getRemoteBrowsersStatus, getServerStatus} from "../api/adminApis";
-import {ServerDetails} from "../Components/CrawlerStatus";
+import {CheckSource, ServerDetails} from "../Components/CrawlerStatus";
 
 const ServerStatus = () => {
     const queryClient = useQueryClient();
@@ -66,9 +66,11 @@ const ServerStatus = () => {
 
     if (isError || isError2) {
         return (
-            <div css={style.container}>
-                <span css={style.title}> Server Status </span>
-                --Error--
+            <div css={style.pageContainer}>
+                <div css={style.container}>
+                    <span css={style.title}> Server Status </span>
+                    --Error--
+                </div>
             </div>
         );
     }
@@ -93,7 +95,18 @@ const ServerStatus = () => {
                         </div>
                     ))
                 }
+
+                {
+                    remoteBrowsersStatus.filter(item => item.error).map(item => (
+                        <div css={style.container2} key={item.endpoint}>
+                            <span css={style.title2}> {item.endpoint}: </span>
+                            <span css={style.title2}> Error </span>
+                        </div>
+                    ))
+                }
             </div>
+
+            <CheckSource/>
 
         </div>
     );
