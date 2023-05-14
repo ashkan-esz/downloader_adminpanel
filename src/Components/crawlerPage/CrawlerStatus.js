@@ -93,6 +93,10 @@ const CrawlerStatus = () => {
                     sources: [], //sourceName,url,checked,changed,crawled,errorMessage
                 },
                 remoteBrowsers: [], //endpoint,tabsCount,apiCallCount,urls,sourcesData:{sourceName,errorCounter,lastErrorTime,isBlocked},disabledTime,disabled
+                axiosBlackList: {
+                    default: [], //sourceName, errorCounter, lastErrorTime, isBlocked, totalErrorCounter
+                    remoteBrowsers: [], //sourceName, lastErrorTime, isBlocked, linksCount
+                },
             },
             keepPreviousData: true,
             refetchInterval: 1000,
@@ -347,6 +351,47 @@ const CrawlerStatus = () => {
                     </div>
                 }
 
+                {
+                    data.axiosBlackList.default.length > 0 && <div css={style.remoteBrowsersContainer}>
+                        <div css={style.titleContainer}>
+                            <span css={style.title2}> Axios BlackLists </span>
+                        </div>
+
+                        {
+                            data.axiosBlackList.default.map((item, index) => (
+                                <span key={item.sourceName} css={style.field3}>
+                                    {index + 1}.
+                                    Name: {item.sourceName} ||
+                                    Error Counter: {item.errorCounter} ||
+                                    lastErrorTime: {item.lastErrorTime ? getPassedTime(item.lastErrorTime) : 0} ago ||
+                                    Total Error Counter: {item.totalErrorCounter} ||
+                                    Active: <CheckIcon isCheck={!item.isBlocked}/>
+                                </span>
+                            ))
+                        }
+                    </div>
+                }
+
+                {
+                    data.axiosBlackList.remoteBrowsers.length > 0 && <div css={style.remoteBrowsersContainer}>
+                        <div css={style.titleContainer}>
+                            <span css={style.title2}> Axios BlackLists (remoteBrowsers) </span>
+                        </div>
+
+                        {
+                            data.axiosBlackList.remoteBrowsers.map((item, index) => (
+                                <span key={item.sourceName} css={style.field4}>
+                                    {index + 1}.
+                                    Name: {item.sourceName} ||
+                                    lastErrorTime: {item.lastErrorTime ? getPassedTime(item.lastErrorTime) : 0} ago ||
+                                    linksCount: {item.linksCount} ||
+                                    Active: <CheckIcon isCheck={!item.isBlocked}/>
+                                </span>
+                            ))
+                        }
+                    </div>
+                }
+
                 <Divider css={style.divider} orientation="horizontal" flexItem/>
             </div>
         </div>
@@ -386,6 +431,20 @@ const style = {
         alignItems: 'center',
         marginTop: '7px',
         marginLeft: '30px',
+    }),
+    field3: css({
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '5px',
+        marginBottom: '5px',
+        marginLeft: '100px',
+    }),
+    field4: css({
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: '5px',
+        marginBottom: '5px',
+        marginLeft: '20px',
     }),
     divider: css({
         marginTop: '20px',

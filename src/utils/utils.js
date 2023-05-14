@@ -28,7 +28,7 @@ export function getPassedTime(date) {
     if (minutes > 0) {
         return `${minutes}Min,${Math.floor(seconds) % 60}sec`;
     }
-    return `${seconds.toFixed(2)}Sec`;
+    return `${seconds.toFixed(0)}Sec`;
 }
 
 export function getLeftTime(date) {
@@ -45,7 +45,7 @@ export function getLeftTime(date) {
     if (minutes > 0) {
         return `${minutes}Min,${Math.floor(seconds) % 60}sec`;
     }
-    return `${seconds.toFixed(2)}Sec`;
+    return `${seconds.toFixed(0)}Sec`;
 }
 
 export function addHourToDate(date, hours) {

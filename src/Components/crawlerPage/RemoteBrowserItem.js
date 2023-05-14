@@ -26,23 +26,31 @@ const RemoteBrowserItem = ({data, index}) => {
 
     return (
         <div css={style.container}>
-            <span css={style.field}>
-                {index + 1}.
-                Link: {data.endpoint} ||
-                TabsCount: {data.tabsCount} ||
-                ApiCallCount: {data.apiCallCount} ||
-                Active: <CheckIcon isCheck={!data.disabled && !data.manualDisabled}/> {
-                data.disabled && <span>({getPassedTime(data.disabledTime)} ago)</span>
-            }
-                {
-                    data.manualDisabled && <span css={style.field2}>
-                || ManualDisabled: <CheckIcon isCheck={data.manualDisabled}/> {
-                        data.manualDisabled && <span>({getPassedTime(data.manualDisabledTime)} ago)</span>
-                    }
-                </span>
+            <div css={style.fieldContainer}>
+                <span css={style.field}>
+                    {index + 1}.
+                    Link: {data.endpoint} ||
+                    TabsCount: {data.tabsCount} ||
+                    ApiCallCount: {data.apiCallCount} ||
+                    Active: <CheckIcon isCheck={!data.disabled && !data.manualDisabled}/> {
+                    data.disabled && <span>({getPassedTime(data.disabledTime)} ago)</span>
                 }
+                    {
+                        data.manualDisabled && <span css={style.field2}>
+                    || ManualDisabled: <CheckIcon isCheck={data.manualDisabled}/> {
+                            data.manualDisabled && <span>({getPassedTime(data.manualDisabledTime)} ago)</span>
+                        }
+                    </span>
+                    }
 
-            </span>
+                </span>
+
+                <MyLoadingButton
+                    isLoading={isMutating}
+                    disabled={isMutating}
+                    text={mutateType === 'enable' ? 'Enable' : 'Disable'}
+                    onClick={_onMutate}/>
+            </div>
 
             {
                 data.sourcesData.length > 0 && <>
@@ -72,18 +80,12 @@ const RemoteBrowserItem = ({data, index}) => {
                     </div>
                     {
                         data.urls.map((url, uindex) => (
-                                <span key={url} css={style.field3}>{uindex + 1}. {url}</span>
+                                <span key={url.url} css={style.field3}>{uindex + 1}. {url.url} ({getPassedTime(url.time)})</span>
                             )
                         )
                     }
                 </>
             }
-
-            <MyLoadingButton
-                isLoading={isMutating}
-                disabled={isMutating}
-                text={mutateType === 'enable' ? 'Enable' : 'Disable'}
-                onClick={_onMutate}/>
 
         </div>
     );
@@ -91,9 +93,11 @@ const RemoteBrowserItem = ({data, index}) => {
 
 const style = {
     container: css({
-        display: 'flex',
         alignItems: 'center',
         marginTop: '5px',
+    }),
+    fieldContainer: css({
+        display: 'flex',
     }),
     titleContainer: css({
         marginTop: '10px',
