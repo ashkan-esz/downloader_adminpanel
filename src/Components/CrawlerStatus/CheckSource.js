@@ -8,9 +8,10 @@ import {CircularProgress, FormControl, InputLabel, MenuItem, Select} from "@mui/
 import {LoadingButton} from "@mui/lab";
 import {checkSourceRemoteBrowsers} from "../../api/adminApis";
 import CheckIcon from "../crawlerPage/CheckIcon";
+import {getPassedTime} from "../../utils/utils";
 
 
-const CheckSource = () => {
+const CheckSource = ({remoteBrowsersStatus}) => {
     const [selectedSource, setSelectedSource] = useState('');
     const [result, setResult] = useState([]);
     const [isLoading2, setIsLoading2] = useState(false);
@@ -75,6 +76,24 @@ const CheckSource = () => {
                 </FormControl>
 
                 {
+                    isLoading2 && remoteBrowsersStatus.map((item, index) => (
+                        <span key={index} css={style.field}>
+                           {index + 1}. {item.server.serverName} || {
+                            [item.crawlerStatus.pageLinks.find(p => p.url === data.find(s => s.sourceName === selectedSource).url)].map(l => (
+                                l && <span css={style.marginLeft}>
+                                    {l.url} ||
+                                    Type: {l.type} ||
+                                    Time: {getPassedTime(l.time)} ||
+                                    State: {l.state}, ({getPassedTime(l.stateTime)}) ||
+                                    RetryCounter: {l.retryCounter}
+                                </span>
+                            ))
+                        }
+                        </span>
+                    ))
+                }
+
+                {
                     result.map((item, index) => (
                         <span key={index} css={style.field}>
                            {index + 1}. {item.sourceName} ||
@@ -126,6 +145,9 @@ const style = {
         alignItems: 'center',
         marginTop: '10px',
         marginLeft: '10px',
+    }),
+    marginLeft: css({
+        marginLeft: '5px',
     }),
     submitButtonContainer: css({
         marginTop: "20px",

@@ -2,7 +2,7 @@
 import {css} from "@emotion/react";
 import {RowStack} from "../index";
 import {CheckIcon} from "../crawlerPage";
-import {getPassedTime} from "../../utils/utils";
+import {convertToGbIfNeeded, getPassedTime} from "../../utils/utils";
 
 
 const ServerDetails = ({data, isRemoteBrowser}) => {
@@ -25,18 +25,24 @@ const ServerDetails = ({data, isRemoteBrowser}) => {
 
             <span css={style.title2}> Memory: </span>
             <RowStack>
-                <span css={style.field}>Total(OS): {data.memoryStatus.memoryStatus_os.total} MB</span>
-                <span css={style.field}>Used(OS): {data.memoryStatus.memoryStatus_os.used} MB</span>
-                <span css={style.field}>Free(OS): {data.memoryStatus.memoryStatus_os.free} MB</span>
-                <span css={style.field}>Total: {data.memoryStatus.total.toFixed(2)} MB</span>
+                <span css={style.field}>
+                    Total(OS): {convertToGbIfNeeded(data.memoryStatus.memoryStatus_os.total)}
+                </span>
+                <span css={style.field}>
+                    Used(OS): {convertToGbIfNeeded(data.memoryStatus.memoryStatus_os.used)}
+                </span>
+                <span css={style.field}>
+                    Free(OS): {convertToGbIfNeeded(data.memoryStatus.memoryStatus_os.free)}
+                </span>
+                <span css={style.field}>Total: {convertToGbIfNeeded(data.memoryStatus.total)}</span>
                 {
                     isRemoteBrowser ? <span css={style.field}>
                                     Used: {data.memoryStatus.used.toFixed(2)} MB
                                     [ node: {data.memoryStatus.used_node.toFixed(0)}, puppeteer: {data.memoryStatus.used_pupputeer.toFixed(0)} ]
                                 </span>
-                        : <span css={style.field}>Used: {data.memoryStatus.used.toFixed(2)} MB</span>
+                        : <span css={style.field}>Used: {convertToGbIfNeeded(data.memoryStatus.used)}</span>
                 }
-                <span css={style.field}>Free: {data.memoryStatus.free.toFixed(2)} MB</span>
+                <span css={style.field}>Free: {convertToGbIfNeeded(data.memoryStatus.free)}</span>
             </RowStack>
 
             <span css={style.title2}> Cpu: </span>
@@ -57,12 +63,12 @@ const ServerDetails = ({data, isRemoteBrowser}) => {
             <span css={style.title2}> Disk: </span>
             <RowStack>
                 <span css={style.field}>DiskPath: {data.diskStatus.diskStatus_os.diskPath}</span>
-                <span css={style.field}>Total(OS): {data.diskStatus.diskStatus_os.total.toFixed(2)} MB</span>
-                <span css={style.field}>Used(OS): {data.diskStatus.diskStatus_os.used.toFixed(2)} MB</span>
-                <span css={style.field}>Free(OS): {data.diskStatus.diskStatus_os.free.toFixed(2)} MB</span>
-                <span css={style.field}>Total: {data.diskStatus.total.toFixed(2)} MB</span>
-                <span css={style.field}>Used: {data.diskStatus.used.toFixed(2)} MB</span>
-                <span css={style.field}>Free: {data.diskStatus.free.toFixed(2)} MB</span>
+                <span css={style.field}>Total(OS): {convertToGbIfNeeded(data.diskStatus.diskStatus_os.total)}</span>
+                <span css={style.field}>Used(OS): {convertToGbIfNeeded(data.diskStatus.diskStatus_os.used)}</span>
+                <span css={style.field}>Free(OS): {convertToGbIfNeeded(data.diskStatus.diskStatus_os.free)}</span>
+                <span css={style.field}>Total: {convertToGbIfNeeded(data.diskStatus.total)}</span>
+                <span css={style.field}>Used: {convertToGbIfNeeded(data.diskStatus.used)}</span>
+                <span css={style.field}>Free: {convertToGbIfNeeded(data.diskStatus.free)}</span>
             </RowStack>
 
             {
@@ -70,9 +76,13 @@ const ServerDetails = ({data, isRemoteBrowser}) => {
                     <span css={style.title2}> Files: </span>
                     <RowStack>
                         <span css={style.field}>Files Count: {data.filesStatus.files.length}</span>
-                        <span css={style.field}>Files Total Size: {data.filesStatus.filesTotalSize} MB</span>
+                        <span
+                            css={style.field}>Files Total Size: {convertToGbIfNeeded(data.filesStatus.filesTotalSize)}</span>
                         <span css={style.field}>Download Count: {data.filesStatus.downloadCount}</span>
                         <span css={style.field}>Upload Count: {data.filesStatus.uploadCount}</span>
+                        <span css={style.field}>
+                            disableUploadJob: <CheckIcon isCheck={data.configs.disableUploadJob}/>
+                        </span>
                         <span css={style.field}>
                             uploadJobRunning: <CheckIcon isCheck={data.filesStatus.uploadJobRunning}/>
                         </span>
@@ -81,7 +91,8 @@ const ServerDetails = ({data, isRemoteBrowser}) => {
                         <span css={style.field}>BlackHole Message: {data.filesStatus.blackHoleUpload.message}</span>
                         <span css={style.field}>BlackHole Time: {data.filesStatus.blackHoleUpload.time}</span>
                         <span css={style.field}>BlackHole State: {data.filesStatus.blackHoleUpload.state}</span>
-                        <span css={style.field}>BlackHole File Size Limit: {data.configs.blackHole.fileSizeLimit} MB</span>
+                        <span
+                            css={style.field}>BlackHole File Size Limit: {convertToGbIfNeeded(data.configs.blackHole.fileSizeLimit)}</span>
                     </RowStack>
                     <RowStack>
                         {
@@ -99,16 +110,20 @@ const ServerDetails = ({data, isRemoteBrowser}) => {
                     <RowStack>
                         <span css={style.field}>State: {data.crawlerStatus.crawlerState}</span>
                         <span css={style.field}>
-                            Last Use Time: {getPassedTime(data.crawlerStatus.lastTimeCrawlerUse)} Ago
+                            Last Use: {getPassedTime(data.crawlerStatus.lastTimeCrawlerUse)} Ago
                         </span>
-                        <span css={style.field}>Memory Limit: {data.crawlerStatus.memoryLimit}</span>
+                        <span css={style.field}>
+                            Tabs/Limit: {data.crawlerStatus.pageLinks.length}/{data.configs.browserTabsCount}
+                        </span>
+                        <span css={style.field}>Memory Limit: {convertToGbIfNeeded(data.crawlerStatus.memoryLimit)}</span>
+                        <span css={style.field}>Pause Duration Limit: {data.configs.pauseDurationLimit}sec</span>
                         <span css={style.field}>
                             IsPaused: <CheckIcon isCheck={data.crawlerStatus.pauseData.isPaused}/>
                         </span>
                         <span css={style.field}>Pause Reason: {data.crawlerStatus.pauseData.pauseReason}</span>
                         <span css={style.field}>Paused From: {data.crawlerStatus.pauseData.pausedFrom}</span>
                         <span css={style.field}>
-                            Total Pause Duration: {data.crawlerStatus.pauseData.totalPausedDuration.toFixed(1)} Min
+                            Total Pause: {data.crawlerStatus.pauseData.totalPausedDuration.toFixed(1)} Min
                         </span>
                     </RowStack>
 

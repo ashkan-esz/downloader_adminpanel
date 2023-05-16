@@ -106,7 +106,7 @@ const ServerStatus = () => {
                 }
             </div>
 
-            <CheckSource/>
+            <CheckSource remoteBrowsersStatus={remoteBrowsersStatus}/>
 
         </div>
     );

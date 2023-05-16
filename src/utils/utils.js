@@ -53,3 +53,9 @@ export function addHourToDate(date, hours) {
     date.setHours(date.getHours() + hours);
     return date;
 }
+
+export function convertToGbIfNeeded(input) {
+    return input > 1024
+        ? `${(input / 1024).toFixed(1)} GB`
+        : `${input.toFixed(1)} MB`
+}
