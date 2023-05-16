@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {startWebCrawler} from "../../api/adminApis";
 import {css} from "@emotion/react";
 import {
@@ -13,15 +13,15 @@ import {
     Typography
 } from "@mui/material";
 import {LoadingButton} from "@mui/lab";
-import {useQueryClient} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useIsMounted} from "../../hooks";
 import RefreshButton from "./RefreshButton";
+import {getMovieSources} from "../../api";
 
 const StartCrawler = () => {
     const [selectedSource, setSelectedSource] = useState('');
-    const [crawlerSources, setCrawlerSources] = useState({sources: []});
-    const [data, setData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading2, setIsLoading2] = useState(false);
+    const [result, setResult] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState("");
     const [configs, setConfigs] = useState({
@@ -34,14 +34,30 @@ const StartCrawler = () => {
     const isMounted = useIsMounted();
     const queryClient = useQueryClient();
 
-    useEffect(() => {
-        setTimeout(() => {
-            let temp = queryClient.getQueryData(['crawlerSources']);
-            if (temp) {
-                setCrawlerSources(temp);
-            }
-        }, 2000);
-    }, []);
+    const getData = async () => {
+        let result = await getMovieSources();
+        if (result !== 'error') {
+            return result;
+        } else {
+            throw new Error();
+        }
+    }
+
+    const {data, isLoading, isFetching, isError} = useQuery(
+        ['movieSources'],
+        getData,
+        {
+            placeholderData: [],
+            keepPreviousData: true,
+            refetchInterval: 10 * 60 * 1000,
+        }
+    );
+
+    const _onRefresh = async () => {
+        setRefreshing(true);
+        await queryClient.refetchQueries(['movieSources']);
+        isMounted.current && setRefreshing(false);
+    }
 
     const _onPress = () => {
         if (!selectedSource) {
@@ -49,7 +65,7 @@ const StartCrawler = () => {
             return;
         }
         setError("");
-        setIsLoading(true);
+        setIsLoading2(true);
         let temp = {
             ...configs,
             sourceName: selectedSource,
@@ -58,26 +74,18 @@ const StartCrawler = () => {
         startWebCrawler(temp).then((res) => {
             if (res.errorMessage || res.data.isError) {
                 setError(res.errorMessage || res.data.message);
-                setData(null);
+                setResult(null);
             } else {
-                setData(res.data);
+                setResult(res.data);
             }
-            setIsLoading(false);
+            setIsLoading2(false);
         });
-    }
-
-    const _onRefresh = async () => {
-        setRefreshing(true);
-        await queryClient.refetchQueries(['crawlerSources']);
-        let temp = queryClient.getQueryData(['crawlerSources']);
-        setCrawlerSources(temp);
-        isMounted.current && setRefreshing(false);
     }
 
     return (
         <div css={style.container}>
             <span css={style.title}> Start Crawler </span>
-            <RefreshButton refreshing={refreshing || isLoading} onClick={_onRefresh}/>
+            <RefreshButton refreshing={refreshing || isFetching|| isLoading || isLoading2} onClick={_onRefresh}/>
 
             <div css={style.fieldsContainer}>
 
@@ -88,7 +96,7 @@ const StartCrawler = () => {
                     alignItems={"baseline"}
                 >
 
-                    <FormControl required disabled={refreshing || isLoading} sx={{m: 1, minWidth: 120}}>
+                    <FormControl required disabled={refreshing || isFetching || isLoading ||isLoading2} sx={{m: 1, minWidth: 120}}>
                         <InputLabel id="demo-simple-select-label">Source</InputLabel>
                         <Select
                             autoWidth
@@ -99,7 +107,7 @@ const StartCrawler = () => {
                             onChange={(v) => setSelectedSource(v.target.value)}
                         >
                             {
-                                crawlerSources.sources.map(item => <MenuItem
+                                data.map(item => <MenuItem
                                     key={item.sourceName}
                                     value={item.sourceName}>
                                     {item.sourceName}
@@ -197,14 +205,14 @@ const StartCrawler = () => {
                 }
 
                 {
-                    !error && !isLoading && data && data.message && <div>
+                    !error && !isFetching && !isLoading && !isLoading2 && result && result.message && <div>
                         <Typography
                             css={style.errorText}
                             variant="subtitle2"
                             component="h2"
                             color={"secondary"}
                         >
-                            *{data.message}*
+                            *{result.message}*
                         </Typography>
                     </div>
                 }
@@ -214,7 +222,7 @@ const StartCrawler = () => {
                         variant={"outlined"}
                         size={"large"}
                         color={"secondary"}
-                        loading={isLoading}
+                        loading={isFetching || isLoading || isLoading2}
                         loadingIndicator={<CircularProgress color="error" size={18}/>}
                         onClick={_onPress}
                     >
