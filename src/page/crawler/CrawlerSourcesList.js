@@ -3,7 +3,7 @@ import {DataGrid} from '@mui/x-data-grid';
 import {Check, Close, DeleteOutline} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import {css} from "@emotion/react";
-import {getCrawlerSources} from "../api/adminApis";
+import {getCrawlerSources} from "../../api/adminApis";
 import {useQuery} from "@tanstack/react-query";
 
 function CrawlerSourcesList() {

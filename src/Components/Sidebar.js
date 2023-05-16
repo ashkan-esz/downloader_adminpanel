@@ -49,14 +49,18 @@ function Sidebar() {
                                 Configs
                             </li>
                         </Link>
-                        <li css={style.sidebarListItem}>
-                            <Timeline css={style.sidebarIcon}/>
-                            Analytics
-                        </li>
-                        <li css={style.sidebarListItem}>
-                            <TrendingUp css={style.sidebarIcon}/>
-                            Sales
-                        </li>
+                        <Link to="/warnings" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/warnings') && style.activeSidebarListItem]}>
+                                <Timeline css={style.sidebarIcon}/>
+                                Warnings
+                            </li>
+                        </Link>
+                        <Link to="/googlecache" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/googlecache') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                GoogleCacheCalls
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>

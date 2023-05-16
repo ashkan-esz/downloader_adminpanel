@@ -3,9 +3,9 @@ import {Link} from "react-router-dom";
 import {CalendarToday, Grade} from "@mui/icons-material";
 import {css} from "@emotion/react";
 import {useLocation} from "react-router-dom";
-import {CrawlerSourceUpdateForm} from "../Components/crawlerPage";
+import {CrawlerSourceUpdateForm} from "../../Components/crawlerPage";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getCrawlerSources} from "../api/adminApis";
+import {getCrawlerSources} from "../../api/adminApis";
 
 function CrawlerSource() {
     const location = useLocation();

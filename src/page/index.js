@@ -1,7 +1,9 @@
-export {default as Crawler} from "./Crawler";
-export {default as CrawlerSourcesList} from "./CrawlerSourcesList";
-export {default as CrawlerSource} from "./CrawlerSource";
-export {default as AddCrawlerSource} from "./AddCrawlerSource";
+export {default as Crawler} from "./crawler/Crawler";
+export {default as CrawlerSourcesList} from "./crawler/CrawlerSourcesList";
+export {default as CrawlerSource} from "./crawler/CrawlerSource";
+export {default as AddCrawlerSource} from "./crawler/AddCrawlerSource";
 export {default as Home} from "./Home";
 export {default as Configs} from "./Configs";
-export {default as ServerStatus} from "./ServerStatus";
+export {default as ServerStatus} from "./crawler/ServerStatus";
+export {default as GoogleCache} from "./serverAnalysis/GoogleCache";
+export {default as Warnings} from "./serverAnalysis/Warnings";

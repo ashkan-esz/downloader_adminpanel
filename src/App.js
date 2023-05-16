@@ -14,7 +14,16 @@ import {Route, BrowserRouter, Routes} from "react-router-dom";
 import Topbar from "./Components/Topbar";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {profile_api} from "./redux/slices/user.slice";
-import {AddCrawlerSource, Configs, Crawler, CrawlerSource, CrawlerSourcesList, Home, ServerStatus} from "./page";
+import {
+    AddCrawlerSource,
+    Configs,
+    Crawler,
+    CrawlerSource,
+    CrawlerSourcesList,
+    GoogleCache,
+    Home,
+    ServerStatus, Warnings
+} from "./page";
 import {css} from "@emotion/react";
 
 const queryClient = new QueryClient({
@@ -68,6 +77,8 @@ const App = () => {
                         <Route path="/product/:productId" element={<Product/>}/>
                         <Route path="/newproduct" element={<NewProduct/>}/>
                         <Route path="/configs" element={<Configs/>}/>
+                        <Route path="/warnings" element={<Warnings/>}/>
+                        <Route path="/googlecache" element={<GoogleCache/>}/>
                     </Routes>
                 </div>
             </QueryClientProvider>

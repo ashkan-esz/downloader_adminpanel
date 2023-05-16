@@ -39,7 +39,7 @@ const style = {
     container: css({
         display: 'flex',
         alignItems: 'center',
-        marginLeft: '5px',
+        marginLeft: '10px',
     }),
     warning: css({
         marginTop: '10px',

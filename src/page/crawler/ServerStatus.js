@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import {css} from "@emotion/react";
-import RefreshButton from "../Components/crawlerPage/RefreshButton";
+import RefreshButton from "../../Components/crawlerPage/RefreshButton";
 import {CircularProgress} from "@mui/material";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getRemoteBrowsersStatus, getServerStatus} from "../api/adminApis";
-import {CheckSource, ServerDetails} from "../Components/CrawlerStatus";
+import {getRemoteBrowsersStatus, getServerStatus} from "../../api/adminApis";
+import {CheckSource, ServerDetails} from "../../Components/CrawlerStatus";
 
 const ServerStatus = () => {
     const queryClient = useQueryClient();

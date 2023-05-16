@@ -4,10 +4,11 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
 import {getCrawlerSources, getServerAnalysisCurrentMonth} from "../../api/adminApis";
 import {css} from "@emotion/react";
-import {Divider, Stack} from "@mui/material";
+import {Button, Divider, Stack} from "@mui/material";
 import RefreshButton from "./RefreshButton";
 import CheckIcon from "./CheckIcon";
 import {CrawlerWarningItem} from "./index";
+import {Link} from "react-router-dom";
 
 const CrawlerSources = () => {
     const [refreshing, setRefreshing] = useState(false);
@@ -95,7 +96,7 @@ const CrawlerSources = () => {
                     (data.warnings && data.warnings.length > 0) && <>
                         <span css={style.title2}> Warnings: </span>
                         {
-                            data.warnings.filter(f => !f.message.startsWith('RemoteBrowser')).map((warning, index) => (
+                            data.warnings.slice(0, 10).map((warning, index) => (
                                 <CrawlerWarningItem
                                     key={warning.id}
                                     data={warning}
@@ -104,22 +105,17 @@ const CrawlerSources = () => {
                                 />
                             ))
                         }
-                    </>
-                }
 
-                {
-                    (data.warnings && data.warnings.filter(f => f.message.startsWith('RemoteBrowser')).length > 0) && <>
-                        <span css={style.title2}>RemoteBrowser Warnings: </span>
                         {
-                            data.warnings.filter(f => f.message.startsWith('RemoteBrowser')).map((warning, index) => (
-                                <CrawlerWarningItem
-                                    key={warning.id}
-                                    data={warning}
-                                    index={index}
-                                    onResolve={delayFuncCall}
-                                />
-                            ))
+                            data.warnings.length > 5 && <div css={style.buttonContainer}>
+                                <Button variant={"contained"}>
+                                    <Link to="/warnings" css={style.link}>
+                                        Warnings
+                                    </Link>
+                                </Button>
+                            </div>
                         }
+
                     </>
                 }
 
@@ -158,6 +154,15 @@ const style = {
     divider: css({
         marginTop: '10px',
         marginBottom: '10px',
+    }),
+    buttonContainer: css({
+        display: "flex",
+        justifyContent: 'center',
+        marginTop: '10px',
+    }),
+    link: css({
+        textDecoration: 'none',
+        color: 'inherit',
     }),
 }
 

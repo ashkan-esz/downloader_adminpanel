@@ -1,13 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import {useState} from "react";
+import {css} from "@emotion/react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
 import {getServerAnalysisCurrentMonth} from "../../api/adminApis";
-import {css} from "@emotion/react";
-import RefreshButton from "./RefreshButton";
-import GoogleCacheCallItem from "./GoogleCacheCallItem";
+import RefreshButton from "../../Components/crawlerPage/RefreshButton";
+import GoogleCacheCallItem from "../../Components/crawlerPage/GoogleCacheCallItem";
 
-const GoogleCacheCalls = () => {
+
+const GoogleCache = () => {
     const [refreshing, setRefreshing] = useState(false);
     const queryClient = useQueryClient();
     const isMounted = useIsMounted();
@@ -49,33 +50,38 @@ const GoogleCacheCalls = () => {
     }
 
     return (
-        <div css={style.container}>
-            <span css={style.title}> Google Cache Calls </span>
-            <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+        <div css={style.pageContainer}>
+            <div css={style.container}>
+                <span css={style.title}> Google Cache Calls </span>
+                <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
 
-            <div css={style.fieldsContainer}>
+                <div css={style.fieldsContainer}>
 
-                {
-                    (data && data.length > 0) && <>
-                        {
-                            data.map((cacheCall, index) => (
-                                <GoogleCacheCallItem
-                                    key={cacheCall.id}
-                                    data={cacheCall}
-                                    index={index}
-                                    onRemove={delayFuncCall}
-                                />
-                            ))
-                        }
-                    </>
-                }
+                    {
+                        (data && data.length > 0) && <>
+                            {
+                                data.map((cacheCall, index) => (
+                                    <GoogleCacheCallItem
+                                        key={cacheCall.id}
+                                        data={cacheCall}
+                                        index={index}
+                                        onRemove={delayFuncCall}
+                                    />
+                                ))
+                            }
+                        </>
+                    }
 
+                </div>
             </div>
         </div>
     )
 };
 
 const style = {
+    pageContainer: css({
+        flex: 4,
+    }),
     container: css({
         flex: 1,
         margin: '20px',
@@ -91,6 +97,7 @@ const style = {
         marginTop: '20px',
         marginLeft: '10px',
     }),
-}
+};
 
-export default GoogleCacheCalls;
+
+export default GoogleCache;

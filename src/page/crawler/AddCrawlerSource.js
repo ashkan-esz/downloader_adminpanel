@@ -2,7 +2,7 @@
 import {Grade} from "@mui/icons-material";
 import {css} from "@emotion/react";
 import {useQueryClient} from "@tanstack/react-query";
-import {AddCrawlerSourceForm} from "../Components/crawlerPage";
+import {AddCrawlerSourceForm} from "../../Components/crawlerPage";
 
 function AddCrawlerSource() {
     const queryClient = useQueryClient();
