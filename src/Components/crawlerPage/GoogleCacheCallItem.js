@@ -3,7 +3,7 @@ import {useState} from "react";
 import {css} from "@emotion/react";
 import PropTypes from 'prop-types';
 import {getPassedTime} from "../../utils/utils";
-import {removeGoogleCacheCall} from "../../api/adminApis";
+import {resolveServerAnalysis} from "../../api/adminApis";
 import MyLoadingButton from "../MyLoadingButton";
 
 const GoogleCacheCallItem = ({data, index, onRemove}) => {
@@ -12,7 +12,7 @@ const GoogleCacheCallItem = ({data, index, onRemove}) => {
 
     const _remove = async () => {
         setIsRemoving(true);
-        let result = await removeGoogleCacheCall(data.id);
+        let result = await resolveServerAnalysis('googleCacheCalls', data.id);
         if (result !== 'error') {
             setActive(false);
         }

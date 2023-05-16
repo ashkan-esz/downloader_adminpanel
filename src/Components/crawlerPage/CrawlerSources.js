@@ -2,7 +2,7 @@
 import {useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
-import {getCrawlerSources, getCrawlerWarnings} from "../../api/adminApis";
+import {getCrawlerSources, getServerAnalysisCurrentMonth} from "../../api/adminApis";
 import {css} from "@emotion/react";
 import {Divider, Stack} from "@mui/material";
 import RefreshButton from "./RefreshButton";
@@ -17,7 +17,7 @@ const CrawlerSources = () => {
     const getData = async () => {
         let result = await Promise.all([
             getCrawlerSources(),
-            getCrawlerWarnings(),
+            getServerAnalysisCurrentMonth('warnings'),
         ]);
         if (result[0] !== 'error' && result[1] !== 'error') {
             return {

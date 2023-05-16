@@ -2,7 +2,7 @@
 import {useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
-import {getGoogleCacheCalls} from "../../api/adminApis";
+import {getServerAnalysisCurrentMonth} from "../../api/adminApis";
 import {css} from "@emotion/react";
 import RefreshButton from "./RefreshButton";
 import GoogleCacheCallItem from "./GoogleCacheCallItem";
@@ -13,7 +13,7 @@ const GoogleCacheCalls = () => {
     const isMounted = useIsMounted();
 
     const getData = async () => {
-        let result = await getGoogleCacheCalls();
+        let result = await getServerAnalysisCurrentMonth('googleCacheCalls');
         if (result !== 'error') {
             return result;
         } else {

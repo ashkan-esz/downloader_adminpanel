@@ -54,18 +54,6 @@ export const getCrawlerStatus = async () => {
     }
 }
 
-export const getCrawlerHistory = async (startTime, endTime, skip, limit) => {
-    try {
-        let response = await API.get(`/admin/crawler/history/${startTime}/${endTime}/${skip}/${limit}`);
-        return response.data.data;
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return null;
-        }
-        return 'error';
-    }
-}
-
 export const getCrawlerSources = async () => {
     try {
         let response = await API.get(`/admin/crawler/sources`);
@@ -78,72 +66,12 @@ export const getCrawlerSources = async () => {
     }
 }
 
-export const resolveCrawlerWarnings = async (id) => {
-    try {
-        let response = await API.put(`/admin/crawler/warnings/resolve/${id}`);
-        return response.data.data;
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return [];
-        }
-        return 'error';
-    }
-}
-
-export const getCrawlerWarnings = async () => {
-    try {
-        let response = await API.get(`/admin/crawler/warnings`);
-        return response.data.data;
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return [];
-        }
-        return 'error';
-    }
-}
-
 export const updateCrawlerSourceData = async (sourceName, data) => {
     try {
         let response = await API.put(`/admin/crawler/editSource/${sourceName}`, data);
         return response.data;
     } catch (error) {
         return normalizeErrorData(error);
-    }
-}
-
-//---------------------------------------------
-//---------------------------------------------
-
-export const getGoogleCacheCallsHistory = async (startTime, endTime, skip, limit) => {
-    try {
-        let response = await API.get(`/admin/googleCacheCalls/history/${startTime}/${endTime}/${skip}/${limit}`);
-        return response.data.data;
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return null;
-        }
-        return 'error';
-    }
-}
-
-export const getGoogleCacheCalls = async () => {
-    try {
-        let response = await API.get(`/admin/googleCacheCalls`);
-        return response.data.data;
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-            return [];
-        }
-        return 'error';
-    }
-}
-
-export const removeGoogleCacheCall = async (id) => {
-    try {
-        let response = await API.put(`/admin/googleCacheCalls/remove/${id}`);
-        return response.data.data;
-    } catch (error) {
-        return 'error';
     }
 }
 
@@ -180,9 +108,36 @@ export const addCrawlerSource = async (data) => {
     }
 }
 
-export const getAnalysisActiveUsers = async (startTime, endTime, skip, limit) => {
+//---------------------------------------------
+//---------------------------------------------
+
+export const getServerAnalysisInTimes = async (fieldName, startTime, endTime, skip, limit) => {
     try {
-        let response = await API.get(`/admin/analysis/activeUsers/${startTime}/${endTime}/${skip}/${limit}`);
+        let response = await API.get(`/admin/analysis/${fieldName}/${startTime}/${endTime}/${skip}/${limit}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+        return 'error';
+    }
+}
+
+export const getServerAnalysisCurrentMonth = async (fieldName) => {
+    try {
+        let response = await API.get(`/admin/analysis/currentMonth/${fieldName}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+        return 'error';
+    }
+}
+
+export const resolveServerAnalysis = async (fieldName, id) => {
+    try {
+        let response = await API.put(`/admin/analysis/resolve/${fieldName}/${id}`);
         return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -236,7 +191,6 @@ export const checkSourceRemoteBrowsers = async (sourceName, url) => {
         return 'error';
     }
 }
-
 
 //---------------------------------------------
 //---------------------------------------------

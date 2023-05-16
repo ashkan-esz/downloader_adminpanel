@@ -3,7 +3,7 @@ import {useState} from "react";
 import {css} from "@emotion/react";
 import PropTypes from 'prop-types';
 import {getPassedTime} from "../../utils/utils";
-import {resolveCrawlerWarnings} from "../../api/adminApis";
+import {resolveServerAnalysis} from "../../api/adminApis";
 import MyLoadingButton from "../MyLoadingButton";
 
 const CrawlerWarningItem = ({data, index, onResolve}) => {
@@ -12,7 +12,7 @@ const CrawlerWarningItem = ({data, index, onResolve}) => {
 
     const _resolveWarning = async () => {
         setIsResolving(true);
-        let result = await resolveCrawlerWarnings(data.id);
+        let result = await resolveServerAnalysis('warnings', data.id);
         if (result !== 'error') {
             setActive(false);
         }

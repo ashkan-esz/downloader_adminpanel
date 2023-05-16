@@ -2,7 +2,7 @@
 import {useEffect, useState} from "react";
 import Chart from '../Components/chart';
 import {css} from "@emotion/react";
-import {getCrawlerHistory} from "../api/adminApis";
+import {getServerAnalysisInTimes} from "../api/adminApis";
 import {CrawlerStatus, CrawlerSources, StartCrawler, GoogleCacheCalls} from "../Components/crawlerPage";
 import {Grid} from "@mui/material";
 
@@ -14,7 +14,7 @@ function Crawler() {
         let start = new Date();
         start.setDate(start.getDate() - 14);
         let end = new Date();
-        getCrawlerHistory(start, end, 0, 240).then(res => {
+        getServerAnalysisInTimes('crawlerLogs', start, end, 0, 240).then(res => {
             if (res !== null) {
                 let t = res.map(item => item.crawledSources).flat(1);
                 let shit = t.reduce((rv, x) => {

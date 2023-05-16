@@ -5,7 +5,7 @@ import FeaturedInfo from '../Components/Chart/FeaturedInfo'
 import WidgetSm from '../Components/Chart/WidgetSm';
 import WidgetLg from '../Components/Chart/WidgetLg';
 import {css} from "@emotion/react";
-import {getAnalysisActiveUsers} from "../api/adminApis";
+import {getServerAnalysisInTimes} from "../api/adminApis";
 
 function Home() {
     const [usersData, setUsersData] = useState([]);
@@ -14,7 +14,7 @@ function Home() {
         let start = new Date();
         start.setDate(start.getDate() - 60);
         let end = new Date();
-        getAnalysisActiveUsers(start, end, 0, 120).then(res => {
+        getServerAnalysisInTimes('userCounts', start, end, 0, 120).then(res => {
             if (res !== 'error') {
                 setUsersData(res);
             }
