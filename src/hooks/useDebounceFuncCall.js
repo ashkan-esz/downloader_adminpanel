@@ -5,6 +5,7 @@ const useDebounceFuncCall = (func, delay) => {
     useEffect(() => {
         if (counter > 0) {
             const handler = setTimeout(() => {
+                setCounter(0);
                 func?.();
             }, delay);
             return () => {

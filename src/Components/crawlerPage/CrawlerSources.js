@@ -18,7 +18,7 @@ const CrawlerSources = () => {
     const getData = async () => {
         let result = await Promise.all([
             getCrawlerSources(),
-            getServerAnalysisCurrentMonth('warnings'),
+            getServerAnalysisCurrentMonth('warnings', 1),
         ]);
         if (result[0] !== 'error' && result[1] !== 'error') {
             return {

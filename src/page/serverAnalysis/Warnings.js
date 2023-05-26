@@ -7,15 +7,17 @@ import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getServerAnalysisCurrentMonth} from "../../api/adminApis";
 import RefreshButton from "../../Components/crawlerPage/RefreshButton";
 import {CircularProgress} from "@mui/material";
+import {Pagination} from "@mui/lab";
 
 
 const Warnings = () => {
+    const [page, setPage] = useState(1);
     const [refreshing, setRefreshing] = useState(false);
     const queryClient = useQueryClient();
     const isMounted = useIsMounted();
 
     const getData = async () => {
-        let result = await getServerAnalysisCurrentMonth('warnings');
+        let result = await getServerAnalysisCurrentMonth('warnings', page);
         if (result !== 'error') {
             return result;
         } else {
@@ -24,7 +26,7 @@ const Warnings = () => {
     }
 
     const {data, isLoading, isFetching, isError} = useQuery(
-        ['warnings'],
+        ['warnings', page],
         getData,
         {
             placeholderData: [],
@@ -66,6 +68,7 @@ const Warnings = () => {
         <div css={style.pageContainer}>
             <div css={style.container}>
                 <span css={style.title}> Warnings </span>
+                <span css={style.counter}> Resolved: {counter} </span>
                 <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
 
                 <div css={style.fieldsContainer}>
@@ -101,6 +104,14 @@ const Warnings = () => {
                         </>
                     }
                 </div>
+
+                {
+                    (page > 1 || data.length > 0) && <Pagination css={style.pagination}
+                                                                 count={10} page={page}
+                                                                 onChange={(event, value) => setPage(value)}/>
+
+                }
+
             </div>
         </div>
     );
@@ -131,6 +142,14 @@ const style = {
         marginTop: '10px',
         marginLeft: '10px',
     }),
+    counter: css({
+        position: 'absolute',
+        right: 80,
+        marginTop: '8px',
+    }),
+    pagination: css({
+        marginTop: '20px',
+    })
 };
 
 

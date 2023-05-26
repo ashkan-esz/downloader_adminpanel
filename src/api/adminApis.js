@@ -123,9 +123,21 @@ export const getServerAnalysisInTimes = async (fieldName, startTime, endTime, sk
     }
 }
 
-export const getServerAnalysisCurrentMonth = async (fieldName) => {
+export const getServerAnalysisCurrentMonth = async (fieldName, page) => {
     try {
-        let response = await API.get(`/admin/analysis/currentMonth/${fieldName}`);
+        let response = await API.get(`/admin/analysis/currentMonth/${fieldName}/${page}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+export const resolveServerAnalysis = async (fieldName, id) => {
+    try {
+        let response = await API.put(`/admin/analysis/resolve/${fieldName}/${id}`);
         return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -135,9 +147,9 @@ export const getServerAnalysisCurrentMonth = async (fieldName) => {
     }
 }
 
-export const resolveServerAnalysis = async (fieldName, id) => {
+export const resolveServerAnalysisLastDays = async (fieldName, days) => {
     try {
-        let response = await API.put(`/admin/analysis/resolve/${fieldName}/${id}`);
+        let response = await API.put(`/admin/analysis/resolve/${fieldName}/lastDays/${days}`);
         return response.data.data;
     } catch (error) {
         if (error.response && error.response.status === 404) {
