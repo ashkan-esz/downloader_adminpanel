@@ -4,10 +4,10 @@ import {css} from "@emotion/react";
 import {CrawlerWarningItem} from "../../Components/crawlerPage";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getServerAnalysisCurrentMonth} from "../../api/adminApis";
+import {getServerAnalysisCurrentMonth, resolveServerAnalysisLastDays} from "../../api/adminApis";
 import RefreshButton from "../../Components/crawlerPage/RefreshButton";
 import {CircularProgress} from "@mui/material";
-import {Pagination} from "@mui/lab";
+import {LoadingButton, Pagination} from "@mui/lab";
 
 
 const Warnings = () => {
@@ -41,6 +41,13 @@ const Warnings = () => {
         isMounted.current && setRefreshing(false);
     }
 
+    const _onRemove = async () => {
+        setRefreshing(true);
+        await resolveServerAnalysisLastDays('warnings', 1);
+        await queryClient.refetchQueries(['warnings']);
+        isMounted.current && setRefreshing(false);
+    }
+
     const {counter, delayFuncCall} = useDebounceFuncCall(_onRefresh, 2000);
 
     if (!data && (isLoading || isFetching)) {
@@ -70,6 +77,17 @@ const Warnings = () => {
                 <span css={style.title}> Warnings </span>
                 <span css={style.counter}> Resolved: {counter} </span>
                 <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+                <LoadingButton
+                    css={style.removeButton}
+                    variant={"outlined"}
+                    size={"medium"}
+                    color={"secondary"}
+                    disabled={isLoading || isFetching || refreshing}
+                    loadingIndicator={<CircularProgress color="error" size={18}/>}
+                    onClick={_onRemove}
+                >
+                    Remove
+                </LoadingButton>
 
                 <div css={style.fieldsContainer}>
                     {
@@ -149,6 +167,10 @@ const style = {
     }),
     pagination: css({
         marginTop: '20px',
+    }),
+    removeButton: css({
+        position: 'absolute',
+        right: 170,
     })
 };
 

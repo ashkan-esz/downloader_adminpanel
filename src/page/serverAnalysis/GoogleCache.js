@@ -3,10 +3,11 @@ import {useState} from "react";
 import {css} from "@emotion/react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
-import {getServerAnalysisCurrentMonth} from "../../api/adminApis";
+import {getServerAnalysisCurrentMonth, resolveServerAnalysisLastDays} from "../../api/adminApis";
 import RefreshButton from "../../Components/crawlerPage/RefreshButton";
 import GoogleCacheCallItem from "../../Components/crawlerPage/GoogleCacheCallItem";
-import {Pagination} from "@mui/lab";
+import {LoadingButton, Pagination} from "@mui/lab";
+import {CircularProgress} from "@mui/material";
 
 
 const GoogleCache = () => {
@@ -40,6 +41,13 @@ const GoogleCache = () => {
         isMounted.current && setRefreshing(false);
     }
 
+    const _onRemove = async () => {
+        setRefreshing(true);
+        await resolveServerAnalysisLastDays('googleCacheCalls', 1);
+        await queryClient.refetchQueries(['googleCacheCalls']);
+        isMounted.current && setRefreshing(false);
+    }
+
     const {counter, delayFuncCall} = useDebounceFuncCall(_onRefresh, 2000);
 
     if (isError) {
@@ -57,6 +65,17 @@ const GoogleCache = () => {
                 <span css={style.title}> Google Cache Calls </span>
                 <span css={style.counter}> Removed: {counter} </span>
                 <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+                <LoadingButton
+                    css={style.removeButton}
+                    variant={"outlined"}
+                    size={"medium"}
+                    color={"secondary"}
+                    disabled={isLoading || isFetching || refreshing}
+                    loadingIndicator={<CircularProgress color="error" size={18}/>}
+                    onClick={_onRemove}
+                >
+                    Remove
+                </LoadingButton>
 
                 <div css={style.fieldsContainer}>
 
@@ -115,6 +134,10 @@ const style = {
     }),
     pagination: css({
         marginTop: '20px',
+    }),
+    removeButton: css({
+        position: 'absolute',
+        right: 170,
     })
 };
 
