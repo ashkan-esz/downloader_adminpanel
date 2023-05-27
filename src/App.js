@@ -15,7 +15,7 @@ import Topbar from "./Components/Topbar";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {profile_api} from "./redux/slices/user.slice";
 import {
-    AddCrawlerSource,
+    AddCrawlerSource, BadLinks,
     Configs,
     Crawler,
     CrawlerSource,
@@ -79,6 +79,7 @@ const App = () => {
                         <Route path="/configs" element={<Configs/>}/>
                         <Route path="/warnings" element={<Warnings/>}/>
                         <Route path="/googlecache" element={<GoogleCache/>}/>
+                        <Route path="/badlinks" element={<BadLinks/>}/>
                     </Routes>
                 </div>
             </QueryClientProvider>

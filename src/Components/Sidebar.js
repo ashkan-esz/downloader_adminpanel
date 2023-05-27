@@ -61,6 +61,12 @@ function Sidebar() {
                                 GoogleCacheCalls
                             </li>
                         </Link>
+                        <Link to="/badlinks" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/badlinks') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                BadLinks
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>
