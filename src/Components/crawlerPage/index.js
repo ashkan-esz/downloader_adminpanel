@@ -12,3 +12,4 @@ export {default as GoogleCacheCallItem} from "./GoogleCacheCallItem";
 export {default as CrawlerWarningItem} from "./CrawlerWarningItem";
 export {default as RemoteBrowserItem} from "./RemoteBrowserItem";
 export {default as CrawlerServerLogItem} from "./CrawlerServerLogItem";
+export {default as BadLinkItem} from "./BadLinkItem";

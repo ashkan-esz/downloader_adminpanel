@@ -7,6 +7,7 @@ import {getServerAnalysisCurrentMonth, resolveServerAnalysisLastDays} from "../.
 import {CircularProgress} from "@mui/material";
 import RefreshButton from "../../Components/crawlerPage/RefreshButton";
 import {LoadingButton, Pagination} from "@mui/lab";
+import {BadLinkItem} from "../../Components/crawlerPage";
 
 
 const BadLinks = () => {
@@ -90,8 +91,13 @@ const BadLinks = () => {
 
                 <div css={style.fieldsContainer}>
                     {
-                        data.length > 0 && data.map((b, index) => (
-                            <span>{index + 1}. {JSON.stringify(b, null, 4)} </span>
+                        data.map((item, index) => (
+                            <BadLinkItem
+                                key={item.id}
+                                data={item}
+                                index={index}
+                                onResolve={delayFuncCall}
+                            />
                         ))
                     }
                 </div>
