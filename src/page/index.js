@@ -8,3 +8,4 @@ export {default as ServerStatus} from "./crawler/ServerStatus";
 export {default as GoogleCache} from "./serverAnalysis/GoogleCache";
 export {default as Warnings} from "./serverAnalysis/Warnings";
 export {default as BadLinks} from "./serverAnalysis/BadLinks";
+export {default as ServerLogs} from "./serverAnalysis/ServerLogs";

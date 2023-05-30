@@ -67,6 +67,12 @@ function Sidebar() {
                                 BadLinks
                             </li>
                         </Link>
+                        <Link to="/serverlogs" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/serverlogs') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                ServerLogs
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>
