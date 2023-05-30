@@ -44,19 +44,9 @@ function CrawlerSourcesList() {
             width: 230
         },
         {
-            field: "page_count",
-            headerName: "pages",
-            width: 80,
-        },
-        {
             field: "serial_url",
             headerName: "Serial",
             width: 230,
-        },
-        {
-            field: "serial_page_count",
-            headerName: "Pages",
-            width: 80,
         },
         {
             field: "crawlCycle",

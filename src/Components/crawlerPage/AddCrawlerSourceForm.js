@@ -95,28 +95,6 @@ const AddCrawlerSourceForm = ({extraStyle, onDataUpdate}) => {
             <div>
                 <TextField
                     css={style.textField}
-                    {...register("page_count", {
-                        valueAsNumber: true,
-                        required: 'This is required',
-                        validate: value => !isNaN(value) || 'Must be a number',
-                        min: {value: 0, message: "Can't be less than 0'"}
-                    })}
-                    name={"page_count"}
-                    placeholder={"Movie Pages"}
-                    defaultValue={0}
-                    label={"Movies Pages"}
-                    type={"text"}
-                    error={!!errors.page_count}
-                    helperText={errors.page_count?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-
-            <div>
-                <TextField
-                    css={style.textField}
                     {...register("serial_url", {
                         validate: value => (value === "" || (isUri(value) && !!value.toString().match(/[?/]page[/=]$/))) || "Not a url match [?/]page[/=]$",
                     })}
@@ -127,28 +105,6 @@ const AddCrawlerSourceForm = ({extraStyle, onDataUpdate}) => {
                     type={"url"}
                     error={!!errors.serial_url}
                     helperText={errors.serial_url?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("serial_page_count", {
-                        valueAsNumber: true,
-                        required: 'This is required',
-                        validate: value => !isNaN(value) || 'Must be a number',
-                        min: {value: 0, message: "Can't be less than 0'"}
-                    })}
-                    name={"serial_page_count"}
-                    placeholder={"Serial Pages"}
-                    defaultValue={0}
-                    label={"Serials Pages"}
-                    type={"text"}
-                    error={!!errors.serial_page_count}
-                    helperText={errors.serial_page_count?.message}
                     margin={"dense"}
                     variant={"standard"}
                     color={"secondary"}

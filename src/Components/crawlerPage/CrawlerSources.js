@@ -79,11 +79,9 @@ const CrawlerSources = () => {
                             <span css={style.field}>
                               {item.movie_url.replace(/https?:\/\//, '').replace(/\/page\/?/, '')}
                             </span>
-                            <span css={style.field}>Pages: {item.page_count}</span>
                             <span css={style.field}>
                                 {item.serial_url?.replace(/https?:\/\//, '').replace(/\/page\/?/, '').replace(/\/series?\/?/, '')}
                             </span>
-                            <span css={style.field}>Pages: {item.serial_page_count}</span>
                             <span css={style.field}>Cycle: {item.crawlCycle}</span>
                             <span css={style.field}>Last crawl: {item.lastCrawlDate.toString().trim()}</span>
                             <span css={style.field}>Active: <CheckIcon isCheck={!item.disabled}/></span>
