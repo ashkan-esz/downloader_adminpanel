@@ -7,6 +7,7 @@ import {LoadingButton} from "@mui/lab";
 import {useForm} from "react-hook-form";
 import {getConfigs, updateConfigs} from "../api/adminApis";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {Message} from "../Components/configs";
 
 
 const Configs = () => {
@@ -114,145 +115,148 @@ const Configs = () => {
     }
 
     return (
-        <form css={style.container} onSubmit={_onPress}>
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("corsAllowedOrigins", {
-                        validate: value => (value === "" || value.toString().split(' --- ').every(item => isUri(item))) || "Not array of url joined by \\s---\\s",
-                    })}
-                    name={"corsAllowedOrigins"}
-                    placeholder={data.corsAllowedOrigins.join(" --- ")}
-                    defaultValue={data.corsAllowedOrigins.join(" --- ")}
-                    label={"corsAllowedOrigins"}
-                    type={"url"}
-                    error={!!errors.corsAllowedOrigins}
-                    helperText={errors.corsAllowedOrigins?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("disableCrawlerForDuration", {
-                        validate: value => !isNaN(value) || "Int Numbers only",
-                    })}
-                    name={"disableCrawlerForDuration"}
-                    placeholder={data.disableCrawlerForDuration || '0'}
-                    defaultValue={data.disableCrawlerForDuration || 0}
-                    label={"disableCrawlerForDuration"}
-                    type={"url"}
-                    error={!!errors.disableCrawlerForDuration}
-                    helperText={errors.disableCrawlerForDuration?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-
-            <FormControlLabel
-                css={style.switch}
-                value="start"
-                control={
-                    <Switch
-                        size={"medium"}
-                        color={otherDataFields.disableTestUserRequests ? "error" : "primary"}
-                        checked={otherDataFields.disableTestUserRequests}
-                        onChange={(e) => setOtherDataFields(prev => ({
-                            ...prev,
-                            disableTestUserRequests: e.target.checked,
-                        }))}
-                        inputProps={{'aria-label': 'controlled'}}
-                    />
-                }
-                label="disableTestUserRequests"
-                labelPlacement="start"
-            />
-
-            <FormControlLabel
-                css={style.switch}
-                value="start"
-                control={
-                    <Switch
-                        size={"medium"}
-                        color={otherDataFields.disableCrawler ? "error" : "primary"}
-                        checked={otherDataFields.disableCrawler}
-                        onChange={(e) => setOtherDataFields(prev => ({
-                            ...prev,
-                            disableCrawler: e.target.checked,
-                        }))}
-                        inputProps={{'aria-label': 'disableCrawler'}}
-                    />
-                }
-                label="disableCrawler"
-                labelPlacement="start"
-            />
-
-            <FormControlLabel
-                css={style.switch}
-                value="start"
-                control={
-                    <Switch
-                        size={"medium"}
-                        color={otherDataFields.developmentFaze ? "error" : "primary"}
-                        checked={otherDataFields.developmentFaze}
-                        onChange={(e) => setOtherDataFields(prev => ({
-                            ...prev,
-                            developmentFaze: e.target.checked,
-                        }))}
-                        inputProps={{'aria-label': 'developmentFaze'}}
-                    />
-                }
-                label="developmentFaze"
-                labelPlacement="start"
-            />
-
-            {
-                !!error && <div>
-                    <Typography
-                        css={style.errorText}
-                        variant="subtitle2"
-                        component="h2"
-                        color={"red"}
-                    >
-                        *{error}.
-                    </Typography>
-                </div>
-            }
-
-            <div css={style.buttonsContainer}>
-                <div css={[style.submitButtonContainer, style.resetButtonMargin]}>
-                    <Button
-                        variant={"outlined"}
-                        size={"large"}
-                        color={"primary"}
-                        onClick={() => reset()}
-                        disabled={!isDirty || isLoading || isLoading2}
-                    >
-                        Reset
-                    </Button>
-                </div>
-
-                <div css={style.submitButtonContainer}>
-                    <LoadingButton
-                        variant={"outlined"}
-                        size={"large"}
+        <div css={style.container}>
+            <form onSubmit={_onPress}>
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("corsAllowedOrigins", {
+                            validate: value => (value === "" || value.toString().split(' --- ').every(item => isUri(item))) || "Not array of url joined by \\s---\\s",
+                        })}
+                        name={"corsAllowedOrigins"}
+                        placeholder={data.corsAllowedOrigins.join(" --- ")}
+                        defaultValue={data.corsAllowedOrigins.join(" --- ")}
+                        label={"corsAllowedOrigins"}
+                        type={"url"}
+                        error={!!errors.corsAllowedOrigins}
+                        helperText={errors.corsAllowedOrigins?.message}
+                        margin={"dense"}
+                        variant={"standard"}
                         color={"secondary"}
-                        loading={isLoading || isLoading2}
-                        loadingIndicator={<CircularProgress color="error" size={18}/>}
-                        onClick={_onPress}
-                        disabled={!isDirty}
-                    >
-                        Update
-                    </LoadingButton>
+                    />
                 </div>
-            </div>
 
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("disableCrawlerForDuration", {
+                            validate: value => !isNaN(value) || "Int Numbers only",
+                        })}
+                        name={"disableCrawlerForDuration"}
+                        placeholder={data.disableCrawlerForDuration || '0'}
+                        defaultValue={data.disableCrawlerForDuration || 0}
+                        label={"disableCrawlerForDuration"}
+                        type={"url"}
+                        error={!!errors.disableCrawlerForDuration}
+                        helperText={errors.disableCrawlerForDuration?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
 
-        </form>
+                <FormControlLabel
+                    css={style.switch}
+                    value="start"
+                    control={
+                        <Switch
+                            size={"medium"}
+                            color={otherDataFields.disableTestUserRequests ? "error" : "primary"}
+                            checked={otherDataFields.disableTestUserRequests}
+                            onChange={(e) => setOtherDataFields(prev => ({
+                                ...prev,
+                                disableTestUserRequests: e.target.checked,
+                            }))}
+                            inputProps={{'aria-label': 'controlled'}}
+                        />
+                    }
+                    label="disableTestUserRequests"
+                    labelPlacement="start"
+                />
+
+                <FormControlLabel
+                    css={style.switch}
+                    value="start"
+                    control={
+                        <Switch
+                            size={"medium"}
+                            color={otherDataFields.disableCrawler ? "error" : "primary"}
+                            checked={otherDataFields.disableCrawler}
+                            onChange={(e) => setOtherDataFields(prev => ({
+                                ...prev,
+                                disableCrawler: e.target.checked,
+                            }))}
+                            inputProps={{'aria-label': 'disableCrawler'}}
+                        />
+                    }
+                    label="disableCrawler"
+                    labelPlacement="start"
+                />
+
+                <FormControlLabel
+                    css={style.switch}
+                    value="start"
+                    control={
+                        <Switch
+                            size={"medium"}
+                            color={otherDataFields.developmentFaze ? "error" : "primary"}
+                            checked={otherDataFields.developmentFaze}
+                            onChange={(e) => setOtherDataFields(prev => ({
+                                ...prev,
+                                developmentFaze: e.target.checked,
+                            }))}
+                            inputProps={{'aria-label': 'developmentFaze'}}
+                        />
+                    }
+                    label="developmentFaze"
+                    labelPlacement="start"
+                />
+
+                {
+                    !!error && <div>
+                        <Typography
+                            css={style.errorText}
+                            variant="subtitle2"
+                            component="h2"
+                            color={"red"}
+                        >
+                            *{error}.
+                        </Typography>
+                    </div>
+                }
+
+                <div css={style.buttonsContainer}>
+                    <div css={[style.submitButtonContainer, style.resetButtonMargin]}>
+                        <Button
+                            variant={"outlined"}
+                            size={"large"}
+                            color={"primary"}
+                            onClick={() => reset()}
+                            disabled={!isDirty || isLoading || isLoading2}
+                        >
+                            Reset
+                        </Button>
+                    </div>
+
+                    <div css={style.submitButtonContainer}>
+                        <LoadingButton
+                            variant={"outlined"}
+                            size={"large"}
+                            color={"secondary"}
+                            loading={isLoading || isLoading2}
+                            loadingIndicator={<CircularProgress color="error" size={18}/>}
+                            onClick={_onPress}
+                            disabled={!isDirty}
+                        >
+                            Update
+                        </LoadingButton>
+                    </div>
+                </div>
+            </form>
+
+            <Message/>
+
+        </div>
     );
 };
 

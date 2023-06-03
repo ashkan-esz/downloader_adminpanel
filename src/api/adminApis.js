@@ -207,6 +207,30 @@ export const checkSourceRemoteBrowsers = async (sourceName, url) => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const setMessage = async (data) => {
+    try {
+        let response = await API.put(`/admin/setMessage`, data);
+        return response.data.data;
+    } catch (error) {
+        if (error.response?.status === 400) {
+            return error.response.data;
+        }
+        return 'error';
+    }
+}
+
+export const getMessage = async () => {
+    try {
+        let response = await API.get(`/utils/getMessage`);
+        return response.data.data;
+    } catch (error) {
+        return 'error';
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
 function normalizeErrorData(error) {
     if (!error.response) {
         error.response = {
