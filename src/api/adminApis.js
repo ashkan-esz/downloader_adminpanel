@@ -231,6 +231,56 @@ export const getMessage = async () => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const addNewAppVersion = async (data, file, setProgress) => {
+    try {
+        const formData = new FormData();
+        formData.append("appFile", file, file.name);
+        let response = await API.post(`/admin/addNewAppVersion`, formData, {
+            params: {appData: data},
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: data => {
+                setProgress(Math.round((100 * data.loaded) / data.total))
+            },
+        });
+        return response.data.data;
+    } catch (error) {
+        if (error.response?.status === 400 || error.response?.status === 409 || error.response?.status === 500) {
+            return error.response.data;
+        }
+        return 'error';
+    }
+}
+
+export const removeAppVersion = async (vid) => {
+    try {
+        let response = await API.put(`/admin/removeAppVersion/${vid}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response?.status === 400) {
+            return error.response.data;
+        }
+        return 'error';
+    }
+}
+
+export const getAppVersions = async () => {
+    try {
+        let response = await API.get(`/admin/appVersions`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+
+//---------------------------------------------
+//---------------------------------------------
+
 function normalizeErrorData(error) {
     if (!error.response) {
         error.response = {

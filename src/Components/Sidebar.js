@@ -73,6 +73,12 @@ function Sidebar() {
                                 ServerLogs
                             </li>
                         </Link>
+                        <Link to="/appversions" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/appversions') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                AppVersions
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>
