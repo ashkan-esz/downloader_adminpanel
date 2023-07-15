@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  frontend:
+    network_mode: host
+    build:
+      network: host
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/react-app:delegated
+      - /node_modules
+#    ports:
+#      - "7000:7000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true

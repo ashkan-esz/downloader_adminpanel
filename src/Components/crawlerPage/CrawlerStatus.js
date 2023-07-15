@@ -253,7 +253,7 @@ const CrawlerStatus = () => {
                             pausedDuration: {(data.crawlingSource.pausedDuration / 60).toFixed(1)}
                         </span>
                         <span css={style.field}>crawlMode: {data.crawlingSource.crawlMode}</span>
-                        <span css={style.field}>pageNumber: {data.pageNumber}/{data.pageCount.toFixed(0)}</span>
+                        <span css={style.field}>pageNumber: {data.pageNumber}/{data.pageCount?.toFixed(0)}</span>
                         <span
                             css={style.field}>Links/Limit: {data.pageLinks.length}/{data.constValues.concurrencyNumber}</span>
                     </Stack>

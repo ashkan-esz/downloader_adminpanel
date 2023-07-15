@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  frontend:
+    network_mode: host
+    env_file: .env
+    build:
+      args:
+        REACT_APP_BASE_URL: ${REACT_APP_BASE_URL}
+      network: host
+      context: .
+      dockerfile: Dockerfile
+#    volumes:
+#      - ./:/react-app:delegated
+#      - /node_modules
+    #    ports:
+    #      - "7000:7000"
