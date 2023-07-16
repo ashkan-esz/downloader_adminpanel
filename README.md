@@ -73,5 +73,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ## Docker
 
 docker oull ashkanaz2828/downloader_adminpanel
-
-**NOTE: need to set `REACT_APP_BASE_URL` as build Arg in docker-compose**

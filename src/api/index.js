@@ -3,7 +3,9 @@ import axios from 'axios';
 const {REACT_APP_BASE_URL, REACT_APP_BASE_URL_DEV} = process.env;
 
 const API = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ? REACT_APP_BASE_URL : REACT_APP_BASE_URL_DEV,
+    baseURL: process.env.NODE_ENV === 'production'
+        ? window?._env_?.REACT_APP_BASE_URL || REACT_APP_BASE_URL
+        : window?._env_?.REACT_APP_BASE_URL_DEV || REACT_APP_BASE_URL_DEV,
     // baseURL: REACT_APP_BASE_URL,
     withCredentials: true,
 });

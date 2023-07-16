@@ -6,5 +6,5 @@ build
 .idea
 *.md
 .gitignore
-*.env
+#*.env
 .cache
