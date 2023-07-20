@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useForm} from "react-hook-form";
-import {Button, CircularProgress, TextField, Typography} from "@mui/material";
+import {Button, CircularProgress, FormControlLabel, Switch, TextField, Typography} from "@mui/material";
 import {LoadingButton} from '@mui/lab';
 import {isUri} from "valid-url";
 import {css} from "@emotion/react";
@@ -9,6 +9,9 @@ import PropsTypes from 'prop-types';
 import {updateCrawlerSourceData} from "../../api/adminApis";
 
 const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
+    const [otherDataFields, setOtherDataFields] = useState({
+        reCrawl: true,
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [isDirty, setIsDirty] = useState(false);
@@ -31,7 +34,7 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
 
     const _onPress = () => {
         handleSubmit((data) => {
-                let updateFields = {...data};
+                let updateFields = {...data, ...otherDataFields};
                 let validCookie = updateFields.cookie.name && updateFields.cookie.value;
                 if (sourceData.cookies.length === 0) {
                     updateFields.cookies = validCookie ? [updateFields.cookie] : [];
@@ -216,6 +219,25 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
                 />
             </div>
 
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.reCrawl ? "primary" : "error"}
+                        checked={otherDataFields.reCrawl}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            reCrawl: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="reCrawl"
+                labelPlacement="start"
+            />
+
             {
                 !!error && <div>
                     <Typography
@@ -268,6 +290,10 @@ const style = {
         width: '100%',
         maxWidth: '500px',
         color: 'red',
+    }),
+    switch: css({
+        display: 'block',
+        marginLeft: '-10px',
     }),
     errorText: css({
         marginTop: "10px",
