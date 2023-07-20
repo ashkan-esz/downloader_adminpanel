@@ -44,6 +44,14 @@ const ServerDetails = ({data, isRemoteBrowser}) => {
                 }
                 <span css={style.field}>Free: {convertToGbIfNeeded(data.memoryStatus.free)}</span>
             </RowStack>
+            <RowStack>
+                <span css={style.field}>
+                    Cache(jikan-api): {JSON.stringify(data.memoryStatus.cache.jikan)}
+                </span>
+                <span css={style.field}>
+                    Cache(userStats): {JSON.stringify(data.memoryStatus.cache.userStats)}
+                </span>
+            </RowStack>
 
             <span css={style.title2}> Cpu: </span>
             <RowStack>

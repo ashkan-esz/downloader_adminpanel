@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import Chart from '../../Components/chart';
 import {css} from "@emotion/react";
 import {getServerAnalysisInTimes} from "../../api/adminApis";
-import {CrawlerStatus, CrawlerSources, StartCrawler} from "../../Components/crawlerPage";
+import {CrawlerStatus, CrawlerSources, StartCrawler, ApiKeys} from "../../Components/crawlerPage";
 import {Grid} from "@mui/material";
 
 function Crawler() {
@@ -33,6 +33,7 @@ function Crawler() {
         <div css={style.home}>
             <CrawlerStatus/>
             <StartCrawler/>
+            <ApiKeys/>
             <CrawlerSources/>
             <Chart
                 data={crawlingHistory}

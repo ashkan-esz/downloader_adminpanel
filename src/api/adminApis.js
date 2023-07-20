@@ -281,6 +281,21 @@ export const getAppVersions = async () => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const check3rdPartApisWorking = async () => {
+    try {
+        let response = await API.get(`/admin/3rdpartyApis/checkWorking`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
 function normalizeErrorData(error) {
     if (!error.response) {
         error.response = {
