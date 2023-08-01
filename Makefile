@@ -17,5 +17,5 @@ compose-dev:
 	docker-compose -f docker-compose.dev.yml up --build
 
 push-image:
-	docker tag downloader_adminpanel_frontend ashkanaz2828/downloader_adminpanel
+	docker tag downloader-adminpanel ashkanaz2828/downloader_adminpanel
 	docker push ashkanaz2828/downloader_adminpanel

@@ -96,6 +96,12 @@ function CrawlerSource() {
                         <div css={style.fieldInfo}>
                             <Grade css={style.fieldInfoIcon}/>
                             <span css={style.fieldInfoTitle}>
+                                Status: {JSON.stringify(data.status)}
+                            </span>
+                        </div>
+                        <div css={style.fieldInfo}>
+                            <Grade css={style.fieldInfoIcon}/>
+                            <span css={style.fieldInfoTitle}>
                                 Note: crawl cycle equal to 0 means no cycle.
                             </span>
                         </div>
