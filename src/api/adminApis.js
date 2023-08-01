@@ -15,6 +15,15 @@ export const startWebCrawler = async (configs) => {
     }
 }
 
+export const startCrawlUrl = async (data) => {
+    try {
+        let response = await API.put(`/admin/crawler/crawlUrl`, data);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
 export const pauseWebCrawler = async (duration) => {
     try {
         let response = await API.put(`/admin/crawler/pause/${duration}`);
