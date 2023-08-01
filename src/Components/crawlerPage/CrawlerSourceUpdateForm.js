@@ -29,6 +29,7 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
             crawlCycle: sourceData.crawlCycle,
             disabled: sourceData.disabled,
             cookie: sourceData.cookies[0] || {},
+            description: sourceData.description,
         }), [sourceData]),
     });
 
@@ -213,6 +214,24 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
                     type={"text"}
                     error={!!errors["cookie.expire"]}
                     helperText={errors["cookie.expire"]?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("description", {
+                        // validate: value => value || "",
+                    })}
+                    name={"description"}
+                    placeholder={sourceData.description}
+                    label={"Description"}
+                    type={"text"}
+                    error={!!errors.description}
+                    helperText={errors.description?.message}
                     margin={"dense"}
                     variant={"standard"}
                     color={"secondary"}

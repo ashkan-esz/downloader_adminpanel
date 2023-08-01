@@ -21,7 +21,7 @@ function CrawlerSource() {
     }
 
     const {data} = useQuery(
-        ['crawlerSource'],
+        ['crawlerSource', location.state?.data?.sourceName],
         getData,
         {
             keepPreviousData: false,
@@ -79,6 +79,18 @@ function CrawlerSource() {
                             <CalendarToday css={style.fieldInfoIcon}/>
                             <span css={style.fieldInfoTitle}>
                                 Disabled Date: {data.disabledDate.toString().replace(/\.\d+z$/i, '')}
+                            </span>
+                        </div>
+                        <div css={style.fieldInfo}>
+                            <CalendarToday css={style.fieldInfoIcon}/>
+                            <span css={style.fieldInfoTitle}>
+                                Config Update Date: {data.lastConfigUpdateDate?.toString().replace(/\.\d+z$/i, '')}
+                            </span>
+                        </div>
+                        <div css={style.fieldInfo}>
+                            <Grade css={style.fieldInfoIcon}/>
+                            <span css={style.fieldInfoTitle}>
+                                UserData: {JSON.stringify(data.userData)}
                             </span>
                         </div>
                         <div css={style.fieldInfo}>
