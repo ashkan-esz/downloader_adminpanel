@@ -84,6 +84,12 @@ function CrawlerSource() {
                         <div css={style.fieldInfo}>
                             <CalendarToday css={style.fieldInfoIcon}/>
                             <span css={style.fieldInfoTitle}>
+                                IsManualDisable: {data.isManualDisable?.toString() || 'false'}
+                            </span>
+                        </div>
+                        <div css={style.fieldInfo}>
+                            <CalendarToday css={style.fieldInfoIcon}/>
+                            <span css={style.fieldInfoTitle}>
                                 Config Update Date: {data.lastConfigUpdateDate?.toString().replace(/\.\d+z$/i, '')}
                             </span>
                         </div>
