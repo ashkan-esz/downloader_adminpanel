@@ -90,6 +90,12 @@ function Sidebar() {
                                 Crawler Sources
                             </li>
                         </Link>
+                        <Link to="/botsList" css={style.link}>
+                            <li css={style.sidebarListItem}>
+                                <Source css={style.sidebarIcon}/>
+                                Bots
+                            </li>
+                        </Link>
                         <Link to="/users" css={style.link}>
                             <li css={style.sidebarListItem}>
                                 <PermIdentity css={style.sidebarIcon}/>

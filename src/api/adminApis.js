@@ -87,6 +87,48 @@ export const updateCrawlerSourceData = async (sourceName, data) => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const getBots = async (botId = '') => {
+    try {
+        let response = await API.get(`/admin/bots?botId=` + botId);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+        return 'error';
+    }
+}
+
+export const updateBotData = async (botId, data) => {
+    try {
+        let response = await API.put(`/admin/bots/editBot/${botId}`, data);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
+export const addBotData = async (data) => {
+    try {
+        let response = await API.put(`/admin/bots/addBot/`, data);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
+export const deleteBotData = async (botId) => {
+    try {
+        let response = await API.delete(`/admin/bots/deleteBot/` + botId);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
 export const updateConfigs = async (data) => {
     try {
         let response = await API.put('/admin/configs/update/', data);

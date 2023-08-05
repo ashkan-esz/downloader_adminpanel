@@ -10,3 +10,6 @@ export {default as Warnings} from "./serverAnalysis/Warnings";
 export {default as BadLinks} from "./serverAnalysis/BadLinks";
 export {default as ServerLogs} from "./serverAnalysis/ServerLogs";
 export {default as AppVersions} from "./AppVersions";
+export {default as BotsList} from "./bots/BotsList";
+export {default as Bot} from "./bots/Bot";
+export {default as AddBot} from "./bots/AddBot";

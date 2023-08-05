@@ -15,7 +15,8 @@ import Topbar from "./Components/Topbar";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {profile_api} from "./redux/slices/user.slice";
 import {
-    AddCrawlerSource, AppVersions, BadLinks,
+    AddBot,
+    AddCrawlerSource, AppVersions, BadLinks, Bot, BotsList,
     Configs,
     Crawler,
     CrawlerSource,
@@ -70,6 +71,9 @@ const App = () => {
                         <Route path="/crawlerSourcesList" element={<CrawlerSourcesList/>}/>
                         <Route path="/crawlerSource/:sourceName" element={<CrawlerSource/>}/>
                         <Route path="/addCrawlerSource" element={<AddCrawlerSource/>}/>
+                        <Route path="/botsList" element={<BotsList/>}/>
+                        <Route path="/bots/:botId" element={<Bot/>}/>
+                        <Route path="/addBot" element={<AddBot/>}/>
                         <Route path="/users" element={<UserList/>}/>
                         <Route path="/user/:userId" element={<User/>}/>
                         <Route path="/newUser" element={<NewUser/>}/>
