@@ -347,6 +347,33 @@ export const check3rdPartApisWorking = async () => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const getCronJobs = async () => {
+    try {
+        let response = await API.get(`/admin/cronJobs`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+export const startCronJob = async (jobName) => {
+    try {
+        let response = await API.put(`/admin/cronJobs/start/${jobName}`);
+        return response.data.data;
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return [];
+        }
+        return 'error';
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
 function normalizeErrorData(error) {
     if (!error.response) {
         error.response = {

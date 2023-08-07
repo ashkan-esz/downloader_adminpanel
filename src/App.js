@@ -20,7 +20,7 @@ import {
     Configs,
     Crawler,
     CrawlerSource,
-    CrawlerSourcesList,
+    CrawlerSourcesList, CronJobs,
     GoogleCache,
     Home, ServerLogs,
     ServerStatus, Warnings
@@ -86,6 +86,7 @@ const App = () => {
                         <Route path="/badlinks" element={<BadLinks/>}/>
                         <Route path="/serverlogs" element={<ServerLogs/>}/>
                         <Route path="/appversions" element={<AppVersions/>}/>
+                        <Route path="/cronjobs" element={<CronJobs/>}/>
                     </Routes>
                 </div>
             </QueryClientProvider>

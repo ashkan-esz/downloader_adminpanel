@@ -79,6 +79,12 @@ function Sidebar() {
                                 AppVersions
                             </li>
                         </Link>
+                        <Link to="/cronjobs" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/cronjobs') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                CronJobs
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>
