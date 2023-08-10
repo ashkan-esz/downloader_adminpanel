@@ -76,7 +76,7 @@ const CronJobs = () => {
                                             <span
                                                 css={style.job}>Start: {jobData.startDate ? getPassedTime(jobData.startDate) : 0} </span>
                                             <span css={style.job}>State: {jobData.state} </span>
-                                            <span css={style.job}>Value: {jobData.value} </span>
+                                            <span css={style.job}>Value: {JSON.stringify(jobData.value)} </span>
                                             <span css={style.job}>Description: {jobData.description} </span>
                                         </RowStack>
                                         <MyLoadingButton
