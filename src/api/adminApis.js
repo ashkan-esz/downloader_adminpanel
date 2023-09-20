@@ -374,7 +374,7 @@ export const startCronJob = async (jobName) => {
 //---------------------------------------------
 //---------------------------------------------
 
-function normalizeErrorData(error) {
+export function normalizeErrorData(error) {
     if (!error.response) {
         error.response = {
             data: {

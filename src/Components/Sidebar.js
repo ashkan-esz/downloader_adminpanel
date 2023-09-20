@@ -91,15 +91,21 @@ function Sidebar() {
                     <h3 css={style.sidebarTitle}>Quick Menu</h3>
                     <ul css={style.sidebarList}>
                         <Link to="/crawlerSourcesList" css={style.link}>
-                            <li css={style.sidebarListItem}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/crawlerSourcesList') && style.activeSidebarListItem]}>
                                 <Source css={style.sidebarIcon}/>
                                 Crawler Sources
                             </li>
                         </Link>
                         <Link to="/botsList" css={style.link}>
-                            <li css={style.sidebarListItem}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/botsList') && style.activeSidebarListItem]}>
                                 <Source css={style.sidebarIcon}/>
                                 Bots
+                            </li>
+                        </Link>
+                        <Link to="/movies" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/movies') && style.activeSidebarListItem]}>
+                                <Source css={style.sidebarIcon}/>
+                                Movies
                             </li>
                         </Link>
                         <Link to="/users" css={style.link}>

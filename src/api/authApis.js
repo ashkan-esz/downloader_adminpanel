@@ -2,15 +2,15 @@ import API from "./index";
 
 export const authEndpoints_all = [
     '/admin/login',
-    '/admin/getToken',
+    '/admin/getToken?profileImages=true',
     '/users/logout'
 ];
 
 export const authEndpoints = [
     '/admin/login',
-    '/admin/getToken',
+    '/admin/getToken?profileImages=true',
 ];
-export const tokenEndPoint = '/admin/getToken';
+export const tokenEndPoint = '/admin/getToken?profileImages=true';
 
 //auth
 export const loginApi = async (data) => {

@@ -22,7 +22,7 @@ import {
     CrawlerSource,
     CrawlerSourcesList, CronJobs,
     GoogleCache,
-    Home, ServerLogs,
+    Home, Movies, ServerLogs,
     ServerStatus, Warnings
 } from "./page";
 import {css} from "@emotion/react";
@@ -87,6 +87,7 @@ const App = () => {
                         <Route path="/serverlogs" element={<ServerLogs/>}/>
                         <Route path="/appversions" element={<AppVersions/>}/>
                         <Route path="/cronjobs" element={<CronJobs/>}/>
+                        <Route path="/movies" element={<Movies/>}/>
                     </Routes>
                 </div>
             </QueryClientProvider>
