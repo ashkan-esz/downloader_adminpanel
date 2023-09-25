@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import {css} from "@emotion/react";
-import {AddRelation, RemoveRelation} from "../../Components/movies";
+import {AddRelation, RemoveDoc, RemoveRelation} from "../../Components/movies";
 
 
 function Movies() {
@@ -9,6 +9,7 @@ function Movies() {
         <div css={style.container}>
             <AddRelation/>
             <RemoveRelation/>
+            <RemoveDoc/>
         </div>
     );
 }

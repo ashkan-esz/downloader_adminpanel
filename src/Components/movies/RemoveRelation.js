@@ -43,6 +43,7 @@ const RemoveRelation = ({extraStyle}) => {
 
     return (
         <form css={[style.form, extraStyle]} onSubmit={_onPress}>
+            <p css={style.title}> Remove Relation </p>
             <div>
                 <TextField
                     css={style.textField}
@@ -112,6 +113,14 @@ const style = {
         flexDirection: 'row',
         display: 'flex',
         flexWrap: 'wrap',
+    }),
+    title: css({
+        width: '130px',
+        color: 'red',
+        paddingRight: '28px',
+        display: 'flex',
+        alignSelf: 'baseline',
+        marginTop: '28px',
     }),
     textField: css({
         flex: 1,

@@ -18,3 +18,12 @@ export const removeRelationMovie = async (id1, id2) => {
         return normalizeErrorData(error);
     }
 }
+
+export const removeDoc = async (removeType, id) => {
+    try {
+        let response = await API.delete(`/admin/remove/${removeType}/${id}`);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}

@@ -1,14 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import {css} from "@emotion/react";
 import React, {useEffect, useState} from "react";
-import {addRelationMovie} from "../../api/moviesApi";
-import {CircularProgress, TextField, Typography} from "@mui/material";
+import {removeDoc} from "../../api/moviesApi";
+import {CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {LoadingButton} from "@mui/lab";
 import {useForm} from "react-hook-form";
 import PropsTypes from "prop-types";
 
 
-const AddRelation = ({extraStyle}) => {
+const RemoveDoc = ({extraStyle}) => {
+    const [removeType, setRemoveType] = useState('movie');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const {
@@ -22,7 +23,7 @@ const AddRelation = ({extraStyle}) => {
         handleSubmit((data) => {
                 setError("");
                 setIsLoading(true);
-                addRelationMovie(data.id1, data.id2, data.relation).then(async res => {
+                removeDoc(removeType, data.id).then(async res => {
                     setIsLoading(false);
                     if (res.errorMessage) {
                         setError(res.errorMessage);
@@ -43,52 +44,44 @@ const AddRelation = ({extraStyle}) => {
 
     return (
         <form css={[style.form, extraStyle]} onSubmit={_onPress}>
-            <p css={style.title}> Add Relation </p>
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("id1", {
-                        required: true,
-                    })}
-                    name={"id1"}
-                    label={"id1"}
-                    type={"text"}
-                    error={!!errors.id1}
-                    helperText={errors.id1?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
+            <p css={style.title}> Remove Doc </p>
+
+            <FormControl css={style.selector} required sx={{m: 1, minWidth: 120}}>
+                <InputLabel id="demo-simple-select-label">removeType</InputLabel>
+                <Select
+                    autoWidth
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={removeType}
+                    label="Remove Type"
+                    onChange={(v) => setRemoveType(v.target.value)}
+                >
+                    <MenuItem value={'movie'}>
+                        movie
+                    </MenuItem>
+                    <MenuItem value={'staff'}>
+                        staff
+                    </MenuItem>
+                    <MenuItem value={'character'}>
+                        character
+                    </MenuItem>
+                    <MenuItem value={'user'}>
+                        user
+                    </MenuItem>
+                </Select>
+            </FormControl>
 
             <div>
                 <TextField
                     css={style.textField}
-                    {...register("id2", {
+                    {...register("id", {
                         required: true,
                     })}
-                    name={"id2"}
-                    label={"id2"}
+                    name={"id"}
+                    label={"id"}
                     type={"text"}
-                    error={!!errors.id2}
-                    helperText={errors.id2?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("relation", {
-                        required: true,
-                    })}
-                    name={"relation"}
-                    label={"Relation"}
-                    type={"text"}
-                    error={!!errors.relation}
-                    helperText={errors.relation?.message}
+                    error={!!errors.id}
+                    helperText={errors.id?.message}
                     margin={"dense"}
                     variant={"standard"}
                     color={"secondary"}
@@ -104,7 +97,7 @@ const AddRelation = ({extraStyle}) => {
                     loadingIndicator={<CircularProgress color="error" size={18}/>}
                     onClick={_onPress}
                 >
-                    Add
+                    Remove
                 </LoadingButton>
             </div>
 
@@ -133,11 +126,14 @@ const style = {
     }),
     title: css({
         width: '130px',
-        color: 'green',
+        color: 'red',
         paddingRight: '28px',
         display: 'flex',
         alignSelf: 'baseline',
         marginTop: '28px',
+    }),
+    selector: css({
+        paddingRight: '40px',
     }),
     textField: css({
         flex: 1,
@@ -160,8 +156,8 @@ const style = {
     }),
 };
 
-AddRelation.propTypes = {
+RemoveDoc.propTypes = {
     extraStyle: PropsTypes.object,
 }
 
-export default AddRelation;
+export default RemoveDoc;
