@@ -1,14 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import {DataGrid} from '@mui/x-data-grid';
-import {Check, Close, DeleteOutline} from "@mui/icons-material";
+import {Check, Close} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import {css} from "@emotion/react";
-import {getCrawlerSources} from "../../api/adminApis";
+import {getCrawlerSources, removeCrawlerSource} from "../../api/adminApis";
 import {useQuery} from "@tanstack/react-query";
+import {useState} from "react";
+import {LoadingButton} from "@mui/lab";
+import {CircularProgress} from "@mui/material";
 
 function CrawlerSourcesList() {
+    const [isRemoving, setIsRemoving] = useState(false);
     const handleDelete = (sourceName) => {
-        //todo : add
+        setIsRemoving(true);
+        removeCrawlerSource(sourceName).then(() => {
+            setIsRemoving(false);
+        })
     };
 
     const getData = async () => {
@@ -51,12 +58,12 @@ function CrawlerSourcesList() {
         {
             field: "crawlCycle",
             headerName: "Cycle",
-            width: 70,
+            width: 55,
         },
         {
             field: "lastCrawlDate",
             headerName: "Last Crawl",
-            width: 200,
+            width: 190,
         },
         {
             field: "disabled",
@@ -91,10 +98,18 @@ function CrawlerSourcesList() {
                         >
                             <button css={style.listEdit}>Edit</button>
                         </Link>
-                        <DeleteOutline
+
+                        <LoadingButton
                             css={style.listDelete}
+                            variant={"outlined"}
+                            size={"medium"}
+                            color={"secondary"}
+                            disabled={isRemoving}
+                            loadingIndicator={<CircularProgress color="error" size={18}/>}
                             onClick={() => handleDelete(params.row.sourceName)}
-                        />
+                        >
+                            Remove
+                        </LoadingButton>
                     </>
                 );
             },
@@ -155,6 +170,10 @@ const style = {
     listDelete: css({
         color: 'red',
         cursor: 'pointer',
+        borderRadius: '10px',
+        padding: '5px 10px',
+        marginRight: '20px',
+        fontSize: '0.8rem',
     }),
 }
 

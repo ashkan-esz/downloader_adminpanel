@@ -84,6 +84,15 @@ export const updateCrawlerSourceData = async (sourceName, data) => {
     }
 }
 
+export const removeCrawlerSource = async (sourceName) => {
+    try {
+        let response = await API.delete(`/admin/crawler/removeSource/${sourceName}`);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
 //---------------------------------------------
 //---------------------------------------------
 
