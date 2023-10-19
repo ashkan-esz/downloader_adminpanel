@@ -20,7 +20,7 @@ const Message = () => {
         if (result !== 'error') {
             return result;
         } else {
-            throw new Error();
+            return null;
         }
     }
 
@@ -78,6 +78,10 @@ const Message = () => {
         return (
             <CircularProgress color="error" size={18}/>
         );
+    }
+
+    if (!data) {
+        return null;
     }
 
     return (
