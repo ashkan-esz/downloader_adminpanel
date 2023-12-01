@@ -284,6 +284,12 @@ export const getMessage = async () => {
         let response = await API.get(`/utils/getMessage`);
         return response.data.data;
     } catch (error) {
+        if (error.response?.status === 404) {
+            return {
+                message: '',
+                date: '',
+            };
+        }
         return 'error';
     }
 }
