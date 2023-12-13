@@ -8,7 +8,11 @@ export const startWebCrawler = async (configs) => {
             '&handleDomainChange=' + configs.handleDomainChange +
             '&handleDomainChangeOnly=' + configs.handleDomainChangeOnly +
             '&handleCastUpdate=' + configs.handleCastUpdate;
-        let response = await API.put(`/admin/crawler/start?${queryParams}`);
+        let response = await API.put(`/admin/crawler/start`, null, {
+            params: {
+                ...configs,
+            },
+        });
         return response.data;
     } catch (error) {
         return normalizeErrorData(error);

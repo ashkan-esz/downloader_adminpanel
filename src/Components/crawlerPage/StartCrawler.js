@@ -20,16 +20,22 @@ import {getMovieSources} from "../../api";
 
 const StartCrawler = () => {
     const [selectedSource, setSelectedSource] = useState('');
+    const [castUpdateState, setCastUpdateState] = useState('none');
+    const [apiUpdateState, setApiUpdateState] = useState('none');
+    const [trailerUploadState, setTrailerUploadState] = useState('none');
+    const [crawlMode, setCrawlMode] = useState(0);
     const [isLoading2, setIsLoading2] = useState(false);
     const [result, setResult] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState("");
     const [configs, setConfigs] = useState({
         sourceName: "",
-        mode: 0,
         handleDomainChange: true,
         handleDomainChangeOnly: false,
-        handleCastUpdate: true,
+        dontUseRemoteBrowser: false,
+        crawlerConcurrency: 0,
+        axiosBlockThreshHold: 0,
+        remoteBrowserBlockThreshHold: 0,
     });
     const isMounted = useIsMounted();
     const queryClient = useQueryClient();
@@ -69,6 +75,10 @@ const StartCrawler = () => {
         let temp = {
             ...configs,
             sourceName: selectedSource,
+            castUpdateState: castUpdateState,
+            apiUpdateState: apiUpdateState,
+            trailerUploadState: trailerUploadState,
+            mode: crawlMode,
         }
         setConfigs(temp);
         startWebCrawler(temp).then((res) => {
@@ -85,7 +95,7 @@ const StartCrawler = () => {
     return (
         <div css={style.container}>
             <span css={style.title}> Start Crawler </span>
-            <RefreshButton refreshing={refreshing || isFetching|| isLoading || isLoading2} onClick={_onRefresh}/>
+            <RefreshButton refreshing={refreshing || isFetching || isLoading || isLoading2} onClick={_onRefresh}/>
 
             <div css={style.fieldsContainer}>
 
@@ -96,7 +106,8 @@ const StartCrawler = () => {
                     alignItems={"baseline"}
                 >
 
-                    <FormControl required disabled={refreshing || isFetching || isLoading ||isLoading2} sx={{m: 1, minWidth: 120}}>
+                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
+                                 sx={{m: 1, minWidth: 120}}>
                         <InputLabel id="demo-simple-select-label">Source</InputLabel>
                         <Select
                             autoWidth
@@ -116,16 +127,122 @@ const StartCrawler = () => {
                         </Select>
                     </FormControl>
 
+                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
+                                 sx={{m: 1, minWidth: 190}}>
+                        <InputLabel id="demo-simple-select-label">Cast Update State</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={castUpdateState}
+                            label="Age"
+                            onChange={(v) => setCastUpdateState(v.target.value)}
+                        >
+                            <MenuItem value={'none'}>none</MenuItem>
+                            <MenuItem value={'ignore'}>ignore</MenuItem>
+                            <MenuItem value={'force'}>force</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
+                                 sx={{m: 1, minWidth: 190}}>
+                        <InputLabel id="demo-simple-select-label">Api Update State</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={apiUpdateState}
+                            label="Age"
+                            onChange={(v) => setApiUpdateState(v.target.value)}
+                        >
+                            <MenuItem value={'none'}>none</MenuItem>
+                            <MenuItem value={'ignore'}>ignore</MenuItem>
+                            <MenuItem value={'force'}>force</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
+                                 sx={{m: 1, minWidth: 190}}>
+                        <InputLabel id="demo-simple-select-label">Trailer Upload State</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={trailerUploadState}
+                            label="Age"
+                            onChange={(v) => setTrailerUploadState(v.target.value)}
+                        >
+                            <MenuItem value={'none'}>none</MenuItem>
+                            <MenuItem value={'ignore'}>ignore</MenuItem>
+                            <MenuItem value={'force'}>force</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
+                                 sx={{m: 1, minWidth: 190}}>
+                        <InputLabel id="demo-simple-select-label">Crawl Mode</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={crawlMode}
+                            label="Age"
+                            onChange={(v) => setCrawlMode(v.target.value)}
+                        >
+                            <MenuItem value={0}>First Page</MenuItem>
+                            <MenuItem value={1}>Recent Pages</MenuItem>
+                            <MenuItem value={2}>All pages</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Stack>
+
+                <Stack
+                    css={style.checkboxContainer}
+                    direction={"row"}
+                    spacing={2}
+                    divider={<Divider orientation="vertical" flexItem/>}
+                    alignItems={"baseline"}
+                >
                     <TextField
-                        name={"mode"}
-                        placeholder={"Crawl Mode?"}
-                        value={configs.mode}
+                        name={"crawlerConcurrency"}
+                        placeholder={"Crawler Concurrency"}
+                        value={configs.crawlerConcurrency}
                         onChange={(value) => setConfigs(prev => ({
                                 ...prev,
-                                mode: value.target.value,
+                            crawlerConcurrency: value.target.value,
                             })
                         )}
-                        label={"Crawl Mode"}
+                        label={"Crawler Concurrency"}
+                        type={"number"}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                    <TextField
+                        name={"axiosBlockThreshHold"}
+                        placeholder={"Axios Block ThreshHold"}
+                        value={configs.axiosBlockThreshHold}
+                        onChange={(value) => setConfigs(prev => ({
+                                ...prev,
+                            axiosBlockThreshHold: value.target.value,
+                            })
+                        )}
+                        label={"Axios Block ThreshHold"}
+                        type={"number"}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                    <TextField
+                        name={"remoteBrowserBlockThreshHold"}
+                        placeholder={"RemoteBrowser Block ThreshHold"}
+                        value={configs.remoteBrowserBlockThreshHold}
+                        onChange={(value) => setConfigs(prev => ({
+                                ...prev,
+                            remoteBrowserBlockThreshHold: value.target.value,
+                            })
+                        )}
+                        label={"RemoteBrowser Block ThreshHold"}
                         type={"number"}
                         margin={"dense"}
                         variant={"standard"}
@@ -175,19 +292,18 @@ const StartCrawler = () => {
 
                     <FormControlLabel
                         control={
-
                             <Checkbox
                                 css={style.checkbox}
-                                name={"handleCastUpdate"}
+                                name={"dontUseRemoteBrowser"}
                                 color={"secondary"}
-                                checked={configs.handleCastUpdate}
+                                checked={configs.dontUseRemoteBrowser}
                                 onChange={() => setConfigs(prev => ({
                                         ...prev,
-                                        handleCastUpdate: !prev.handleCastUpdate
+                                        dontUseRemoteBrowser: !prev.dontUseRemoteBrowser
                                     })
                                 )}
                             />}
-                        label="Handle Cast Update"
+                        label="Dont Use Remote Browser"
                     />
                 </Stack>
 
@@ -251,7 +367,7 @@ const style = {
         marginLeft: '10px',
     }),
     checkboxContainer: css({
-        marginTop: '10px',
+        marginTop: '20px',
     }),
     checkbox: css({
         width: '30px',

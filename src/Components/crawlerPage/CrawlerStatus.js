@@ -207,6 +207,9 @@ const CrawlerStatus = () => {
                     <span css={style.field}>
                         TrailerUpload/Limit: {data.limits.trailerUpload.value}/{data.limits.trailerUpload.limit}
                     </span>
+                    <span css={style.field}>
+                        extraConfigs: {JSON.stringify(data.extraConfigs || {}, null, 4)}
+                    </span>
                 </Stack>
 
                 <Stack
