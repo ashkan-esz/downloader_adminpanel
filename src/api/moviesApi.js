@@ -27,3 +27,25 @@ export const removeDoc = async (removeType, id) => {
         return normalizeErrorData(error);
     }
 }
+
+export const searchMovies = async (dataLevel, page, filters) => {
+    try {
+        let response = await API.get(`/movies/searchMovie/${dataLevel}/${page}`, {
+            params: {
+                ...filters,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error) || [];
+    }
+}
+
+export const getMovieData = async (id, dataLevel) => {
+    try {
+        let response = await API.get(`/movies/searchById/${id}/${dataLevel}`);
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error) || [];
+    }
+}

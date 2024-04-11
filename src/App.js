@@ -20,7 +20,7 @@ import {
     Configs,
     Crawler,
     CrawlerSource,
-    CrawlerSourcesList, CronJobs,
+    CrawlerSourcesList, CronJobs, SearchMovie, TorrentLinks,
     GoogleCache,
     Home, Movies, ServerLogs,
     ServerStatus, Warnings
@@ -87,6 +87,8 @@ const App = () => {
                         <Route path="/serverlogs" element={<ServerLogs/>}/>
                         <Route path="/appversions" element={<AppVersions/>}/>
                         <Route path="/cronjobs" element={<CronJobs/>}/>
+                        <Route path="/searchMovie" element={<SearchMovie/>}/>
+                        <Route path="/movie/torrentLinks/:id" element={<TorrentLinks/>}/>
                         <Route path="/movies" element={<Movies/>}/>
                     </Routes>
                 </div>

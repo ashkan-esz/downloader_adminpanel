@@ -14,4 +14,6 @@ export {default as BotsList} from "./bots/BotsList";
 export {default as Bot} from "./bots/Bot";
 export {default as AddBot} from "./bots/AddBot";
 export {default as CronJobs} from "./CronJobs";
+export {default as SearchMovie} from "./searchMovie/SearchMovie";
+export {default as TorrentLinks} from "./searchMovie/TorrentLinks";
 export {default as Movies} from "./movies/Movies";

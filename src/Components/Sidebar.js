@@ -85,6 +85,12 @@ function Sidebar() {
                                 CronJobs
                             </li>
                         </Link>
+                        <Link to="/searchMovie" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/searchMovie') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                SearchMovie
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>
