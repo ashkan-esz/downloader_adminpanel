@@ -15,3 +15,4 @@ export {default as CrawlerServerLogItem} from "./CrawlerServerLogItem";
 export {default as BadLinkItem} from "./BadLinkItem";
 export {default as ApiKeys} from "./ApiKeys";
 export {default as StartCrawlUrl} from "./StartCrawlUrl";
+export {default as TorrentSearch} from "./TorrentSearch";

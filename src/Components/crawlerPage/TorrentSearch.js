@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import {useState} from "react";
-import {startWebCrawler} from "../../api/adminApis";
+import React, {useState} from "react";
+import {startTorrentCrawlerSearch} from "../../api/adminApis";
 import {css} from "@emotion/react";
 import {
     Checkbox,
@@ -18,25 +18,21 @@ import {useIsMounted} from "../../hooks";
 import RefreshButton from "./RefreshButton";
 import {getMovieSources} from "../../api";
 
-const StartCrawler = () => {
+const TorrentSearch = () => {
     const [selectedSource, setSelectedSource] = useState('');
+    const [selectedType, setSelectedType] = useState('serial');
     const [castUpdateState, setCastUpdateState] = useState('none');
     const [apiUpdateState, setApiUpdateState] = useState('none');
     const [trailerUploadState, setTrailerUploadState] = useState('none');
-    const [torrentState, setTorrentState] = useState('none');
-    const [crawlMode, setCrawlMode] = useState(0);
     const [isLoading2, setIsLoading2] = useState(false);
     const [result, setResult] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [error, setError] = useState("");
     const [configs, setConfigs] = useState({
         sourceName: "",
-        handleDomainChange: true,
-        handleDomainChangeOnly: false,
+        title: "",
         dontUseRemoteBrowser: false,
         crawlerConcurrency: 0,
-        axiosBlockThreshHold: 0,
-        remoteBrowserBlockThreshHold: 0,
     });
     const isMounted = useIsMounted();
     const queryClient = useQueryClient();
@@ -71,19 +67,22 @@ const StartCrawler = () => {
             setError("Choose source");
             return;
         }
+        if (!selectedType) {
+            setError("Choose type");
+            return;
+        }
         setError("");
         setIsLoading2(true);
         let temp = {
             ...configs,
             sourceName: selectedSource,
+            type: selectedType,
             castUpdateState: castUpdateState,
             apiUpdateState: apiUpdateState,
             trailerUploadState: trailerUploadState,
-            torrentState: torrentState,
-            mode: crawlMode,
         }
         setConfigs(temp);
-        startWebCrawler(temp).then((res) => {
+        startTorrentCrawlerSearch(temp).then((res) => {
             if (res.errorMessage || res.data.isError) {
                 setError(res.errorMessage || res.data.message);
                 setResult(null);
@@ -96,7 +95,7 @@ const StartCrawler = () => {
 
     return (
         <div css={style.container}>
-            <span css={style.title}> Start Crawler </span>
+            <span css={style.title}> Torrent Crawler Search</span>
             <RefreshButton refreshing={refreshing || isFetching || isLoading || isLoading2} onClick={_onRefresh}/>
 
             <div css={style.fieldsContainer}>
@@ -120,12 +119,46 @@ const StartCrawler = () => {
                             onChange={(v) => setSelectedSource(v.target.value)}
                         >
                             {
-                                data.map(item => <MenuItem
+                                data.filter(item => item.isTorrent).map(item => <MenuItem
                                     key={item.sourceName}
                                     value={item.sourceName}>
                                     {item.sourceName}
                                 </MenuItem>)
                             }
+                        </Select>
+                    </FormControl>
+
+                    <TextField
+                        name={"title"}
+                        placeholder={"title"}
+                        value={configs.title}
+                        onChange={(value) => setConfigs(prev => ({
+                                ...prev,
+                                title: value.target.value,
+                            })
+                        )}
+                        label={"title"}
+                        type={"text"}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+
+                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
+                                 sx={{m: 1, minWidth: 120}}>
+                        <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedType}
+                            label="Age"
+                            onChange={(v) => setSelectedType(v.target.value)}
+                        >
+                            <MenuItem value={"serial"}>Serial</MenuItem>
+                            <MenuItem value={"movie"}>Movie</MenuItem>
+                            <MenuItem value={"anime_serial"}>Anime Serial</MenuItem>
+                            <MenuItem value={"anime_movie"}>Anime Movie</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -179,40 +212,6 @@ const StartCrawler = () => {
                             <MenuItem value={'force'}>force</MenuItem>
                         </Select>
                     </FormControl>
-
-                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
-                                 sx={{m: 1, minWidth: 150}}>
-                        <InputLabel id="demo-simple-select-label">Torrent sources filter</InputLabel>
-                        <Select
-                            autoWidth
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={torrentState}
-                            label="torrentState"
-                            onChange={(v) => setTorrentState(v.target.value)}
-                        >
-                            <MenuItem value={'none'}>none</MenuItem>
-                            <MenuItem value={'ignore'}>ignore</MenuItem>
-                            <MenuItem value={'only'}>only</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <FormControl required disabled={refreshing || isFetching || isLoading || isLoading2}
-                                 sx={{m: 1, minWidth: 150}}>
-                        <InputLabel id="demo-simple-select-label">Crawl Mode</InputLabel>
-                        <Select
-                            autoWidth
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={crawlMode}
-                            label="Age"
-                            onChange={(v) => setCrawlMode(v.target.value)}
-                        >
-                            <MenuItem value={0}>First Page</MenuItem>
-                            <MenuItem value={1}>Recent Pages</MenuItem>
-                            <MenuItem value={2}>All pages</MenuItem>
-                        </Select>
-                    </FormControl>
                 </Stack>
 
                 <Stack
@@ -228,40 +227,10 @@ const StartCrawler = () => {
                         value={configs.crawlerConcurrency}
                         onChange={(value) => setConfigs(prev => ({
                                 ...prev,
-                            crawlerConcurrency: value.target.value,
+                                crawlerConcurrency: value.target.value,
                             })
                         )}
                         label={"Crawler Concurrency"}
-                        type={"number"}
-                        margin={"dense"}
-                        variant={"standard"}
-                        color={"secondary"}
-                    />
-                    <TextField
-                        name={"axiosBlockThreshHold"}
-                        placeholder={"Axios Block ThreshHold"}
-                        value={configs.axiosBlockThreshHold}
-                        onChange={(value) => setConfigs(prev => ({
-                                ...prev,
-                            axiosBlockThreshHold: value.target.value,
-                            })
-                        )}
-                        label={"Axios Block ThreshHold"}
-                        type={"number"}
-                        margin={"dense"}
-                        variant={"standard"}
-                        color={"secondary"}
-                    />
-                    <TextField
-                        name={"remoteBrowserBlockThreshHold"}
-                        placeholder={"RemoteBrowser Block ThreshHold"}
-                        value={configs.remoteBrowserBlockThreshHold}
-                        onChange={(value) => setConfigs(prev => ({
-                                ...prev,
-                            remoteBrowserBlockThreshHold: value.target.value,
-                            })
-                        )}
-                        label={"RemoteBrowser Block ThreshHold"}
                         type={"number"}
                         margin={"dense"}
                         variant={"standard"}
@@ -276,39 +245,6 @@ const StartCrawler = () => {
                     divider={<Divider orientation="vertical" flexItem/>}
                     alignItems={"baseline"}
                 >
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                css={style.checkbox}
-                                name={"handleDomainChange"}
-                                label={"handleDomainChange"}
-                                color={"secondary"}
-                                checked={configs.handleDomainChange}
-                                onChange={() => setConfigs(prev => ({
-                                        ...prev,
-                                        handleDomainChange: !prev.handleDomainChange
-                                    })
-                                )}
-                            />}
-                        label="Handle Domain Change"
-                    />
-
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                css={style.checkbox}
-                                name={"handleDomainChangeOnly"}
-                                color={"secondary"}
-                                checked={configs.handleDomainChangeOnly}
-                                onChange={() => setConfigs(prev => ({
-                                        ...prev,
-                                        handleDomainChangeOnly: !prev.handleDomainChangeOnly
-                                    })
-                                )}
-                            />}
-                        label="Handle Domain Change Only"
-                    />
-
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -409,4 +345,4 @@ const style = {
     }),
 }
 
-export default StartCrawler;
+export default TorrentSearch;

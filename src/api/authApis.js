@@ -82,6 +82,7 @@ export const forceLogoutAllApi = async () => {
 
 export const getProfileDataApi = async () => {
     try {
+        return null;
         const response = await API.get('/users/myProfile');
         return response.data;
     } catch (error) {

@@ -39,6 +39,7 @@ const addDeviceInfo = (config) => {
             appVersion: "1.0.0",
             os: "unknown",
             deviceModel: "unknown",
+            notifToken: "ttt", //todo : implement
         };
     } catch (error) {
         if (!config.data) {

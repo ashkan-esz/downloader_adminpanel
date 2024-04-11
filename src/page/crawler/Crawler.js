@@ -3,7 +3,14 @@ import {useEffect, useState} from "react";
 import Chart from '../../Components/chart';
 import {css} from "@emotion/react";
 import {getServerAnalysisInTimes} from "../../api/adminApis";
-import {CrawlerStatus, CrawlerSources, StartCrawler, ApiKeys, StartCrawlUrl} from "../../Components/crawlerPage";
+import {
+    CrawlerStatus,
+    CrawlerSources,
+    StartCrawler,
+    ApiKeys,
+    StartCrawlUrl,
+    TorrentSearch,
+} from "../../Components/crawlerPage";
 import {Grid} from "@mui/material";
 
 function Crawler() {
@@ -34,6 +41,7 @@ function Crawler() {
             <CrawlerStatus/>
             <StartCrawler/>
             <StartCrawlUrl/>
+            <TorrentSearch/>
             <ApiKeys/>
             <CrawlerSources/>
             <Chart

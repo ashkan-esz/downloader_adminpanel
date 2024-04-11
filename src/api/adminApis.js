@@ -28,6 +28,19 @@ export const startCrawlUrl = async (data) => {
     }
 }
 
+export const startTorrentCrawlerSearch = async (configs) => {
+    try {
+        let response = await API.put(`/admin/crawler/torrent/search`, null, {
+            params: {
+                ...configs,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
 export const pauseWebCrawler = async (duration) => {
     try {
         let response = await API.put(`/admin/crawler/pause/${duration}`);
