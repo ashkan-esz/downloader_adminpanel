@@ -17,3 +17,4 @@ export {default as CronJobs} from "./CronJobs";
 export {default as SearchMovie} from "./searchMovie/SearchMovie";
 export {default as TorrentLinks} from "./searchMovie/TorrentLinks";
 export {default as Movies} from "./movies/Movies";
+export {default as Torrent} from "./torrent/Torrent";

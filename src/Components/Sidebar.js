@@ -91,6 +91,12 @@ function Sidebar() {
                                 SearchMovie
                             </li>
                         </Link>
+                        <Link to="/torrent" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/torrent') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                Torrent
+                            </li>
+                        </Link>
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>

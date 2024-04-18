@@ -21,7 +21,7 @@ import {
     Crawler,
     CrawlerSource,
     CrawlerSourcesList, CronJobs, SearchMovie, TorrentLinks,
-    GoogleCache,
+    GoogleCache, Torrent,
     Home, Movies, ServerLogs,
     ServerStatus, Warnings
 } from "./page";
@@ -90,6 +90,7 @@ const App = () => {
                         <Route path="/searchMovie" element={<SearchMovie/>}/>
                         <Route path="/movie/torrentLinks/:id" element={<TorrentLinks/>}/>
                         <Route path="/movies" element={<Movies/>}/>
+                        <Route path="/torrent" element={<Torrent/>}/>
                     </Routes>
                 </div>
             </QueryClientProvider>

@@ -1,12 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import {Link} from "react-router-dom";
 import {css} from "@emotion/react";
 import {useLocation} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {DataGrid} from "@mui/x-data-grid";
 import {getMovieData} from "../../api/moviesApi";
+import * as TorrentApis from "../../api/torrentApi";
+import {useState} from "react";
+import MyLoadingButton from "../../Components/MyLoadingButton";
+import {TORRENT_API} from "../../api";
 
 function TorrentLinks() {
+    const [downloadingLink, setDownloadingLink] = useState("");
     const location = useLocation();
 
     const getData = async () => {
@@ -16,6 +20,11 @@ function TorrentLinks() {
                 ? result.data.seasons.map(s => s.episodes).flat(1).map(e => e.torrentLinks).flat(1)
                 : result.data.qualities.flat(1).map(e => e.torrentLinks).flat(1)
             // console.log(links[0]);
+            for (let i = 0; i < links.length; i++) {
+                if (links[i].localLink) {
+                    links[i].localLink = TORRENT_API.getUri() + links[i].localLink
+                }
+            }
             return links;
         } else {
             throw new Error();
@@ -31,6 +40,14 @@ function TorrentLinks() {
         }
     );
 
+    const _download = async (row) => {
+        if (location.state?.data?._id.toString()) {
+            setDownloadingLink(row.link);
+            await TorrentApis.downloadTorrent(location.state?.data?._id.toString(), row.link)
+            setDownloadingLink("");
+        }
+    }
+
     const columns = [
         {
             field: "info",
@@ -40,7 +57,7 @@ function TorrentLinks() {
         {
             field: "link",
             headerName: "Link",
-            width: 450,
+            width: 350,
         },
         // {
         //     field: "type",
@@ -70,22 +87,20 @@ function TorrentLinks() {
         {
             field: "localLink",
             headerName: "Local Link",
-            width: 70,
+            width: 100,
         },
         {
             field: "action",
             headerName: "Action",
-            width: 100,
+            width: 250,
             renderCell: (params) => {
                 return (
-                    <>
-                        <Link
-                            to={"/movie/torrentLinks/" + params.row.link}
-                            state={{data: params.row}}
-                        >
-                            <button css={style.listEdit}>Download</button>
-                        </Link>
-                    </>
+                    <MyLoadingButton
+                        disabled={params.row.localLink !== "" || downloadingLink !== ""}
+                        isLoading={downloadingLink === params.row.link}
+                        text={"Start Torrent Download"}
+                        onClick={() => _download(params.row)}
+                    />
                 );
             },
         },

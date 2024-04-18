@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const {REACT_APP_BASE_URL, REACT_APP_BASE_URL_DEV} = process.env;
+const {REACT_APP_TORRENT_BASE_URL, REACT_APP_TORRENT_BASE_URL_DEV} = process.env;
 
 const API = axios.create({
     baseURL: process.env.NODE_ENV === 'production'
@@ -9,6 +10,13 @@ const API = axios.create({
     // baseURL: REACT_APP_BASE_URL,
     // baseURL: 'http://localhost:3000',
     // baseURL: 'https://api.movieTracker.mom',
+    withCredentials: true,
+});
+
+export const TORRENT_API = axios.create({
+    baseURL: process.env.NODE_ENV === 'production'
+        ? window?._env_?.REACT_APP_TORRENT_BASE_URL || REACT_APP_TORRENT_BASE_URL
+        : window?._env_?.REACT_APP_TORRENT_BASE_URL_DEV || REACT_APP_TORRENT_BASE_URL_DEV,
     withCredentials: true,
 });
 
