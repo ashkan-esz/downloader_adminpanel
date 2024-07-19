@@ -9,7 +9,7 @@ const API = axios.create({
         : window?._env_?.REACT_APP_BASE_URL_DEV || REACT_APP_BASE_URL_DEV,
     // baseURL: REACT_APP_BASE_URL,
     // baseURL: 'http://localhost:3000',
-    // baseURL: 'https://api.movieTracker.mom',
+    // baseURL: 'https://api.movieTracker.site',
     withCredentials: true,
 });
 

@@ -155,6 +155,124 @@ const Configs = () => {
                     />
                 </div>
 
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("mediaFileSizeLimit", {
+                            setValueAs: value => Number(value),
+                            validate: value => !isNaN(value) || "Int Numbers only",
+                        })}
+                        name={"mediaFileSizeLimit"}
+                        placeholder={data.mediaFileSizeLimit || '0'}
+                        defaultValue={data.mediaFileSizeLimit || 0}
+                        label={"mediaFileSizeLimit"}
+                        type={"url"}
+                        error={!!errors.mediaFileSizeLimit}
+                        helperText={errors.mediaFileSizeLimit?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
+
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("profileFileSizeLimit", {
+                            setValueAs: value => Number(value),
+                            validate: value => !isNaN(value) || "Int Numbers only",
+                        })}
+                        name={"profileFileSizeLimit"}
+                        placeholder={data.profileFileSizeLimit || '0'}
+                        defaultValue={data.profileFileSizeLimit || 0}
+                        label={"profileFileSizeLimit"}
+                        type={"url"}
+                        error={!!errors.profileFileSizeLimit}
+                        helperText={errors.profileFileSizeLimit?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
+
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("profileImageCountLimit", {
+                            setValueAs: value => Number(value),
+                            validate: value => !isNaN(value) || "Int Numbers only",
+                        })}
+                        name={"profileImageCountLimit"}
+                        placeholder={data.profileImageCountLimit || '0'}
+                        defaultValue={data.profileImageCountLimit || 0}
+                        label={"profileImageCountLimit"}
+                        type={"url"}
+                        error={!!errors.profileImageCountLimit}
+                        helperText={errors.profileImageCountLimit?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
+
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("mediaFileExtensionLimit", {
+                            validate: value => value && value.match(/^([a-zA-Z\d]+((,\s)|$))+$/) || "example: jpg, png",
+                        })}
+                        name={"mediaFileExtensionLimit"}
+                        placeholder={data.mediaFileExtensionLimit || ''}
+                        defaultValue={data.mediaFileExtensionLimit || ''}
+                        label={"mediaFileExtensionLimit"}
+                        type={"url"}
+                        error={!!errors.mediaFileExtensionLimit}
+                        helperText={errors.mediaFileExtensionLimit?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
+
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("profileImageExtensionLimit", {
+                            validate: value => value && value.match(/^([a-zA-Z\d]+((,\s)|$))+$/) || "example: jpg, png",
+                        })}
+                        name={"profileImageExtensionLimit"}
+                        placeholder={data.profileImageExtensionLimit || ''}
+                        defaultValue={data.profileImageExtensionLimit || ''}
+                        label={"profileImageExtensionLimit"}
+                        type={"url"}
+                        error={!!errors.profileImageExtensionLimit}
+                        helperText={errors.profileImageExtensionLimit?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
+
+                <div>
+                    <TextField
+                        css={style.textField}
+                        {...register("torrentDownloadMaxFileSize", {
+                            setValueAs: value => Number(value),
+                            validate: value => !isNaN(value) || "Int Numbers only",
+                        })}
+                        name={"torrentDownloadMaxFileSize"}
+                        placeholder={data.torrentDownloadMaxFileSize || '0'}
+                        defaultValue={data.torrentDownloadMaxFileSize || 0}
+                        label={"torrentDownloadMaxFileSize"}
+                        type={"url"}
+                        error={!!errors.torrentDownloadMaxFileSize}
+                        helperText={errors.torrentDownloadMaxFileSize?.message}
+                        margin={"dense"}
+                        variant={"standard"}
+                        color={"secondary"}
+                    />
+                </div>
+
                 <FormControlLabel
                     css={style.switch}
                     value="start"
