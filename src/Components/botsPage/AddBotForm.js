@@ -84,7 +84,7 @@ const AddBotForm = ({extraStyle, onDataUpdate}) => {
                 <TextField
                     css={style.textField}
                     {...register("disabled", {
-                        setValueAs: v => v === 'true',
+                        setValueAs: v => v === true || v === 'true',
                         validate: value => (typeof value === 'boolean') || 'Can only be true|false',
                     })}
                     name={"disabled"}
@@ -92,6 +92,75 @@ const AddBotForm = ({extraStyle, onDataUpdate}) => {
                     type={'text'}
                     error={!!errors.disabled}
                     helperText={errors.disabled?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("isOfficial", {
+                        setValueAs: v => v === true || v === 'true',
+                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
+                    })}
+                    name={"isOfficial"}
+                    label={"isOfficial"}
+                    type={'text'}
+                    error={!!errors.isOfficial}
+                    helperText={errors.isOfficial?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("permissionToLogin", {
+                        setValueAs: v => v === true || v === 'true',
+                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
+                    })}
+                    name={"permissionToLogin"}
+                    label={"permissionToLogin"}
+                    type={'text'}
+                    error={!!errors.permissionToLogin}
+                    helperText={errors.permissionToLogin?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("permissionToCrawl", {
+                        setValueAs: v => v === true || v === 'true',
+                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
+                    })}
+                    name={"permissionToCrawl"}
+                    label={"permissionToCrawl"}
+                    type={'text'}
+                    error={!!errors.permissionToCrawl}
+                    helperText={errors.permissionToCrawl?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("permissionToTorrentLeech", {
+                        setValueAs: v => v === true || v === 'true',
+                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
+                    })}
+                    name={"permissionToTorrentLeech"}
+                    label={"permissionToTorrentLeech"}
+                    type={'text'}
+                    error={!!errors.permissionToTorrentLeech}
+                    helperText={errors.permissionToTorrentLeech?.message}
                     margin={"dense"}
                     variant={"standard"}
                     color={"secondary"}

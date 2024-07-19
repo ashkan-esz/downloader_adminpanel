@@ -42,7 +42,7 @@ function BotsList() {
         {
             field: "botType",
             headerName: "Bot Type",
-            width: 200,
+            width: 120,
         },
         {
             field: "addDate",
@@ -52,27 +52,72 @@ function BotsList() {
         {
             field: "disabled",
             headerName: "Active",
-            width: 70,
+            width: 60,
             renderCell: (params) => {
-                if (!params.row.disabled) {
-                    return (
-                        <Check color={"success"}/>
-                    );
-                }
                 return (
-                    <Close color={"error"}/>
+                    !params.row.disabled
+                        ? <Check color={"success"}/>
+                        : <Close color={"error"}/>
+                );
+            },
+        },
+        {
+            field: "isOfficial",
+            headerName: "IsOfficial",
+            width: 75,
+            renderCell: (params) => {
+                return (
+                    params.row.isOfficial
+                        ? <Check color={"success"}/>
+                        : <Close color={"error"}/>
+                );
+            },
+        },
+        {
+            field: "permissionToLogin",
+            headerName: "PermissionToLogin",
+            width: 140,
+            renderCell: (params) => {
+                return (
+                    params.row.permissionToLogin
+                        ? <Check color={"success"}/>
+                        : <Close color={"error"}/>
+                );
+            },
+        },
+        {
+            field: "permissionToCrawl",
+            headerName: "PermissionToCrawl",
+            width: 140,
+            renderCell: (params) => {
+                return (
+                    params.row.permissionToCrawl
+                        ? <Check color={"success"}/>
+                        : <Close color={"error"}/>
+                );
+            },
+        },
+        {
+            field: "permissionToTorrentLeech",
+            headerName: "PermissionToTorrentLeech",
+            width: 190,
+            renderCell: (params) => {
+                return (
+                    params.row.permissionToTorrentLeech
+                        ? <Check color={"success"}/>
+                        : <Close color={"error"}/>
                 );
             },
         },
         {
             field: "disabledDate",
             headerName: "Disabled Date",
-            width: 200,
+            width: 150,
         },
         {
             field: "action",
             headerName: "Action",
-            width: 140,
+            width: 110,
             renderCell: (params) => {
                 return (
                     <>
