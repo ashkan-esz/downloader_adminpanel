@@ -66,6 +66,23 @@ const AddBotForm = ({extraStyle, onDataUpdate}) => {
             <div>
                 <TextField
                     css={style.textField}
+                    {...register("botToken", {
+                        required: 'This is required',
+                    })}
+                    name={"botToken"}
+                    label={"botToken"}
+                    type={"url"}
+                    error={!!errors.botToken}
+                    helperText={errors.botToken?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+
+            <div>
+                <TextField
+                    css={style.textField}
                     {...register("botType", {
                         required: true,
                     })}

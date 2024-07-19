@@ -21,6 +21,7 @@ const BotDataUpdateForm = ({extraStyle, botData, onDataUpdate}) => {
     } = useForm({
         defaultValues: useMemo(() => ({
             botName: botData.botName,
+            botToken: botData.botToken,
             botType: botData.botType,
             lastUseDate: botData.lastUseDate,
             lastApiCall_news: botData.lastApiCall_news,
@@ -83,6 +84,24 @@ const BotDataUpdateForm = ({extraStyle, botData, onDataUpdate}) => {
                     type={"url"}
                     error={!!errors.botName}
                     helperText={errors.botName?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("botToken", {
+                        required: 'This is required',
+                    })}
+                    name={"botToken"}
+                    placeholder={botData.botToken}
+                    label={"botToken"}
+                    type={"url"}
+                    error={!!errors.botToken}
+                    helperText={errors.botToken?.message}
                     margin={"dense"}
                     variant={"standard"}
                     color={"secondary"}
