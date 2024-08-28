@@ -163,9 +163,7 @@ API.interceptors.response.use(
         if (!authEndpoints.includes(originalConfig.url)) {
             await waitForTokenErrorFix();
 
-            if (
-                (err.response && err.response.status === 401) ||
-                err.toString() === errorMessages["401"]) {
+            if (err.response?.status === 401 || err.toString() === errorMessages["401"]) {
                 //stale refreshToken or refreshToken doesn't match (force logout)
                 store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
                 return Promise.reject(err);
@@ -183,6 +181,12 @@ API.interceptors.response.use(
 
             await waitForTokenFetch();
             await waitForTokenErrorFix();
+        } else if (originalConfig.url === tokenEndPoint) {
+            if (err.response?.status === 403 || err.toString() === errorMessages["403"]) {
+                //stale refreshToken or refreshToken doesn't match (force logout)
+                store.dispatch({type: "auth/setForceLoggedOutFlag", payload: true});
+                return Promise.reject(err);
+            }
         }
 
         if (originalConfig.url === tokenEndPoint && err.toString() === errorMessages["500"]) {

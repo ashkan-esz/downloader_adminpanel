@@ -15,6 +15,7 @@ const Configs = () => {
         disableTestUserRequests: false,
         disableCrawler: false,
         developmentFaze: false,
+        disableBotsNotifications: false,
     });
     const [isFirstData, setIsFirstData] = useState(true);
     const [isLoading2, setIsLoading2] = useState(false);
@@ -31,6 +32,7 @@ const Configs = () => {
                     disableTestUserRequests: result.disableTestUserRequests,
                     disableCrawler: result.disableCrawler,
                     developmentFaze: result.developmentFaze,
+                    disableBotsNotifications: result.disableBotsNotifications,
                 });
                 setIsFirstData(false);
             }
@@ -100,7 +102,8 @@ const Configs = () => {
         if (
             (data && data.disableTestUserRequests !== otherDataFields.disableTestUserRequests) ||
             (data && data.disableCrawler !== otherDataFields.disableCrawler) ||
-            (data && data.developmentFaze !== otherDataFields.developmentFaze)
+            (data && data.developmentFaze !== otherDataFields.developmentFaze) ||
+            (data && data.disableBotsNotifications !== otherDataFields.disableBotsNotifications)
         ) {
             setIsDirty(true);
         } else if (data && isDirty) {
@@ -327,6 +330,25 @@ const Configs = () => {
                         />
                     }
                     label="developmentFaze"
+                    labelPlacement="start"
+                />
+
+                <FormControlLabel
+                    css={style.switch}
+                    value="start"
+                    control={
+                        <Switch
+                            size={"medium"}
+                            color={otherDataFields.disableBotsNotifications ? "error" : "primary"}
+                            checked={otherDataFields.disableBotsNotifications}
+                            onChange={(e) => setOtherDataFields(prev => ({
+                                ...prev,
+                                disableBotsNotifications: e.target.checked,
+                            }))}
+                            inputProps={{'aria-label': 'disableBotsNotifications'}}
+                        />
+                    }
+                    label="disableBotsNotifications"
                     labelPlacement="start"
                 />
 
