@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import {css} from "@emotion/react";
 
-function Chart({title, data, xAxisDataKey, dataKey, dataKey2, grid}) {
+function Chart({title, data, xAxisDataKey, dataKey, dataKey2, dataKeys= null, grid}) {
 
     return (
         <div css={style.chart}>
@@ -33,6 +33,9 @@ function Chart({title, data, xAxisDataKey, dataKey, dataKey2, grid}) {
                     <Area type="monotone" dataKey={dataKey} stroke="#8884d8" fillOpacity={1} fill="url(#total)"/>
                     {dataKey2 &&
                         <Area type="monotone" dataKey={dataKey2} stroke="#8884d8" fillOpacity={1} fill="url(#active)"/>}
+                    {
+                        dataKeys && dataKeys.map(dk => <Area type="monotone" key={dk} dataKey={dk} stroke={"red"} fillOpacity={1} fill="url(#total)"/>)
+                    }
                 </AreaChart>
             </ResponsiveContainer>
         </div>

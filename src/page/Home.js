@@ -9,6 +9,8 @@ import {getServerAnalysisInTimes} from "../api/adminApis";
 
 function Home() {
     const [usersData, setUsersData] = useState([]);
+    const [botUsersData, setBotUsersData] = useState([]);
+    const [botNames, setBotNames] = useState([]);
 
     useEffect(() => {
         let start = new Date();
@@ -17,6 +19,27 @@ function Home() {
         getServerAnalysisInTimes('userCounts', start, end, 0, 120).then(res => {
             if (res !== 'error') {
                 setUsersData(res);
+            }
+        });
+        getServerAnalysisInTimes('botUserCounts', start, end, 0, 120).then(res => {
+            let botNames = [];
+            res = res.map(r => {
+                let bots = {};
+                for (let i = 0; i < r.bots.length; i++) {
+                    bots[r.bots[i].botName] = r.bots[i].count;
+                    if (!botNames.includes(r.bots[i].botName)) {
+                        botNames.push(r.bots[i].botName);
+                    }
+                }
+
+               return {
+                ...bots,
+                   date: r.date,
+               }
+            });
+            if (res !== 'error') {
+                setBotUsersData(res);
+                setBotNames(botNames);
             }
         });
     }, []);
@@ -31,6 +54,14 @@ function Home() {
                 xAxisDataKey={"date"}
                 dataKey={"total"}
                 dataKey2={"active"}
+            />
+            <Chart
+                data={botUsersData}
+                title="Bots User Analytics - Last 60 days"
+                grid
+                xAxisDataKey={"date"}
+                dataKey={"bots.botName"}
+                dataKeys={botNames}
             />
             <div css={style.homeWidgets}>
                 <WidgetSm/>
