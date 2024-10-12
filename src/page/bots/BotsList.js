@@ -38,21 +38,25 @@ function BotsList() {
             field: "botName",
             headerName: "Bot Name",
             width: 150,
+            headerAlign: 'center',
         },
         {
             field: "botType",
             headerName: "Bot Type",
             width: 120,
+            headerAlign: 'center',
         },
         {
             field: "addDate",
             headerName: "Add Date",
             width: 200,
+            headerAlign: 'center',
         },
         {
             field: "disabled",
             headerName: "Active",
             width: 60,
+            headerAlign: 'center',
             renderCell: (params) => {
                 return (
                     !params.row.disabled
@@ -64,7 +68,8 @@ function BotsList() {
         {
             field: "isOfficial",
             headerName: "IsOfficial",
-            width: 75,
+            width: 90,
+            headerAlign: 'center',
             renderCell: (params) => {
                 return (
                     params.row.isOfficial
@@ -75,8 +80,9 @@ function BotsList() {
         },
         {
             field: "permissionToLogin",
-            headerName: "PermissionToLogin",
-            width: 140,
+            headerName: "Login",
+            width: 90,
+            headerAlign: 'center',
             renderCell: (params) => {
                 return (
                     params.row.permissionToLogin
@@ -87,8 +93,9 @@ function BotsList() {
         },
         {
             field: "permissionToCrawl",
-            headerName: "PermissionToCrawl",
-            width: 140,
+            headerName: "Crawl",
+            width: 90,
+            headerAlign: 'center',
             renderCell: (params) => {
                 return (
                     params.row.permissionToCrawl
@@ -99,8 +106,9 @@ function BotsList() {
         },
         {
             field: "permissionToTorrentLeech",
-            headerName: "PermissionToTorrentLeech",
-            width: 190,
+            headerName: "TorrentLeech",
+            width: 115,
+            headerAlign: 'center',
             renderCell: (params) => {
                 return (
                     params.row.permissionToTorrentLeech
@@ -110,14 +118,29 @@ function BotsList() {
             },
         },
         {
+            field: "permissionToTorrentSearch",
+            headerName: "TorrentSearch",
+            width: 115,
+            headerAlign: 'center',
+            renderCell: (params) => {
+                return (
+                    params.row.permissionToTorrentSearch
+                        ? <Check color={"success"}/>
+                        : <Close color={"error"}/>
+                );
+            },
+        },
+        {
             field: "disabledDate",
             headerName: "Disabled Date",
             width: 150,
+            headerAlign: 'center',
         },
         {
             field: "action",
             headerName: "Action",
             width: 110,
+            headerAlign: 'center',
             renderCell: (params) => {
                 return (
                     <>

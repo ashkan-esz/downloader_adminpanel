@@ -2,13 +2,21 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import {CircularProgress, TextField, Typography} from "@mui/material";
+import {CircularProgress, FormControlLabel, Switch, TextField, Typography} from "@mui/material";
 import {LoadingButton} from '@mui/lab';
 import {css} from "@emotion/react";
 import {addBotData} from "../../api/adminApis";
 import PropsTypes from 'prop-types';
 
 const AddBotForm = ({extraStyle, onDataUpdate}) => {
+    const [otherDataFields, setOtherDataFields] = useState({
+        disabled: false,
+        isOfficial: false,
+        permissionToLogin: false,
+        permissionToCrawl: false,
+        permissionToTorrentLeech: false,
+        permissionToTorrentSearch: false,
+    });
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const {
@@ -21,7 +29,7 @@ const AddBotForm = ({extraStyle, onDataUpdate}) => {
 
     const _onPress = () => {
         handleSubmit((data) => {
-                let updateFields = {...data};
+            let updateFields = {...data, ...otherDataFields};
                 setIsLoading(true);
                 addBotData(updateFields).then(async res => {
                     if (res.errorMessage) {
@@ -97,92 +105,119 @@ const AddBotForm = ({extraStyle, onDataUpdate}) => {
                 />
             </div>
 
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("disabled", {
-                        setValueAs: v => v === true || v === 'true',
-                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
-                    })}
-                    name={"disabled"}
-                    label={"Disabled"}
-                    type={'text'}
-                    error={!!errors.disabled}
-                    helperText={errors.disabled?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={!otherDataFields.disabled ? "primary" : "error"}
+                        checked={otherDataFields.disabled}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            disabled: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="disabled"
+                labelPlacement="start"
+            />
 
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("isOfficial", {
-                        setValueAs: v => v === true || v === 'true',
-                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
-                    })}
-                    name={"isOfficial"}
-                    label={"isOfficial"}
-                    type={'text'}
-                    error={!!errors.isOfficial}
-                    helperText={errors.isOfficial?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("permissionToLogin", {
-                        setValueAs: v => v === true || v === 'true',
-                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
-                    })}
-                    name={"permissionToLogin"}
-                    label={"permissionToLogin"}
-                    type={'text'}
-                    error={!!errors.permissionToLogin}
-                    helperText={errors.permissionToLogin?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("permissionToCrawl", {
-                        setValueAs: v => v === true || v === 'true',
-                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
-                    })}
-                    name={"permissionToCrawl"}
-                    label={"permissionToCrawl"}
-                    type={'text'}
-                    error={!!errors.permissionToCrawl}
-                    helperText={errors.permissionToCrawl?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
-            <div>
-                <TextField
-                    css={style.textField}
-                    {...register("permissionToTorrentLeech", {
-                        setValueAs: v => v === true || v === 'true',
-                        validate: value => (typeof value === 'boolean') || 'Can only be true|false',
-                    })}
-                    name={"permissionToTorrentLeech"}
-                    label={"permissionToTorrentLeech"}
-                    type={'text'}
-                    error={!!errors.permissionToTorrentLeech}
-                    helperText={errors.permissionToTorrentLeech?.message}
-                    margin={"dense"}
-                    variant={"standard"}
-                    color={"secondary"}
-                />
-            </div>
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.isOfficial ? "primary" : "error"}
+                        checked={otherDataFields.isOfficial}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            isOfficial: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="isOfficial"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.permissionToLogin ? "primary" : "error"}
+                        checked={otherDataFields.permissionToLogin}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            permissionToLogin: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="permissionToLogin"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.permissionToCrawl ? "primary" : "error"}
+                        checked={otherDataFields.permissionToCrawl}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            permissionToCrawl: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="permissionToCrawl"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.permissionToTorrentLeech ? "primary" : "error"}
+                        checked={otherDataFields.permissionToTorrentLeech}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            permissionToTorrentLeech: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="permissionToTorrentLeech"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={otherDataFields.permissionToTorrentSearch ? "primary" : "error"}
+                        checked={otherDataFields.permissionToTorrentSearch}
+                        onChange={(e) => setOtherDataFields(prev => ({
+                            ...prev,
+                            permissionToTorrentSearch: e.target.checked,
+                        }))}
+                        inputProps={{'aria-label': 'controlled'}}
+                    />
+                }
+                label="permissionToTorrentSearch"
+                labelPlacement="start"
+            />
 
             <div>
                 <TextField
@@ -246,6 +281,10 @@ const style = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+    }),
+    switch: css({
+        display: 'block',
+        marginLeft: '-10px',
     }),
 }
 
