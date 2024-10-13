@@ -152,6 +152,18 @@ export const deleteBotData = async (botId) => {
     }
 }
 
+export const sendMessageToBotUsers = async (botId, message, userId) => {
+    try {
+        let response = await API.post(`/admin/bots/sendMessage/` + botId, {
+            message: message,
+            userId: userId,
+        });
+        return response.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
 //---------------------------------------------
 //---------------------------------------------
 

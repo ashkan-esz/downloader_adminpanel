@@ -4,13 +4,20 @@ import {CalendarToday, Grade} from "@mui/icons-material";
 import {css} from "@emotion/react";
 import {useLocation} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getBots} from "../../api/adminApis";
+import {getBots, sendMessageToBotUsers} from "../../api/adminApis";
 import {BotDataUpdateForm} from "../../Components/botsPage";
+import {CircularProgress, TextField, Typography} from "@mui/material";
+import React, {useState} from "react";
+import {LoadingButton} from "@mui/lab";
 
 
 function Bot() {
     const location = useLocation();
     const queryClient = useQueryClient();
+    const [message, setMessage] = useState("");
+    const [messageUserId, setMessageUserId] = useState(0);
+    const [error, setError] = useState("");
+    const [isSending, setIsSending] = useState(false);
 
     const getData = async () => {
         let result = await getBots(location.state?.data?.botId);
@@ -35,6 +42,19 @@ function Bot() {
             queryClient.refetchQueries(['botData']),
             queryClient.refetchQueries(['botsList']),
         ]);
+    }
+
+    const _sendMessage = () => {
+        setError("");
+        setIsSending(true);
+        sendMessageToBotUsers(data.botId, message, messageUserId).then(async res => {
+            setIsSending(false);
+            if (res.errorMessage) {
+                setError(res.errorMessage);
+            } else {
+                setError("");
+            }
+        });
     }
 
     if (!data) {
@@ -80,6 +100,67 @@ function Bot() {
                             <span css={style.fieldInfoTitle}>
                                 UserData: {JSON.stringify(data.userData)}
                             </span>
+                        </div>
+
+                        <div css={[style.fieldInfo, {display: "block", marginTop: "50px"}]}>
+                              <span css={style.fieldInfoTitle}>
+                                  Send Message to Users
+                              </span>
+
+                            <div>
+                                <TextField
+                                    css={style.textField}
+                                    value={message}
+                                    onChange={(value) => setMessage(value.target.value)}
+                                    name={"message"}
+                                    placeholder={"message"}
+                                    label={"message"}
+                                    type={"text"}
+                                    margin={"dense"}
+                                    variant={"standard"}
+                                    color={"secondary"}
+                                />
+                            </div>
+                            <div>
+                                <TextField
+                                    css={style.textField}
+                                    value={messageUserId}
+                                    onChange={(value) => setMessageUserId(Number(value.target.value))}
+                                    name={"messageUserId"}
+                                    placeholder={"messageUserId"}
+                                    label={"messageUserId"}
+                                    type={"text"}
+                                    margin={"dense"}
+                                    variant={"standard"}
+                                    color={"secondary"}
+                                />
+                            </div>
+
+                            {
+                                !!error &&
+                                <Typography
+                                    css={style.errorText}
+                                    variant="subtitle2"
+                                    component="h2"
+                                    color={"red"}
+                                >
+                                    *{error}.
+                                </Typography>
+                            }
+
+                            <div css={style.submitButtonContainer}>
+                                <LoadingButton
+                                    variant={"outlined"}
+                                    size={"large"}
+                                    color={"secondary"}
+                                    loading={isSending}
+                                    loadingIndicator={<CircularProgress color="error" size={18}/>}
+                                    onClick={_sendMessage}
+                                >
+                                    Send Message
+                                </LoadingButton>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -166,6 +247,25 @@ const style = {
     editTitle: css({
         fontSize: '24px',
         fontWeight: '600',
+    }),
+    textField: css({
+        flex: 1,
+        width: '100%',
+        color: 'red',
+    }),
+    errorText: css({
+        marginTop: "65px",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '300px',
+        position: 'absolute',
+    }),
+    submitButtonContainer: css({
+        marginTop: "10px",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }),
 }
 
