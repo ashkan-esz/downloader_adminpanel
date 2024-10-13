@@ -97,6 +97,26 @@ function Sidebar() {
                                 Torrent
                             </li>
                         </Link>
+
+                        <Link to="/role/all_permissions" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/all_permissions') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                Roles.All_Permissions
+                            </li>
+                        </Link>
+                        <Link to="/role/all_roles" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/all_roles') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                Roles.All_Roles
+                            </li>
+                        </Link>
+                        <Link to="/role/all_users" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/all_users') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                Roles.All_Users
+                            </li>
+                        </Link>
+
                     </ul>
                 </div>
                 <div css={style.sidebarMenu}>

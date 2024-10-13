@@ -172,6 +172,7 @@ API.interceptors.response.use(
                 originalConfig._retry = true;
                 let result = await handleTokenRequest();
                 if (result === 'retry') {
+                    originalConfig.data = JSON.parse(originalConfig.data || {});
                     return API(originalConfig);
                 }
                 if (result !== 'logout') {
