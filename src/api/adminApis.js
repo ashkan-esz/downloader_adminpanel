@@ -418,6 +418,18 @@ export const startCronJob = async (jobName) => {
 //---------------------------------------------
 //---------------------------------------------
 
+export const editMovieTorrentConfig = async (id, data) => {
+    try {
+        let response = await API.put(`admin/edit_torrent_config/${id}`, data);
+        return response.data.data;
+    } catch (error) {
+        return normalizeErrorData(error);
+    }
+}
+
+//---------------------------------------------
+//---------------------------------------------
+
 export function normalizeErrorData(error) {
     if (!error.response) {
         error.response = {

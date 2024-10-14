@@ -28,6 +28,7 @@ const Filters = ({setSearchResult}) => {
         movieLang: "",
         embedStaffAndCharacter: false,
         noUserStats: true,
+        withTorrentConfigOnly: false,
     });
 
     const _onPress = () => {
@@ -129,6 +130,26 @@ const Filters = ({setSearchResult}) => {
                         variant={"standard"}
                         color={"secondary"}
                     />
+
+                    <FormControl required disabled={isLoading2}
+                                 sx={{m: 1, minWidth: 120}}>
+                        <InputLabel id="demo-simple-select-label">With Torrent Config Only</InputLabel>
+                        <Select
+                            autoWidth
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={configs.withTorrentConfigOnly}
+                            label="WithTorrentConfigOnly"
+                            onChange={(v) => setConfigs(prev => ({
+                                ...prev,
+                                withTorrentConfigOnly: v.target.value === true || v.target.value === "true",
+                            }))}
+                        >
+                            <MenuItem value={"true"}>True</MenuItem>
+                            <MenuItem value={"false"}>False</MenuItem>
+                        </Select>
+                    </FormControl>
+
                 </Stack>
 
                 <Stack

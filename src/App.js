@@ -23,7 +23,7 @@ import {
     CrawlerSourcesList, CronJobs, SearchMovie, TorrentLinks,
     GoogleCache, Torrent,
     Home, Movies, ServerLogs,
-    ServerStatus, Warnings, AllPermissions, AllUsers, AllRoles, Role, CreateRole, EditRole,
+    ServerStatus, Warnings, AllPermissions, AllUsers, AllRoles, Role, CreateRole, EditRole, TorrentConfigs,
 } from "./page";
 import {css} from "@emotion/react";
 
@@ -89,6 +89,7 @@ const App = () => {
                         <Route path="/cronjobs" element={<CronJobs/>}/>
                         <Route path="/searchMovie" element={<SearchMovie/>}/>
                         <Route path="/movie/torrentLinks/:id" element={<TorrentLinks/>}/>
+                        <Route path="/movie/torrentConfigs/:id" element={<TorrentConfigs/>}/>
                         <Route path="/movies" element={<Movies/>}/>
                         <Route path="/torrent" element={<Torrent/>}/>
                         <Route path="/role/all_permissions" element={<AllPermissions/>}/>

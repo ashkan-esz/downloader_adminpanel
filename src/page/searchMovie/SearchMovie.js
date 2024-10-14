@@ -33,7 +33,7 @@ function SearchMovie() {
         {
             field: "action",
             headerName: "Torrent Links",
-            width: 140,
+            width: 200,
             renderCell: (params) => {
                 return (
                     <>
@@ -42,6 +42,13 @@ function SearchMovie() {
                             state={{data: params.row}}
                         >
                             <button css={style.listEdit}>Links</button>
+                        </Link>
+
+                        <Link
+                            to={"/movie/torrentConfigs/" + params.row._id}
+                            state={{data: params.row}}
+                        >
+                            <button css={style.listEdit}>Torrent Configs</button>
                         </Link>
                     </>
                 );
