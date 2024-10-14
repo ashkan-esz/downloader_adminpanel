@@ -17,11 +17,13 @@ const Torrent = () => {
     const isMounted = useIsMounted();
 
     const getData = async () => {
-        let result = await TorrentApis.torrentStatus();
-        let streamResult = await TorrentApis.streamStatus();
-        if (result !== 'error' && streamResult !== 'error') {
-            result.convertingFiles = streamResult.convertingFiles;
-            return result;
+        let prom = await Promise.allSettled([
+            TorrentApis.torrentStatus(),
+            TorrentApis.streamStatus(),
+        ]);
+        if (prom[0].value !== 'error' && prom[1].value !== 'error') {
+            prom[0].value.convertingFiles = prom[1].value.convertingFiles;
+            return prom[0].value;
         } else {
             throw new Error();
         }
@@ -35,9 +37,15 @@ const Torrent = () => {
                 localFiles: [],
                 downloadingFiles: [],
                 convertingFiles: [],
+                stats: {
+                    configs: {},
+                },
+                downloadQueueStats: {},
+                tasks: {},
+                torrentClientStats: {},
             },
             keepPreviousData: true,
-            refetchInterval: 5 * 1000,
+            refetchInterval: 3 * 1000,
         }
     );
 
@@ -70,6 +78,28 @@ const Torrent = () => {
 
     return (
         <div css={style.pageContainer}>
+            <div css={style.container}>
+                <span css={style.title}> Stats </span>
+                <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+
+                <div css={style.fieldsContainer}>
+                    {
+                        Object.keys(data.stats.configs).map(c =>
+                            <span key={c} style={{display: 'block'}}>
+                                {c}: {data.stats.configs[c].toString()}
+                            </span>
+                        )
+                    }
+                    {
+                        Object.keys(data.stats).filter(c => c !== "configs").map(c =>
+                            <span key={c} style={{display: 'block'}}>
+                                {c}: {data.stats[c].toString()}
+                            </span>
+                        )
+                    }
+                </div>
+            </div>
+
             <div css={style.container}>
                 <span css={style.title}> Local Files </span>
                 <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
@@ -113,6 +143,51 @@ const Torrent = () => {
                                 data={f}
                                 index={index}
                             />
+                        )
+                    }
+                </div>
+            </div>
+
+            <div css={style.container}>
+                <span css={style.title}> Download Queue Status </span>
+                <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+
+                <div css={style.fieldsContainer}>
+                    {
+                        Object.keys(data.downloadQueueStats).map(c =>
+                            <span key={c} style={{display: 'block'}}>
+                                {c}: {data.downloadQueueStats[c].toString()}
+                            </span>
+                        )
+                    }
+                </div>
+            </div>
+
+            <div css={style.container}>
+                <span css={style.title}> Tasks </span>
+                <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+
+                <div css={style.fieldsContainer}>
+                    {
+                        Object.keys(data.tasks).map(c =>
+                            <span key={c} style={{display: 'block'}}>
+                                {c}: {data.tasks[c].toString()}
+                            </span>
+                        )
+                    }
+                </div>
+            </div>
+
+            <div css={style.container}>
+                <span css={style.title}> Torrent Client Stats </span>
+                <RefreshButton refreshing={refreshing || isLoading || isFetching} onClick={_onRefresh}/>
+
+                <div css={style.fieldsContainer}>
+                    {
+                        Object.keys(data.torrentClientStats).map(c =>
+                            <span key={c} style={{display: 'block'}}>
+                                {c}: {data.torrentClientStats[c].toString()}
+                            </span>
                         )
                     }
                 </div>

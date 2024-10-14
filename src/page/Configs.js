@@ -6,6 +6,7 @@ import {isUri} from "valid-url";
 import {LoadingButton} from "@mui/lab";
 import {useForm} from "react-hook-form";
 import {getConfigs, updateConfigs} from "../api/adminApis";
+import * as TorrentApi from "../api/torrentApi";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {Message} from "../Components/configs";
 
@@ -65,6 +66,7 @@ const Configs = () => {
                     if (res.errorMessage) {
                         setError(res.errorMessage);
                     } else {
+                        TorrentApi.fetchConfigs();
                         setError("");
                         await _updateConfigsData();
                         setIsDirty(false);

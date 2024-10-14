@@ -3,10 +3,15 @@ import {css} from "@emotion/react";
 import {useState} from "react";
 import * as TorrentApis from "../../api/torrentApi";
 import {MyLoadingButton} from "../../Components";
-import {TORRENT_API} from "../../api";
+import TimeAgo from "javascript-time-ago";
+import {useQueryClient} from "@tanstack/react-query";
+import en from "javascript-time-ago/locale/en";
 
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo('en-US');
 
 const LocalFile = ({data, index}) => {
+    const queryClient = useQueryClient();
     const [isLoading, setIsLoading] = useState(false);
     const [active, setActive] = useState(true);
 
@@ -19,12 +24,27 @@ const LocalFile = ({data, index}) => {
         setIsLoading(false);
     }
 
+    const _extendExpire = async () => {
+        setIsLoading(true);
+        let result = await TorrentApis.extendExpireTime(data.name);
+        if (result !== 'error') {
+            await queryClient.refetchQueries(['torrentStatus']);
+        }
+        setIsLoading(false);
+    }
+
     return (
         <div css={style.container} key={index}>
             <span css={style.warning}>
                 {index + 1}. {data.name} ({(data.size / (1024 * 1024)).toFixed(0)}MB) ||
-                <a css={style.link} href={TORRENT_API.getUri() + data.downloadLink}> Download Link </a> ||
-                <a css={style.link} href={TORRENT_API.getUri() + data.streamLink}> Stream Link </a>
+                Expire: {timeAgo.format(new Date(data.expireTime))} ||
+                 <span css={style.warning}>
+                     Total-Downloads: {data.totalDownloads} ||
+                     Active-Downloads: {data.activeDownloads} ||
+                     Last-Download: {data.lastDownloadTime} ||
+                     <a css={style.link} href={data.downloadLink}> Download Link </a> ||
+                     <a css={style.link} href={data.streamLink}> Stream Link </a>
+                 </span>
             </span>
 
             <MyLoadingButton
@@ -32,6 +52,12 @@ const LocalFile = ({data, index}) => {
                 isLoading={isLoading}
                 text={"Remove"}
                 onClick={_removeFile}/>
+            <MyLoadingButton
+                extraStyle={style.extendButton}
+                disabled={isLoading || !active}
+                isLoading={isLoading}
+                text={"Extend Expire"}
+                onClick={_extendExpire}/>
         </div>
     );
 };
@@ -49,6 +75,9 @@ const style = {
     }),
     link: css({
         textDecoration: "none",
+    }),
+    extendButton: css({
+        right: "125px",
     }),
 };
 
