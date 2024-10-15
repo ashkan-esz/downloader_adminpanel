@@ -1,4 +1,4 @@
-FROM node:18.16.0-alpine AS builder
+FROM node:20.10.0-alpine AS builder
 
 ENV NODE_ENV production
 
