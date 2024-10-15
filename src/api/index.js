@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const {REACT_APP_BASE_URL, REACT_APP_BASE_URL_DEV} = process.env;
+const {REACT_APP_CHAT_BASE_URL, REACT_APP_CHAT_BASE_URL_DEV} = process.env;
 const {REACT_APP_TORRENT_BASE_URL, REACT_APP_TORRENT_BASE_URL_DEV} = process.env;
 
 const API = axios.create({
@@ -13,10 +14,19 @@ const API = axios.create({
     withCredentials: true,
 });
 
+export const CHAT_API = axios.create({
+    baseURL: process.env.NODE_ENV === 'production'
+        ? window?._env_?.REACT_APP_CHAT_BASE_URL || REACT_APP_CHAT_BASE_URL
+        : window?._env_?.REACT_APP_CHAT_BASE_URL_DEV || REACT_APP_CHAT_BASE_URL_DEV,
+    // baseURL: 'https://chat.movieTracker.site',
+    withCredentials: true,
+});
+
 export const TORRENT_API = axios.create({
     baseURL: process.env.NODE_ENV === 'production'
         ? window?._env_?.REACT_APP_TORRENT_BASE_URL || REACT_APP_TORRENT_BASE_URL
         : window?._env_?.REACT_APP_TORRENT_BASE_URL_DEV || REACT_APP_TORRENT_BASE_URL_DEV,
+    // baseURL: 'https://download.movieTracker.site',
     withCredentials: true,
 });
 

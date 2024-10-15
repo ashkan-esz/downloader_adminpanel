@@ -1,4 +1,4 @@
-import API, {TORRENT_API} from "./index";
+import API, {CHAT_API, TORRENT_API} from "./index";
 import {authEndpoints, tokenEndPoint} from "./authApis";
 
 let store;
@@ -114,6 +114,26 @@ const handleTokenRequest = async () => {
 //todo : fix : false forceLogout when internet reconnect
 
 API.interceptors.request.use(async (config) => {
+    if (!authEndpoints.includes(config.url)) {
+        await waitForTokenErrorFix();
+
+        if (!store.getState().auth.isFetchingToken && accessTokenShouldBeRefreshed()) {
+            await handleTokenRequest();
+        }
+
+        await waitForTokenFetch();
+        await waitForTokenErrorFix();
+    }
+
+    if (authEndpoints.includes(config.url)) {
+        addDeviceInfo(config);
+    }
+
+    config.headers.authorization = `Bearer ${store.getState().auth.accessToken}`;
+    return config;
+});
+
+CHAT_API.interceptors.request.use(async (config) => {
     if (!authEndpoints.includes(config.url)) {
         await waitForTokenErrorFix();
 

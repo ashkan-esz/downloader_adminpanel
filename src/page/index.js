@@ -25,3 +25,4 @@ export {default as Role} from "./role/Role";
 export {default as CreateRole} from "./role/CreateRole";
 export {default as EditRole} from "./role/EditRole";
 export {default as AllUsers} from "./role/AllUsers";
+export {default as ChatService} from "./chat/ChatService";

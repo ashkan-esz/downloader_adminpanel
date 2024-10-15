@@ -116,6 +116,12 @@ function Sidebar() {
                                 Roles.All_Users
                             </li>
                         </Link>
+                        <Link to="/chat/services" css={style.link}>
+                            <li css={[style.sidebarListItem, location.pathname.includes('/chat/services') && style.activeSidebarListItem]}>
+                                <TrendingUp css={style.sidebarIcon}/>
+                                Chat Services
+                            </li>
+                        </Link>
 
                     </ul>
                 </div>
