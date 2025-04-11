@@ -4,9 +4,9 @@ import {useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useDebounceFuncCall, useIsMounted} from "../../hooks";
 import {getServerAnalysisCurrentMonth, resolveServerAnalysisLastDays} from "../../api/adminApis";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, Pagination} from "@mui/material";
 import RefreshButton from "../../Components/crawlerPage/RefreshButton";
-import {LoadingButton, Pagination} from "@mui/lab";
+import {LoadingButton} from "@mui/lab";
 import {BadLinkItem} from "../../Components/crawlerPage";
 
 

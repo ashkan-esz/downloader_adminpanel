@@ -113,10 +113,10 @@ const StartCrawler = () => {
                         <InputLabel id="demo-simple-select-label">Source</InputLabel>
                         <Select
                             autoWidth
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            labelId="selected-source"
+                            id="selected-source"
                             value={selectedSource}
-                            label="Age"
+                            label="Source"
                             onChange={(v) => setSelectedSource(v.target.value)}
                         >
                             {

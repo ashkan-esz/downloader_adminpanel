@@ -6,8 +6,8 @@ import {useDebounceFuncCall, useIsMounted} from "../../hooks";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getServerAnalysisCurrentMonth, resolveServerAnalysisLastDays} from "../../api/adminApis";
 import RefreshButton from "../../Components/crawlerPage/RefreshButton";
-import {CircularProgress} from "@mui/material";
-import {LoadingButton, Pagination} from "@mui/lab";
+import {CircularProgress, Pagination} from "@mui/material";
+import {LoadingButton} from "@mui/lab";
 
 
 const Warnings = () => {
