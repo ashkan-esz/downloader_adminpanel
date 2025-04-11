@@ -43,17 +43,12 @@ function CrawlerSourcesList() {
         {
             field: "sourceName",
             headerName: "Source Name",
-            width: 150,
+            width: 140,
         },
         {
             field: "movie_url",
             headerName: "Movie",
             width: 230
-        },
-        {
-            field: "serial_url",
-            headerName: "Serial",
-            width: 230,
         },
         {
             field: "crawlCycle",
@@ -80,15 +75,15 @@ function CrawlerSourcesList() {
                 );
             },
         },
-        {
-            field: "disabledDate",
-            headerName: "Disabled Date",
-            width: 200,
-        },
+        // {
+        //     field: "disabledDate",
+        //     headerName: "Disabled Date",
+        //     width: 200,
+        // },
         {
             field: "action",
             headerName: "Action",
-            width: 140,
+            width: 160,
             renderCell: (params) => {
                 return (
                     <>
@@ -172,7 +167,7 @@ const style = {
         cursor: 'pointer',
         borderRadius: '10px',
         padding: '5px 10px',
-        marginRight: '20px',
+        marginRight: '5px',
         fontSize: '0.8rem',
     }),
 }

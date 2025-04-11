@@ -114,6 +114,25 @@ const AddCrawlerSourceForm = ({extraStyle, onDataUpdate}) => {
             <div>
                 <TextField
                     css={style.textField}
+                    {...register("anime_url", {
+                        validate: value => (value === "" || (isUri(value) && !!value.toString().match(/[?/]page[/=]$/))) || "Not a url match [?/]page[/=]$",
+                    })}
+                    name={"anime_url"}
+                    placeholder={"https://example.com/anime/page/"}
+                    defaultValue={"https://example.com/anime/page/"}
+                    label={"Anime Url"}
+                    type={"url"}
+                    error={!!errors.anime_url}
+                    helperText={errors.anime_url?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
+
+            <div>
+                <TextField
+                    css={style.textField}
                     {...register("crawlCycle", {
                         valueAsNumber: true,
                         required: 'This is required',

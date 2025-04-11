@@ -22,22 +22,22 @@ function Home() {
             }
         });
         getServerAnalysisInTimes('botUserCounts', start, end, 0, 120).then(res => {
-            let botNames = [];
-            res = res.map(r => {
-                let bots = {};
-                for (let i = 0; i < r.bots.length; i++) {
-                    bots[r.bots[i].botName] = r.bots[i].count;
-                    if (!botNames.includes(r.bots[i].botName)) {
-                        botNames.push(r.bots[i].botName);
+            if (res !== 'error' && Array.isArray(res)) {
+                let botNames = [];
+                res = res.map(r => {
+                    let bots = {};
+                    for (let i = 0; i < r.bots.length; i++) {
+                        bots[r.bots[i].botName] = r.bots[i].count;
+                        if (!botNames.includes(r.bots[i].botName)) {
+                            botNames.push(r.bots[i].botName);
+                        }
                     }
-                }
 
-               return {
-                ...bots,
-                   date: r.date,
-               }
-            });
-            if (res !== 'error') {
+                   return {
+                    ...bots,
+                       date: r.date,
+                   }
+                });
                 setBotUsersData(res);
                 setBotNames(botNames);
             }
