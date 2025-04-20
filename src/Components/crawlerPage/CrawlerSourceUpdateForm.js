@@ -1,7 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useMemo, useState} from 'react';
 import {useForm} from "react-hook-form";
-import {Button, CircularProgress, FormControlLabel, Switch, TextField, Typography} from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    FormControl,
+    FormControlLabel,
+    InputLabel, MenuItem, Select,
+    Switch,
+    TextField,
+    Typography
+} from "@mui/material";
 import {LoadingButton} from '@mui/lab';
 import {isUri} from "valid-url";
 import {css} from "@emotion/react";
@@ -31,8 +40,15 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
             disabled: sourceData.disabled,
             cookie: sourceData.cookies[0] || {},
             description: sourceData.description,
+            config: sourceData.config || {},
         }), [sourceData]),
     });
+
+    const vpnOptions = [
+        { value: 'allOk', label: 'All OK' },
+        { value: 'vpnOnly', label: 'VPN Only' },
+        { value: 'noVpn', label: 'No VPN' },
+    ];
 
     const _onPress = () => {
         handleSubmit((data) => {
@@ -275,6 +291,538 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
                 label="reCrawl"
                 labelPlacement="start"
             />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.isGeneric') ? "primary" : "warning"}
+                        checked={watch('config.isGeneric')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    isGeneric: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.isGeneric"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.is_censored') ? "primary" : "warning"}
+                        checked={watch('config.is_censored')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    is_censored: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.is_censored"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.checkTrailers') ? "primary" : "warning"}
+                        checked={watch('config.checkTrailers')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    checkTrailers: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.checkTrailers"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.is_half_network') ? "primary" : "warning"}
+                        checked={watch('config.is_half_network')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    is_half_network: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.is_half_network"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.dontRemoveDimensions') ? "primary" : "warning"}
+                        checked={watch('config.dontRemoveDimensions')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    dontRemoveDimensions: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.dontRemoveDimensions"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.has_watch_online') ? "primary" : "warning"}
+                        checked={watch('config.has_watch_online')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    has_watch_online: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.has_watch_online"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.has_summary') ? "primary" : "warning"}
+                        checked={watch('config.has_summary')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    has_summary: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.has_summary"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.has_poster') ? "primary" : "warning"}
+                        checked={watch('config.has_poster')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    has_poster: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.has_poster"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.has_wide_poster') ? "primary" : "warning"}
+                        checked={watch('config.has_wide_poster')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    has_wide_poster: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.has_wide_poster"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.has_trailer') ? "primary" : "warning"}
+                        checked={watch('config.has_trailer')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    has_trailer: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.has_trailer"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.has_subtitle') ? "primary" : "warning"}
+                        checked={watch('config.has_subtitle')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    has_subtitle: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.has_subtitle"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.needHeadlessBrowser') ? "primary" : "warning"}
+                        checked={watch('config.needHeadlessBrowser')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    needHeadlessBrowser: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.needHeadlessBrowser"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.isTorrent') ? "primary" : "warning"}
+                        checked={watch('config.isTorrent')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    isTorrent: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.isTorrent"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.replaceInfoOnDuplicate') ? "primary" : "warning"}
+                        checked={watch('config.replaceInfoOnDuplicate')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    replaceInfoOnDuplicate: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.replaceInfoOnDuplicate"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.removeScriptAndStyleFromHtml') ? "primary" : "warning"}
+                        checked={watch('config.removeScriptAndStyleFromHtml')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    removeScriptAndStyleFromHtml: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.removeScriptAndStyleFromHtml"
+                labelPlacement="start"
+            />
+
+            <FormControl required
+                         sx={{m: 1, minWidth: 150}}>
+                <InputLabel id="demo-simple-select-label">Source Auth</InputLabel>
+                <Select
+                    autoWidth
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="sourceAuthStatus"
+                    value={getValues().config.sourceAuthStatus}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+                        const values = getValues();
+                        reset({
+                            ...values,
+                            config: {
+                                ...values.config,
+                                sourceAuthStatus: newValue
+                            }
+                        });
+                        setIsDirty(true);
+                    }}
+                >
+                    <MenuItem value={'ok'}>OK</MenuItem>
+                    <MenuItem value={'login-cookie'}>Login-Cookie</MenuItem>
+                </Select>
+            </FormControl>
+
+            <FormControl required
+                         sx={{m: 1, minWidth: 150}}>
+                <InputLabel id="demo-simple-select-label">Vpn Status Poster</InputLabel>
+                <Select
+                    autoWidth
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="config.vpnStatus.poster"
+                    value={getValues().config.vpnStatus.poster}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+                        const values = getValues();
+                        reset({
+                            ...values,
+                            config: {
+                                ...values.config,
+                                vpnStatus :{
+                                    ...values.config.vpnStatus,
+                                    poster: newValue
+                                }
+                            }
+                        });
+                        setIsDirty(true);
+                    }}
+                >
+                    {vpnOptions.map(opt => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl required
+                         sx={{m: 1, minWidth: 150}}>
+                <InputLabel id="demo-simple-select-label">Vpn Status Trailer</InputLabel>
+                <Select
+                    autoWidth
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="config.vpnStatus.trailer"
+                    value={getValues().config.vpnStatus.trailer}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+                        const values = getValues();
+                        reset({
+                            ...values,
+                            config: {
+                                ...values.config,
+                                vpnStatus :{
+                                    ...values.config.vpnStatus,
+                                    trailer: newValue
+                                }
+                            }
+                        });
+                        setIsDirty(true);
+                    }}
+                >
+                    {vpnOptions.map(opt => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl required
+                         sx={{m: 1, minWidth: 150}}>
+                <InputLabel id="demo-simple-select-label">Vpn Status Download Link</InputLabel>
+                <Select
+                    autoWidth
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="config.vpnStatus.downloadLink"
+                    value={getValues().config.vpnStatus.downloadLink}
+                    onChange={(e) => {
+                        const newValue = e.target.value;
+                        const values = getValues();
+                        reset({
+                            ...values,
+                            config: {
+                                ...values.config,
+                                vpnStatus :{
+                                    ...values.config.vpnStatus,
+                                    downloadLink: newValue
+                                }
+                            }
+                        });
+                        setIsDirty(true);
+                    }}
+                >
+                    {vpnOptions.map(opt => (
+                        <MenuItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <div>
+                <TextField
+                    css={style.textField}
+                    {...register("config.header")}
+                    name={"config.header"}
+                    placeholder={sourceData.config?.header || ''}
+                    label={"Config.Header"}
+                    type={"text"}
+                    error={!!errors?.config?.header}
+                    helperText={errors?.config?.header?.message}
+                    margin={"dense"}
+                    variant={"standard"}
+                    color={"secondary"}
+                />
+            </div>
 
             {
                 !!error && <div>
