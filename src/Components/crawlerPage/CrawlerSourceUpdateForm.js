@@ -584,6 +584,32 @@ const CrawlerSourceUpdateForm = ({extraStyle, sourceData, onDataUpdate}) => {
                 control={
                     <Switch
                         size={"medium"}
+                        color={watch('config.use_google_cache') ? "primary" : "warning"}
+                        checked={watch('config.use_google_cache')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    use_google_cache: newValue
+                                }
+                            });
+                            setIsDirty(true);
+                        }}
+                    />
+                }
+                label="config.use_google_cache"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
                         color={watch('config.needHeadlessBrowser') ? "primary" : "warning"}
                         checked={watch('config.needHeadlessBrowser')}
                         onChange={(e) => {

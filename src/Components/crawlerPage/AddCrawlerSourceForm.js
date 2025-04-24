@@ -48,6 +48,7 @@ const AddCrawlerSourceForm = ({extraStyle, onDataUpdate}) => {
                 has_wide_poster: false,
                 has_trailer: false,
                 has_subtitle: false,
+                use_google_cache: false,
                 needHeadlessBrowser: false,
                 isTorrent: false,
                 replaceInfoOnDuplicate: false,
@@ -549,6 +550,31 @@ const AddCrawlerSourceForm = ({extraStyle, onDataUpdate}) => {
                     />
                 }
                 label="config.has_subtitle"
+                labelPlacement="start"
+            />
+
+            <FormControlLabel
+                css={style.switch}
+                value="start"
+                control={
+                    <Switch
+                        size={"medium"}
+                        color={watch('config.use_google_cache') ? "primary" : "warning"}
+                        checked={watch('config.use_google_cache')}
+                        onChange={(e) => {
+                            const newValue = e.target.checked;
+                            const values = getValues();
+                            reset({
+                                ...values,
+                                config: {
+                                    ...values.config,
+                                    use_google_cache: newValue
+                                }
+                            });
+                        }}
+                    />
+                }
+                label="config.use_google_cache"
                 labelPlacement="start"
             />
 
